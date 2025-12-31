@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
 import AddToCartButton from "./AddToCartButton";
+import WishlistButton from "./WishlistButton";
 import { Product } from "@/types/product";
 
 interface ProductCardProps {
@@ -29,6 +30,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
               SALE
             </span>
           )}
+          <WishlistButton
+            productId={product.id}
+            className="absolute top-4 right-4 z-20"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          />
           <div className="relative w-full h-full rounded-2xl overflow-hidden">
             <img
               src={product.image_url || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop"}

@@ -40,12 +40,20 @@ const Header = () => {
                 {link.label}
               </Link>
             ))}
+            {user && (
+              <Link
+                to="/dashboard"
+                className="text-sm font-bold uppercase tracking-wider hover:text-foreground/70 transition-colors"
+              >
+                Dashboard
+              </Link>
+            )}
             {isAdmin && (
               <Link
                 to="/admin"
                 className="text-sm font-bold uppercase tracking-wider hover:text-foreground/70 transition-colors"
               >
-                Dashboard
+                Admin
               </Link>
             )}
           </nav>
@@ -104,13 +112,22 @@ const Header = () => {
                   {link.label}
                 </Link>
               ))}
+              {user && (
+                <Link
+                  to="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-lg font-bold uppercase tracking-wider"
+                >
+                  Dashboard
+                </Link>
+              )}
               {isAdmin && (
                 <Link
                   to="/admin"
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-lg font-bold uppercase tracking-wider"
                 >
-                  Dashboard
+                  Admin
                 </Link>
               )}
               {user ? (

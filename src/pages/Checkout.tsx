@@ -1,10 +1,37 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
-import { CreditCard, Lock } from "lucide-react";
+import { useCart } from "@/hooks/useCart";
+import { useCreateOrder } from "@/hooks/useOrders";
+import { CreditCard, Lock, Package } from "lucide-react";
 
 const Checkout = () => {
+  const navigate = useNavigate();
+  const { items } = useCart();
+  const createOrder = useCreateOrder();
+
+  const handlePlaceholderOrder = async () => {
+    if (items.length === 0) {
+      return;
+    }
+
+    try {
+      await createOrder.mutateAsync({
+        items: items.map(item => ({
+          product_id: item.productId,
+          quantity: item.quantity
+        })),
+        payment_method: 'placeholder'
+      });
+
+      // Navigate to dashboard orders tab
+      navigate('/dashboard?tab=orders');
+    } catch (error) {
+      console.error('Order creation error:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
@@ -68,6 +95,24 @@ const Checkout = () => {
                 </Button>
               </Link>
             </div>
+
+            {/* Test Order Button (temporary until Stripe integration) */}
+            {items.length > 0 && (
+              <div className="mt-8 p-6 bg-vibrant-yellow/30 rounded-2xl">
+                <p className="text-sm font-serif mb-4">
+                  <strong className="font-sans">For Testing:</strong> Create a placeholder order to test the dashboard features
+                </p>
+                <Button
+                  variant="filled"
+                  className="text-base py-4 px-8 flex items-center gap-2 mx-auto"
+                  onClick={handlePlaceholderOrder}
+                  disabled={createOrder.isPending}
+                >
+                  <Package className="w-5 h-5" />
+                  {createOrder.isPending ? 'Creating Order...' : 'Create Test Order'}
+                </Button>
+              </div>
+            )}
           </div>
 
           <p className="text-sm text-foreground/60 font-serif">
