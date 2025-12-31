@@ -332,7 +332,7 @@ const Admin = () => {
         <div className="px-5 md:px-20 py-5 md:py-6">
           <div className="flex items-center justify-between">
             <a href="/" className="font-serif text-2xl md:text-3xl font-bold italic">
-              Digital Hub
+              LYNCK DIGITAL
             </a>
             <div className="flex items-center gap-4">
               <span className="text-sm font-sans text-foreground/70">{user.email}</span>

@@ -1,11 +1,13 @@
 import { ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { useCart } from "@/hooks/useCart";
+import { Link } from "react-router-dom";
 
 const CartButton = () => {
-  const [itemCount] = useState(0); // Will be connected to cart state later
+  const { itemCount } = useCart();
 
   return (
-    <button
+    <Link
+      to="/cart"
       className="relative p-2 hover:bg-foreground/10 rounded-full transition-colors"
       aria-label="Shopping cart"
     >
@@ -15,7 +17,7 @@ const CartButton = () => {
           {itemCount}
         </span>
       )}
-    </button>
+    </Link>
   );
 };
 

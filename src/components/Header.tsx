@@ -26,7 +26,7 @@ const Header = () => {
         <div className="flex items-center justify-between gap-4">
           {/* Logo */}
           <Link to="/" className="font-serif text-xl md:text-2xl font-bold italic shrink-0">
-            Digital Hub
+            LYNCK DIGITAL
           </Link>
 
           {/* Desktop Navigation */}

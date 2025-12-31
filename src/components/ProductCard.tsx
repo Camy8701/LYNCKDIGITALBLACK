@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
+import AddToCartButton from "./AddToCartButton";
 import { Product } from "@/types/product";
 
 interface ProductCardProps {
@@ -68,9 +69,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
             )}
           </div>
           
-          <Button variant="filled" className="text-xs py-2 px-5 self-start">
-            VIEW PRODUCT
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="filled" className="text-xs py-2 px-5 flex-1">
+              VIEW PRODUCT
+            </Button>
+            <AddToCartButton
+              product={product}
+              variant="icon"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            />
+          </div>
         </div>
       </article>
     </Link>

@@ -1,5 +1,5 @@
 const Footer = () => {
-  const helpLinks = [{ label: "CONTACT", href: "mailto:hello@digitalhub.com" }];
+  const helpLinks = [{ label: "CONTACT", href: "mailto:info@lynckstudio.pro" }];
 
   const socialLinks = [
     { label: "INSTAGRAM", href: "https://instagram.com" },
@@ -14,7 +14,7 @@ const Footer = () => {
           {/* Logo Section */}
           <div className="md:col-span-1">
             <div className="font-serif text-3xl md:text-4xl font-bold italic">
-              DIGITAL HUB
+              LYNCK DIGITAL
             </div>
             <p className="text-sm mt-3 text-foreground/80 font-serif">
               Premium digital products for creators and entrepreneurs.
@@ -65,7 +65,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="mt-12 pt-6 border-t border-foreground/20">
           <p className="text-sm text-center md:text-left uppercase">
-            © 2025 DIGITAL HUB. ALL RIGHTS RESERVED.
+            © 2025 LYNCK DIGITAL. ALL RIGHTS RESERVED.
           </p>
         </div>
       </div>

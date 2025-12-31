@@ -1,6 +1,6 @@
-# Vesper Blog
+# LYNCK DIGITAL
 
-A lifestyle, wellness & personal growth blog built with modern web technologies.
+A premium digital products store built with modern web technologies.
 
 ## Technologies
 

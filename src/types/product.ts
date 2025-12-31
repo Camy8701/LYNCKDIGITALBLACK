@@ -25,3 +25,21 @@ export interface Product {
   updated_at: string;
   category?: Category;
 }
+
+export interface CartItem {
+  productId: string;
+  slug: string;
+  name: string;
+  price: number;
+  originalPrice: number | null;
+  imageUrl: string | null;
+  categoryName: string | null;
+  quantity: number;
+  addedAt: string;
+}
+
+export interface CartStorage {
+  items: CartItem[];
+  lastUpdated: string;
+  version: number;
+}

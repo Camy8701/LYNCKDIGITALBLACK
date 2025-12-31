@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import Button from "@/components/Button";
+import AddToCartButton from "@/components/AddToCartButton";
 import { useProduct, useProducts } from "@/hooks/useProducts";
 import { cn } from "@/lib/utils";
 
@@ -102,9 +102,11 @@ const Product = () => {
                 </div>
 
                 {/* Buy Button */}
-                <Button variant="filled" className="text-base py-4 px-8 self-start">
-                  BUY NOW
-                </Button>
+                <AddToCartButton
+                  product={product}
+                  variant="filled"
+                  className="text-base py-4 px-8 self-start"
+                />
               </div>
             </div>
           </div>
