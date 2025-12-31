@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import Product from "./pages/Product";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <Admin />,
+      },
+      {
+        path: "/blog",
+        element: <Blog />,
+      },
+      {
+        path: "/blog/:slug",
+        element: <BlogPost />,
       },
       {
         path: "*",
