@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import FeaturedProduct from "@/components/FeaturedProduct";
+import HeroCarousel from "@/components/HeroCarousel";
 import CategoryFilter from "@/components/CategoryFilter";
 import Button from "@/components/Button";
 import { useProducts, useCategories } from "@/hooks/useProducts";
@@ -14,13 +14,8 @@ const Index = () => {
   const { data: products = [], isLoading: productsLoading } = useProducts();
   const { data: categories = [] } = useCategories();
 
-  const featuredProduct = useMemo(() => 
-    products.find(p => p.is_featured), 
-    [products]
-  );
-
   const filteredProducts = useMemo(() => {
-    let filtered = products.filter(p => !p.is_featured || products.filter(pr => pr.is_featured).length > 1);
+    let filtered = products;
     if (selectedCategory) {
       filtered = filtered.filter(p => p.category?.slug === selectedCategory);
     }
@@ -49,12 +44,10 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Featured Product */}
-        {featuredProduct && (
-          <section className="px-5 md:px-20 pb-8 md:pb-12">
-            <FeaturedProduct product={featuredProduct} />
-          </section>
-        )}
+        {/* Hero Carousel */}
+        <section className="px-5 md:px-20 pb-8 md:pb-12">
+          <HeroCarousel />
+        </section>
 
         {/* Category Filter */}
         <section className="px-5 md:px-20 py-8 md:py-12">
