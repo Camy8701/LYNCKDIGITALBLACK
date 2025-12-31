@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useAllProducts, useCategories, useCreateProduct, useUpdateProduct, useDeleteProduct, useCreateCategory, useDeleteCategory } from "@/hooks/useProducts";
+import { useAllBlogPosts, useCreateBlogPost, useUpdateBlogPost, useDeleteBlogPost } from "@/hooks/useBlog";
 import { supabase } from "@/integrations/supabase/client";
 import Button from "@/components/Button";
 import { Product, Category } from "@/types/product";
+import { BlogPost } from "@/types/blog";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, LogOut, X } from "lucide-react";
+import { Pencil, Trash2, Plus, LogOut, X, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const Admin = () => {
@@ -21,11 +23,19 @@ const Admin = () => {
   const createCategory = useCreateCategory();
   const deleteCategory = useDeleteCategory();
 
-  const [activeTab, setActiveTab] = useState<'products' | 'categories'>('products');
+  const { data: blogPosts = [], isLoading: blogLoading } = useAllBlogPosts();
+  const createBlogPost = useCreateBlogPost();
+  const updateBlogPost = useUpdateBlogPost();
+  const deleteBlogPost = useDeleteBlogPost();
+
+  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'blog'>('products');
   const [showProductModal, setShowProductModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [showBlogModal, setShowBlogModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [editingBlogPost, setEditingBlogPost] = useState<BlogPost | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [blogImageFile, setBlogImageFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
   const [productForm, setProductForm] = useState({
@@ -46,6 +56,15 @@ const Admin = () => {
     slug: '',
     description: '',
     color_class: 'bg-vibrant-purple'
+  });
+
+  const [blogForm, setBlogForm] = useState({
+    title: '',
+    slug: '',
+    excerpt: '',
+    content: '',
+    image_url: '',
+    is_published: false
   });
 
   const colorOptions = [
@@ -171,6 +190,95 @@ const Admin = () => {
     setShowCategoryModal(false);
   };
 
+  const resetBlogForm = () => {
+    setBlogForm({
+      title: '',
+      slug: '',
+      excerpt: '',
+      content: '',
+      image_url: '',
+      is_published: false
+    });
+    setEditingBlogPost(null);
+    setBlogImageFile(null);
+    setShowBlogModal(false);
+  };
+
+  const handleBlogSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setUploading(true);
+
+    try {
+      let imageUrl = blogForm.image_url;
+      
+      if (blogImageFile) {
+        const fileExt = blogImageFile.name.split('.').pop();
+        const fileName = `blog/${Date.now()}.${fileExt}`;
+        
+        const { error } = await supabase.storage
+          .from('product-images')
+          .upload(fileName, blogImageFile);
+
+        if (error) {
+          toast.error('Failed to upload image');
+        } else {
+          const { data: { publicUrl } } = supabase.storage
+            .from('product-images')
+            .getPublicUrl(fileName);
+          imageUrl = publicUrl;
+        }
+      }
+
+      const blogData = {
+        title: blogForm.title,
+        slug: blogForm.slug || generateSlug(blogForm.title),
+        excerpt: blogForm.excerpt || null,
+        content: blogForm.content || null,
+        image_url: imageUrl || null,
+        is_published: blogForm.is_published,
+        published_at: blogForm.is_published ? new Date().toISOString() : null
+      };
+
+      if (editingBlogPost) {
+        await updateBlogPost.mutateAsync({ id: editingBlogPost.id, ...blogData });
+      } else {
+        await createBlogPost.mutateAsync(blogData);
+      }
+
+      resetBlogForm();
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const editBlogPost = (post: BlogPost) => {
+    setEditingBlogPost(post);
+    setBlogForm({
+      title: post.title,
+      slug: post.slug,
+      excerpt: post.excerpt || '',
+      content: post.content || '',
+      image_url: post.image_url || '',
+      is_published: post.is_published
+    });
+    setShowBlogModal(true);
+  };
+
+  const handleDeleteBlogPost = async (id: string) => {
+    if (confirm('Are you sure you want to delete this blog post?')) {
+      await deleteBlogPost.mutateAsync(id);
+    }
+  };
+
+  const toggleBlogPublish = async (post: BlogPost) => {
+    const newPublishedState = !post.is_published;
+    await updateBlogPost.mutateAsync({
+      id: post.id,
+      is_published: newPublishedState,
+      published_at: newPublishedState ? new Date().toISOString() : null
+    });
+  };
+
   const editProduct = (product: Product) => {
     setEditingProduct(product);
     setProductForm({
@@ -282,6 +390,17 @@ const Admin = () => {
               >
                 Categories ({categories.length})
               </button>
+              <button
+                onClick={() => setActiveTab('blog')}
+                className={cn(
+                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground",
+                  activeTab === 'blog'
+                    ? "bg-foreground text-background"
+                    : "bg-transparent text-foreground hover:bg-foreground hover:text-background"
+                )}
+              >
+                Blog ({blogPosts.length})
+              </button>
             </div>
 
             {/* Products Tab */}
@@ -385,6 +504,79 @@ const Admin = () => {
                     </div>
                   ))}
                 </div>
+              </>
+            )}
+
+            {/* Blog Tab */}
+            {activeTab === 'blog' && (
+              <>
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-extrabold uppercase font-sans">Blog Posts</h2>
+                  <Button
+                    variant="filled"
+                    onClick={() => setShowBlogModal(true)}
+                    className="text-sm"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    ADD POST
+                  </Button>
+                </div>
+
+                {blogLoading ? (
+                  <p className="text-center py-12 font-serif text-foreground/60">Loading blog posts...</p>
+                ) : (
+                  <div className="grid gap-4">
+                    {blogPosts.map((post) => (
+                      <div
+                        key={post.id}
+                        className="bg-card rounded-2xl p-4 md:p-6 flex items-center gap-4 border border-foreground/10"
+                      >
+                        {post.image_url && (
+                          <img
+                            src={post.image_url}
+                            alt={post.title}
+                            className="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover"
+                          />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold font-sans truncate">{post.title}</h3>
+                          <p className="text-sm text-foreground/60 truncate">{post.excerpt || 'No excerpt'}</p>
+                          <div className="flex items-center gap-2 mt-1">
+                            {post.is_published ? (
+                              <span className="text-xs bg-vibrant-mint px-2 py-0.5 rounded">Published</span>
+                            ) : (
+                              <span className="text-xs bg-foreground/20 px-2 py-0.5 rounded">Draft</span>
+                            )}
+                            <span className="text-xs text-foreground/50">
+                              {new Date(post.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => toggleBlogPublish(post)}
+                            className="p-2 hover:bg-foreground/10 rounded-full transition-colors"
+                            title={post.is_published ? 'Unpublish' : 'Publish'}
+                          >
+                            {post.is_published ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                          </button>
+                          <button
+                            onClick={() => editBlogPost(post)}
+                            className="p-2 hover:bg-foreground/10 rounded-full transition-colors"
+                          >
+                            <Pencil className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteBlogPost(post.id)}
+                            className="p-2 hover:bg-accent-red/20 rounded-full transition-colors text-accent-red"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </>
             )}
           </>
@@ -595,6 +787,103 @@ const Admin = () => {
                   CREATE CATEGORY
                 </Button>
                 <Button type="button" variant="transparent" onClick={resetCategoryForm}>
+                  CANCEL
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Blog Post Modal */}
+      {showBlogModal && (
+        <div className="fixed inset-0 bg-foreground/50 flex items-center justify-center p-5 z-50 overflow-y-auto">
+          <div className="bg-background rounded-3xl p-6 md:p-8 w-full max-w-2xl my-8 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-extrabold uppercase font-sans">
+                {editingBlogPost ? 'EDIT POST' : 'ADD POST'}
+              </h2>
+              <button onClick={resetBlogForm} className="p-2 hover:bg-foreground/10 rounded-full">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleBlogSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold uppercase mb-2 font-sans">Title *</label>
+                  <input
+                    type="text"
+                    value={blogForm.title}
+                    onChange={(e) => setBlogForm({ ...blogForm, title: e.target.value })}
+                    required
+                    className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold uppercase mb-2 font-sans">Slug</label>
+                  <input
+                    type="text"
+                    value={blogForm.slug}
+                    onChange={(e) => setBlogForm({ ...blogForm, slug: e.target.value })}
+                    placeholder="auto-generated"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans">Excerpt</label>
+                <input
+                  type="text"
+                  value={blogForm.excerpt}
+                  onChange={(e) => setBlogForm({ ...blogForm, excerpt: e.target.value })}
+                  placeholder="Short description for listing"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans">Content</label>
+                <textarea
+                  value={blogForm.content}
+                  onChange={(e) => setBlogForm({ ...blogForm, content: e.target.value })}
+                  rows={10}
+                  placeholder="Write your blog post content here..."
+                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans">Featured Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setBlogImageFile(e.target.files?.[0] || null)}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                />
+                {blogForm.image_url && !blogImageFile && (
+                  <p className="text-sm text-foreground/60 mt-2">Current: {blogForm.image_url}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={blogForm.is_published}
+                    onChange={(e) => setBlogForm({ ...blogForm, is_published: e.target.checked })}
+                    className="w-5 h-5"
+                  />
+                  <span className="text-sm font-bold uppercase font-sans">Publish immediately</span>
+                </label>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <Button type="submit" variant="filled" disabled={uploading} className="flex-1 justify-center">
+                  {uploading ? 'SAVING...' : editingBlogPost ? 'UPDATE POST' : 'CREATE POST'}
+                </Button>
+                <Button type="button" variant="transparent" onClick={resetBlogForm}>
                   CANCEL
                 </Button>
               </div>
