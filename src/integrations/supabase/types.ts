@@ -112,6 +112,132 @@ export type Database = {
           },
         ]
       }
+      order_items: {
+        Row: {
+          created_at: string
+          download_count: number
+          download_expires_at: string | null
+          download_url: string | null
+          id: string
+          max_downloads: number
+          order_id: string
+          product_description: string | null
+          product_id: string | null
+          product_image_url: string | null
+          product_name: string
+          product_slug: string | null
+          quantity: number
+          subtotal: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          download_count?: number
+          download_expires_at?: string | null
+          download_url?: string | null
+          id?: string
+          max_downloads?: number
+          order_id: string
+          product_description?: string | null
+          product_id?: string | null
+          product_image_url?: string | null
+          product_name: string
+          product_slug?: string | null
+          quantity?: number
+          subtotal: number
+          unit_price: number
+        }
+        Update: {
+          created_at?: string
+          download_count?: number
+          download_expires_at?: string | null
+          download_url?: string | null
+          id?: string
+          max_downloads?: number
+          order_id?: string
+          product_description?: string | null
+          product_id?: string | null
+          product_image_url?: string | null
+          product_name?: string
+          product_slug?: string | null
+          quantity?: number
+          subtotal?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          billing_address: Json | null
+          completed_at: string | null
+          created_at: string
+          currency: string
+          customer_notes: string | null
+          id: string
+          order_number: string
+          payment_method: string | null
+          status: string
+          stripe_payment_intent_id: string | null
+          stripe_session_id: string | null
+          subtotal: number
+          tax: number
+          total: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          billing_address?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          currency?: string
+          customer_notes?: string | null
+          id?: string
+          order_number: string
+          payment_method?: string | null
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          subtotal?: number
+          tax?: number
+          total?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          billing_address?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          currency?: string
+          customer_notes?: string | null
+          id?: string
+          order_number?: string
+          payment_method?: string | null
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          subtotal?: number
+          tax?: number
+          total?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           category_id: string | null
@@ -227,6 +353,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_order_number: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
