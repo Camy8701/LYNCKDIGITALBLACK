@@ -134,7 +134,17 @@ export function useRefundRate() {
 interface ProductPerformance {
   id: string;
   name: string;
+  slug: string;
+  short_description: string | null;
+  description: string | null;
+  price: number;
+  original_price: number | null;
   image_url: string | null;
+  file_url: string | null;
+  is_featured: boolean;
+  is_active: boolean;
+  created_at: string;
+  category_id: string | null;
   category: string | null;
   unitsSoldWeek: number;
   revenueWeek: number;
@@ -149,10 +159,10 @@ export function useProductPerformance() {
       const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-      // Get all products
+      // Get all products with all necessary fields
       const { data: products } = await supabase
         .from('products')
-        .select('id, name, image_url, category:categories(name)');
+        .select('id, name, slug, short_description, description, price, original_price, image_url, file_url, is_featured, is_active, created_at, category_id, category:categories(name)');
 
       if (!products) return [];
 
@@ -181,7 +191,17 @@ export function useProductPerformance() {
         return {
           id: product.id,
           name: product.name,
+          slug: product.slug,
+          short_description: product.short_description,
+          description: product.description,
+          price: product.price,
+          original_price: product.original_price,
           image_url: product.image_url,
+          file_url: product.file_url,
+          is_featured: product.is_featured,
+          is_active: product.is_active,
+          created_at: product.created_at,
+          category_id: product.category_id,
           category: product.category?.name || null,
           unitsSoldWeek,
           revenueWeek,
@@ -249,15 +269,18 @@ export function useTopCustomers(limit: number = 10) {
       const userIds = Object.keys(userStats);
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('id, full_name, email')
+        .select('id, full_name')
         .in('id', userIds);
+
+      const { data: users } = await supabase.auth.admin.listUsers();
+      const userEmailMap = new Map(users.users?.map(u => [u.id, u.email]) || []);
 
       if (!profiles) return [];
 
       // Combine data
       const customers: TopCustomer[] = profiles.map(profile => ({
         id: profile.id,
-        email: profile.email || '',
+        email: userEmailMap.get(profile.id) || '',
         fullName: profile.full_name,
         totalPurchases: userStats[profile.id].totalPurchases,
         totalSpent: userStats[profile.id].totalSpent,
@@ -300,7 +323,7 @@ export function useRecentOrders(limit: number = 10) {
           total,
           status,
           created_at,
-          user:profiles!user_id(email, full_name),
+          user_id,
           items:order_items(id)
         `)
         .order('created_at', { ascending: false })
@@ -308,16 +331,31 @@ export function useRecentOrders(limit: number = 10) {
 
       if (!orders) return [];
 
-      return orders.map(order => ({
-        id: order.id,
-        orderNumber: order.order_number,
-        customerEmail: order.user?.email || 'Unknown',
-        customerName: order.user?.full_name || null,
-        total: order.total || 0,
-        status: order.status,
-        createdAt: order.created_at,
-        itemCount: order.items?.length || 0,
-      }));
+      // Fetch user emails and profiles separately
+      const userIds = orders.map(o => o.user_id).filter(Boolean);
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, full_name')
+        .in('id', userIds);
+
+      const { data: users } = await supabase.auth.admin.listUsers();
+      const userEmailMap = new Map(users.users?.map(u => [u.id, u.email]) || []);
+
+      return orders.map(order => {
+        const profile = profiles?.find(p => p.id === order.user_id);
+        const email = userEmailMap.get(order.user_id) || 'Unknown';
+
+        return {
+          id: order.id,
+          orderNumber: order.order_number,
+          customerEmail: email,
+          customerName: profile?.full_name || null,
+          total: order.total || 0,
+          status: order.status,
+          createdAt: order.created_at,
+          itemCount: order.items?.length || 0,
+        };
+      });
     },
     refetchInterval: 30000, // Refetch every 30 seconds
   });
@@ -352,8 +390,7 @@ export function useUndownloadedPurchases() {
           order:orders!inner(
             user_id,
             created_at,
-            status,
-            user:profiles!user_id(email, full_name)
+            status
           )
         `)
         .eq('download_count', 0)
@@ -362,15 +399,27 @@ export function useUndownloadedPurchases() {
 
       if (!items) return [];
 
+      // Fetch user emails and profiles separately
+      const userIds = items.map(i => i.order.user_id).filter(Boolean);
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, full_name')
+        .in('id', userIds);
+
+      const { data: users } = await supabase.auth.admin.listUsers();
+      const userEmailMap = new Map(users.users?.map(u => [u.id, u.email]) || []);
+
       const now = new Date();
       return items.map(item => {
         const purchaseDate = new Date(item.order.created_at);
         const daysAgo = Math.floor((now.getTime() - purchaseDate.getTime()) / (1000 * 60 * 60 * 24));
+        const profile = profiles?.find(p => p.id === item.order.user_id);
+        const email = userEmailMap.get(item.order.user_id) || 'Unknown';
 
         return {
           orderItemId: item.id,
-          customerEmail: item.order.user?.email || 'Unknown',
-          customerName: item.order.user?.full_name || null,
+          customerEmail: email,
+          customerName: profile?.full_name || null,
           productName: item.product_name,
           purchaseDate: item.order.created_at,
           daysAgo,
@@ -533,8 +582,7 @@ export function useAdminAlerts() {
           order:orders!inner(
             user_id,
             created_at,
-            status,
-            user:profiles!user_id(email)
+            status
           )
         `)
         .eq('download_count', 0)
@@ -543,13 +591,19 @@ export function useAdminAlerts() {
         .limit(5);
 
       if (undownloaded && undownloaded.length > 0) {
+        // Fetch user emails separately
+        const userIds = undownloaded.map(i => i.order.user_id).filter(Boolean);
+        const { data: users } = await supabase.auth.admin.listUsers();
+        const userEmailMap = new Map(users.users?.map(u => [u.id, u.email]) || []);
+
         undownloaded.forEach(item => {
+          const email = userEmailMap.get(item.order.user_id) || 'Unknown';
           alerts.push({
             id: `undownloaded-${item.id}`,
             type: 'undownloaded',
             priority: 'medium',
             title: 'Customer hasn\'t downloaded purchase',
-            message: `${item.order.user?.email} hasn't downloaded "${item.product_name}" for 3+ days`,
+            message: `${email} hasn't downloaded "${item.product_name}" for 3+ days`,
             action: 'Send Reminder',
             createdAt: item.order.created_at,
           });
@@ -557,7 +611,30 @@ export function useAdminAlerts() {
       }
 
       // Check for high refund rate
-      const { data: refundRate } = await supabase.rpc('get_refund_rate');
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+      const { data: recentOrders } = await supabase
+        .from('orders')
+        .select('status')
+        .in('status', ['completed', 'refunded'])
+        .gte('created_at', thirtyDaysAgo.toISOString());
+
+      const totalCount = recentOrders?.length || 0;
+      const refundedCount = recentOrders?.filter(o => o.status === 'refunded').length || 0;
+      const refundRate = totalCount > 0 ? (refundedCount / totalCount) * 100 : 0;
+
+      if (refundRate > 5) {
+        alerts.push({
+          id: 'high-refund-rate',
+          type: 'refund',
+          priority: 'high',
+          title: 'High Refund Rate Detected',
+          message: `Refund rate is ${refundRate.toFixed(1)}% (${refundedCount} of ${totalCount} orders in last 30 days)`,
+          action: 'Review Orders',
+          createdAt: new Date().toISOString(),
+        });
+      }
 
       return alerts.sort((a, b) => {
         // Sort by priority then date
