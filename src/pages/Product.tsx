@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import AddToCartButton from "@/components/AddToCartButton";
+import Button from "@/components/Button";
 import { useProduct, useProducts } from "@/hooks/useProducts";
 import { cn } from "@/lib/utils";
 
