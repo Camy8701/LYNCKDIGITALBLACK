@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { Wishlist, WishlistItem } from '@/types/dashboard';
 import { toast } from 'sonner';
 import { useAuth } from './useAuth';
 
 /**
  * Fetch the current user's wishlist with product details
- * Note: Wishlist table pending creation
  */
 export function useWishlist() {
   const { user } = useAuth();
@@ -14,8 +14,23 @@ export function useWishlist() {
     queryKey: ['wishlist', user?.id],
     queryFn: async (): Promise<WishlistItem[]> => {
       if (!user) throw new Error('User not authenticated');
-      // Placeholder until wishlists table exists
-      return [];
+
+      const { data, error } = await supabase
+        .from('wishlists')
+        .select(`
+          *,
+          product:products(
+            *,
+            category:categories(*)
+          )
+        `)
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      // Filter out any null products
+      return (data || []).filter(item => item.product !== null) as WishlistItem[];
     },
     enabled: !!user
   });
@@ -31,7 +46,17 @@ export function useIsInWishlist(productId: string) {
     queryKey: ['wishlist-item', user?.id, productId],
     queryFn: async (): Promise<boolean> => {
       if (!user) return false;
-      return false;
+
+      const { data, error } = await supabase
+        .from('wishlists')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('product_id', productId)
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') throw error;
+
+      return !!data;
     },
     enabled: !!user && !!productId
   });
@@ -47,7 +72,17 @@ export function useWishlistItem(productId: string) {
     queryKey: ['wishlist-item-detail', user?.id, productId],
     queryFn: async (): Promise<Wishlist | null> => {
       if (!user) return null;
-      return null;
+
+      const { data, error } = await supabase
+        .from('wishlists')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('product_id', productId)
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') throw error;
+
+      return data;
     },
     enabled: !!user && !!productId
   });
@@ -71,7 +106,20 @@ export function useAddToWishlist() {
       priority?: number
     }) => {
       if (!user) throw new Error('Please sign in to add items to your wishlist');
-      throw new Error('Wishlist feature coming soon');
+
+      const { data, error } = await supabase
+        .from('wishlists')
+        .insert({
+          user_id: user.id,
+          product_id: productId,
+          notes,
+          priority
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlist'] });
@@ -96,7 +144,14 @@ export function useRemoveFromWishlist() {
   return useMutation({
     mutationFn: async (productId: string) => {
       if (!user) throw new Error('User not authenticated');
-      throw new Error('Wishlist feature coming soon');
+
+      const { error } = await supabase
+        .from('wishlists')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('product_id', productId);
+
+      if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlist'] });
@@ -120,12 +175,17 @@ export function useToggleWishlist() {
   const removeFromWishlist = useRemoveFromWishlist();
 
   return {
-    toggle: async (productId: string) => {
+    toggle: async (productId: string, isInWishlist: boolean) => {
       if (!user) {
         toast.error('Please sign in to add items to your wishlist');
         return;
       }
-      toast.info('Wishlist feature coming soon');
+
+      if (isInWishlist) {
+        await removeFromWishlist.mutateAsync(productId);
+      } else {
+        await addToWishlist.mutateAsync({ productId });
+      }
     },
     isLoading: addToWishlist.isPending || removeFromWishlist.isPending
   };
@@ -149,7 +209,17 @@ export function useUpdateWishlistItem() {
       priority?: number
     }) => {
       if (!user) throw new Error('User not authenticated');
-      throw new Error('Wishlist feature coming soon');
+
+      const { data, error } = await supabase
+        .from('wishlists')
+        .update({ notes, priority })
+        .eq('user_id', user.id)
+        .eq('product_id', productId)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlist'] });
@@ -173,7 +243,13 @@ export function useClearWishlist() {
   return useMutation({
     mutationFn: async () => {
       if (!user) throw new Error('User not authenticated');
-      throw new Error('Wishlist feature coming soon');
+
+      const { error } = await supabase
+        .from('wishlists')
+        .delete()
+        .eq('user_id', user.id);
+
+      if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlist'] });
