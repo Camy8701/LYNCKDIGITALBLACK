@@ -95,15 +95,8 @@ const HeroCarousel = () => {
                     key={currentProduct?.id}
                     src={currentProduct?.image_url || fallbackImage}
                     alt={currentProduct?.name}
-                    className="w-full h-full object-cover transition-transform duration-500 grayscale animate-scale-in"
+                    className="w-full h-full object-cover transition-transform duration-500 animate-scale-in"
                     onError={handleImageError}
-                  />
-                  <div
-                    className={cn(
-                      "absolute inset-0 mix-blend-multiply opacity-60",
-                      colorClass
-                    )}
-                    aria-hidden="true"
                   />
                 </div>
               </div>

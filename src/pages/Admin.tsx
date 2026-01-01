@@ -447,7 +447,7 @@ const Admin = () => {
 
             {/* Analytics Tab */}
             {activeTab === 'analytics' && (
-              <AdminAnalytics />
+              <AdminAnalytics onEditProduct={editProduct} />
             )}
 
             {/* Products Tab */}

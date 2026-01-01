@@ -7,8 +7,13 @@ import RecentActivityFeed from "./RecentActivityFeed";
 import { RefreshCw } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { Product } from "@/types/product";
 
-const AdminAnalytics = () => {
+interface AdminAnalyticsProps {
+  onEditProduct: (product: Product) => void;
+}
+
+const AdminAnalytics = ({ onEditProduct }: AdminAnalyticsProps) => {
   const queryClient = useQueryClient();
 
   const handleRefresh = () => {
@@ -51,7 +56,7 @@ const AdminAnalytics = () => {
       <SmartAlertsPanel />
 
       {/* Product Performance */}
-      <ProductPerformanceGrid />
+      <ProductPerformanceGrid onEditProduct={onEditProduct} />
 
       {/* Two Column Layout for Download Tracker and Top Customers */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

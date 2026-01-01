@@ -1,8 +1,53 @@
-import { Edit, BarChart3 } from "lucide-react";
+import { useState } from "react";
+import { Edit, BarChart3, X } from "lucide-react";
 import { useProductPerformance } from "@/hooks/useAdminAnalytics";
+import { Product } from "@/types/product";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
-const ProductPerformanceGrid = () => {
+interface ProductPerformanceGridProps {
+  onEditProduct: (product: Product) => void;
+}
+
+const ProductPerformanceGrid = ({ onEditProduct }: ProductPerformanceGridProps) => {
   const { data: products, isLoading } = useProductPerformance();
+  const [selectedProductForSales, setSelectedProductForSales] = useState<string | null>(null);
+
+  // Fetch sales for selected product
+  const { data: productSales } = useQuery({
+    queryKey: ['product-sales', selectedProductForSales],
+    queryFn: async () => {
+      if (!selectedProductForSales) return null;
+
+      const { data, error } = await supabase
+        .from('order_items')
+        .select(`
+          id,
+          quantity,
+          unit_price,
+          subtotal,
+          order:orders (
+            id,
+            order_number,
+            total,
+            status,
+            created_at,
+            user:profiles (
+              full_name,
+              email:users (email)
+            )
+          )
+        `)
+        .eq('product_id', selectedProductForSales)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!selectedProductForSales
+  });
+
+  const selectedProduct = products?.find(p => p.id === selectedProductForSales);
 
   if (isLoading) {
     return (
@@ -122,8 +167,31 @@ const ProductPerformanceGrid = () => {
               <button
                 className="flex-1 text-xs py-2 px-3 rounded-full border-2 border-foreground hover:bg-foreground hover:text-background transition-colors font-bold uppercase flex items-center justify-center gap-1"
                 onClick={() => {
-                  // TODO: Implement edit modal
-                  alert('Edit product modal - to be implemented');
+                  // Convert performance product to full Product type
+                  const fullProduct: Product = {
+                    id: product.id,
+                    name: product.name,
+                    slug: product.slug,
+                    short_description: product.short_description || null,
+                    description: product.description || null,
+                    price: product.price,
+                    original_price: product.original_price || null,
+                    category_id: product.category_id || null,
+                    image_url: product.image_url || null,
+                    file_url: product.file_url || null,
+                    is_featured: product.is_featured || false,
+                    is_active: product.is_active !== undefined ? product.is_active : true,
+                    created_at: product.created_at || new Date().toISOString(),
+                    category: product.category ? {
+                      id: product.category_id || '',
+                      name: product.category,
+                      slug: product.category.toLowerCase().replace(/\s+/g, '-'),
+                      description: null,
+                      color_class: 'bg-vibrant-purple',
+                      created_at: new Date().toISOString()
+                    } : null
+                  };
+                  onEditProduct(fullProduct);
                 }}
               >
                 <Edit className="w-3 h-3" />
@@ -131,10 +199,7 @@ const ProductPerformanceGrid = () => {
               </button>
               <button
                 className="flex-1 text-xs py-2 px-3 rounded-full bg-foreground text-background hover:bg-foreground/80 transition-colors font-bold uppercase flex items-center justify-center gap-1"
-                onClick={() => {
-                  // TODO: Implement view sales
-                  alert(`View sales for ${product.name} - to be implemented`);
-                }}
+                onClick={() => setSelectedProductForSales(product.id)}
               >
                 <BarChart3 className="w-3 h-3" />
                 Sales
@@ -143,6 +208,93 @@ const ProductPerformanceGrid = () => {
           </div>
         ))}
       </div>
+
+      {/* Sales Modal */}
+      {selectedProductForSales && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-background rounded-3xl max-w-4xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+            {/* Header */}
+            <div className="p-6 border-b-2 border-foreground/10 flex items-center justify-between">
+              <div>
+                <h3 className="text-2xl font-extrabold uppercase font-sans">
+                  SALES: {selectedProduct?.name}
+                </h3>
+                <p className="text-sm text-foreground/60 font-serif mt-1">
+                  {productSales?.length || 0} total sales
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedProductForSales(null)}
+                className="w-10 h-10 rounded-full border-2 border-foreground hover:bg-foreground hover:text-background transition-colors flex items-center justify-center"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Sales List */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {!productSales || productSales.length === 0 ? (
+                <div className="text-center py-12">
+                  <BarChart3 className="w-16 h-16 mx-auto mb-4 text-foreground/30" />
+                  <p className="text-foreground/60 font-serif">No sales yet for this product</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {productSales.map((sale: any) => {
+                    const order = sale.order;
+                    const userProfile = order?.user;
+                    const customerName = userProfile?.full_name || 'Unknown';
+                    const customerEmail = userProfile?.email?.email || 'No email';
+
+                    return (
+                      <div
+                        key={sale.id}
+                        className="bg-card rounded-xl p-4 border border-foreground/10"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="font-bold font-sans text-sm">
+                                {customerName}
+                              </span>
+                              <span
+                                className={`text-xs px-2 py-0.5 rounded-full font-bold uppercase ${
+                                  order?.status === 'completed'
+                                    ? 'bg-vibrant-mint/30 text-green-800'
+                                    : order?.status === 'pending'
+                                    ? 'bg-vibrant-yellow/30 text-yellow-800'
+                                    : 'bg-vibrant-coral/30 text-red-800'
+                                }`}
+                              >
+                                {order?.status || 'unknown'}
+                              </span>
+                            </div>
+                            <p className="text-xs text-foreground/60">
+                              {customerEmail}
+                            </p>
+                            <p className="text-xs text-foreground/60 mt-1">
+                              Order #{order?.order_number} •{' '}
+                              {new Date(order?.created_at).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-lg font-extrabold font-sans text-vibrant-mint">
+                              ${sale.subtotal.toFixed(2)}
+                            </div>
+                            <div className="text-xs text-foreground/60">
+                              Qty: {sale.quantity}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

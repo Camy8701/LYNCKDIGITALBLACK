@@ -48,15 +48,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <img
               src={product.image_url || fallbackImage}
               alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-500 grayscale"
+              className="w-full h-full object-cover transition-transform duration-500"
               onError={handleImageError}
-            />
-            <div
-              className={cn(
-                "absolute inset-0 mix-blend-multiply opacity-60",
-                colorClass
-              )}
-              aria-hidden="true"
             />
           </div>
         </div>
