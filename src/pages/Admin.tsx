@@ -35,6 +35,7 @@ const Admin = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editingBlogPost, setEditingBlogPost] = useState<BlogPost | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [productFile, setProductFile] = useState<File | null>(null);
   const [blogImageFile, setBlogImageFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -109,17 +110,44 @@ const Admin = () => {
     return publicUrl;
   };
 
+  const uploadProductFile = async (file: File): Promise<string | null> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    const { error } = await supabase.storage
+      .from('product-files')
+      .upload(filePath, file);
+
+    if (error) {
+      console.error('Upload error:', error);
+      toast.error('Failed to upload product file');
+      return null;
+    }
+
+    // Return the storage path (not public URL, since bucket is private)
+    return filePath;
+  };
+
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setUploading(true);
 
     try {
       let imageUrl = productForm.image_url;
-      
+      let fileUrl = editingProduct?.file_url || null;
+
       if (imageFile) {
         const uploadedUrl = await uploadImage(imageFile);
         if (uploadedUrl) {
           imageUrl = uploadedUrl;
+        }
+      }
+
+      if (productFile) {
+        const uploadedFilePath = await uploadProductFile(productFile);
+        if (uploadedFilePath) {
+          fileUrl = uploadedFilePath;
         }
       }
 
@@ -132,7 +160,7 @@ const Admin = () => {
         original_price: productForm.original_price ? parseFloat(productForm.original_price) : null,
         category_id: productForm.category_id || null,
         image_url: imageUrl || null,
-        file_url: null,
+        file_url: fileUrl,
         is_featured: productForm.is_featured,
         is_active: productForm.is_active
       };
@@ -177,6 +205,7 @@ const Admin = () => {
     });
     setEditingProduct(null);
     setImageFile(null);
+    setProductFile(null);
     setShowProductModal(false);
   };
 
@@ -688,6 +717,28 @@ const Admin = () => {
                 />
                 {productForm.image_url && !imageFile && (
                   <p className="text-sm text-foreground/60 mt-2">Current: {productForm.image_url}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans">
+                  Digital Product File (PDF, ZIP, etc.) *
+                </label>
+                <input
+                  type="file"
+                  accept=".pdf,.zip,.rar,.mp4,.mov,.epub,.txt,.docx,.xlsx"
+                  onChange={(e) => setProductFile(e.target.files?.[0] || null)}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                />
+                {editingProduct?.file_url && !productFile && (
+                  <p className="text-sm text-foreground/60 mt-2">
+                    Current file: {editingProduct.file_url.split('/').pop()}
+                  </p>
+                )}
+                {productFile && (
+                  <p className="text-sm text-vibrant-mint mt-2">
+                    New file selected: {productFile.name}
+                  </p>
                 )}
               </div>
 
