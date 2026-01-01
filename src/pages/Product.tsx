@@ -42,9 +42,15 @@ const Product = () => {
   }
 
   const colorClass = product.category?.color_class || "bg-vibrant-purple";
-  const discount = product.original_price 
-    ? Math.round((1 - product.price / product.original_price) * 100) 
+  const discount = product.original_price
+    ? Math.round((1 - product.price / product.original_price) * 100)
     : 0;
+
+  const fallbackImage = "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop";
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = fallbackImage;
+  };
 
   // Get related products from the same category
   const relatedProducts = products
@@ -69,9 +75,10 @@ const Product = () => {
                 )}
                 <div className="rounded-3xl overflow-hidden">
                   <img
-                    src={product.image_url || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop"}
+                    src={product.image_url || fallbackImage}
                     alt={product.name}
                     className="w-full aspect-square object-cover"
+                    onError={handleImageError}
                   />
                 </div>
               </div>

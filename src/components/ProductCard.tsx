@@ -11,9 +11,15 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const colorClass = product.category?.color_class || "bg-vibrant-purple";
-  const discount = product.original_price 
-    ? Math.round((1 - product.price / product.original_price) * 100) 
+  const discount = product.original_price
+    ? Math.round((1 - product.price / product.original_price) * 100)
     : 0;
+
+  const fallbackImage = "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop";
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = fallbackImage;
+  };
 
   return (
     <Link to={`/product/${product.slug}`} className="block">
@@ -40,9 +46,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
           />
           <div className="relative w-full h-full rounded-2xl overflow-hidden">
             <img
-              src={product.image_url || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop"}
+              src={product.image_url || fallbackImage}
               alt={product.name}
               className="w-full h-full object-cover transition-transform duration-500 grayscale"
+              onError={handleImageError}
             />
             <div
               className={cn(

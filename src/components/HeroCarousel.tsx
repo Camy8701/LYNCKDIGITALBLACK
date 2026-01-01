@@ -32,9 +32,15 @@ const HeroCarousel = () => {
 
   const currentProduct = displayProducts[currentIndex];
   const colorClass = currentProduct?.category?.color_class || "bg-vibrant-purple";
-  const discount = currentProduct?.original_price 
-    ? Math.round((1 - currentProduct.price / currentProduct.original_price) * 100) 
+  const discount = currentProduct?.original_price
+    ? Math.round((1 - currentProduct.price / currentProduct.original_price) * 100)
     : 0;
+
+  const fallbackImage = "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop";
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = fallbackImage;
+  };
 
   return (
     <div className="relative overflow-hidden">
@@ -87,9 +93,10 @@ const HeroCarousel = () => {
                 <div className="relative w-full h-full rounded-2xl overflow-hidden">
                   <img
                     key={currentProduct?.id}
-                    src={currentProduct?.image_url || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop"}
+                    src={currentProduct?.image_url || fallbackImage}
                     alt={currentProduct?.name}
                     className="w-full h-full object-cover transition-transform duration-500 grayscale animate-scale-in"
+                    onError={handleImageError}
                   />
                   <div
                     className={cn(
