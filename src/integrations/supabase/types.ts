@@ -88,33 +88,27 @@ export type Database = {
           created_at: string
           error_message: string | null
           id: string
-          ip_address: string | null
           order_item_id: string
           product_id: string | null
           success: boolean
-          user_agent: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
           error_message?: string | null
           id?: string
-          ip_address?: string | null
           order_item_id: string
           product_id?: string | null
           success?: boolean
-          user_agent?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
           error_message?: string | null
           id?: string
-          ip_address?: string | null
           order_item_id?: string
           product_id?: string | null
           success?: boolean
-          user_agent?: string | null
           user_id?: string
         }
         Relationships: [
