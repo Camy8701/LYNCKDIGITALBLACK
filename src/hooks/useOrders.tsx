@@ -95,9 +95,29 @@ export function useDownloadProduct() {
   return useMutation({
     mutationFn: async (orderItemId: string): Promise<string> => {
       if (!user) throw new Error('User not authenticated');
-      throw new Error('Download not available');
+      
+      const { data, error } = await supabase.functions.invoke('get-download', {
+        body: { orderItemId }
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Download failed');
+      }
+
+      if (data?.error) {
+        throw new Error(data.error);
+      }
+
+      if (!data?.signedUrl) {
+        throw new Error('No download URL received');
+      }
+
+      // Open the signed URL in a new tab to start download
+      window.open(data.signedUrl, '_blank');
+      
+      return data.signedUrl;
     },
-    onSuccess: (signedUrl) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       queryClient.invalidateQueries({ queryKey: ['order-items'] });
       toast.success('Download started!');
