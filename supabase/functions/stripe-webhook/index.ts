@@ -15,7 +15,7 @@ serve(async (req) => {
   try {
     const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
     const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
-    
+
     if (!stripeKey) {
       throw new Error("Stripe secret key not configured");
     }
@@ -104,7 +104,7 @@ serve(async (req) => {
       case "payment_intent.payment_failed": {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
         console.log("Payment failed:", paymentIntent.id);
-        
+
         // Find and update the order
         const { data: orders } = await supabase
           .from("orders")
