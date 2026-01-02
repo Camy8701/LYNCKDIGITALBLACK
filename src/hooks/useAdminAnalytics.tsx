@@ -265,26 +265,23 @@ export function useTopCustomers(limit: number = 10) {
         return acc;
       }, {} as Record<string, { totalPurchases: number; totalSpent: number; lastPurchaseDate: string }>);
 
-      // Get user details
+      // Get user details from profiles (which includes email)
       const userIds = Object.keys(userStats);
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('id, full_name')
-        .in('id', userIds);
-
-      const { data: users } = await supabase.auth.admin.listUsers();
-      const userEmailMap = new Map(users.users?.map(u => [u.id, u.email]) || []);
+        .select('user_id, full_name, email')
+        .in('user_id', userIds);
 
       if (!profiles) return [];
 
       // Combine data
       const customers: TopCustomer[] = profiles.map(profile => ({
-        id: profile.id,
-        email: userEmailMap.get(profile.id) || '',
+        id: profile.user_id,
+        email: profile.email || '',
         fullName: profile.full_name,
-        totalPurchases: userStats[profile.id].totalPurchases,
-        totalSpent: userStats[profile.id].totalSpent,
-        lastPurchaseDate: userStats[profile.id].lastPurchaseDate,
+        totalPurchases: userStats[profile.user_id]?.totalPurchases || 0,
+        totalSpent: userStats[profile.user_id]?.totalSpent || 0,
+        lastPurchaseDate: userStats[profile.user_id]?.lastPurchaseDate || '',
       }));
 
       // Sort by total spent and limit
@@ -331,24 +328,20 @@ export function useRecentOrders(limit: number = 10) {
 
       if (!orders) return [];
 
-      // Fetch user emails and profiles separately
+      // Fetch user profiles (which includes email)
       const userIds = orders.map(o => o.user_id).filter(Boolean);
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('id, full_name')
-        .in('id', userIds);
-
-      const { data: users } = await supabase.auth.admin.listUsers();
-      const userEmailMap = new Map(users.users?.map(u => [u.id, u.email]) || []);
+        .select('user_id, full_name, email')
+        .in('user_id', userIds);
 
       return orders.map(order => {
-        const profile = profiles?.find(p => p.id === order.user_id);
-        const email = userEmailMap.get(order.user_id) || 'Unknown';
+        const profile = profiles?.find(p => p.user_id === order.user_id);
 
         return {
           id: order.id,
           orderNumber: order.order_number,
-          customerEmail: email,
+          customerEmail: profile?.email || 'Unknown',
           customerName: profile?.full_name || null,
           total: order.total || 0,
           status: order.status,
@@ -399,26 +392,22 @@ export function useUndownloadedPurchases() {
 
       if (!items) return [];
 
-      // Fetch user emails and profiles separately
+      // Fetch user profiles (which includes email)
       const userIds = items.map(i => i.order.user_id).filter(Boolean);
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('id, full_name')
-        .in('id', userIds);
-
-      const { data: users } = await supabase.auth.admin.listUsers();
-      const userEmailMap = new Map(users.users?.map(u => [u.id, u.email]) || []);
+        .select('user_id, full_name, email')
+        .in('user_id', userIds);
 
       const now = new Date();
       return items.map(item => {
         const purchaseDate = new Date(item.order.created_at);
         const daysAgo = Math.floor((now.getTime() - purchaseDate.getTime()) / (1000 * 60 * 60 * 24));
-        const profile = profiles?.find(p => p.id === item.order.user_id);
-        const email = userEmailMap.get(item.order.user_id) || 'Unknown';
+        const profile = profiles?.find(p => p.user_id === item.order.user_id);
 
         return {
           orderItemId: item.id,
-          customerEmail: email,
+          customerEmail: profile?.email || 'Unknown',
           customerName: profile?.full_name || null,
           productName: item.product_name,
           purchaseDate: item.order.created_at,
@@ -448,10 +437,10 @@ export function useDownloadStats() {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      // Total downloads
+      // Total downloads from download_logs table
       const { data: allLogs } = await supabase
         .from('download_logs')
-        .select('user_id, created_at, order_item:order_items!inner(order:orders!inner(created_at))');
+        .select('user_id, created_at, order_item_id');
 
       // Downloads today
       const { data: todayLogs } = await supabase
@@ -463,19 +452,30 @@ export function useDownloadStats() {
       const uniqueCustomers = new Set(allLogs?.map(log => log.user_id)).size;
       const downloadsToday = todayLogs?.length || 0;
 
-      // Calculate average time to first download
+      // Calculate average time to first download based on order_items
       let avgTimeToFirstDownload = 0;
       if (allLogs && allLogs.length > 0) {
-        const times = allLogs
-          .map(log => {
-            const orderDate = new Date(log.order_item.order.created_at);
-            const downloadDate = new Date(log.created_at);
-            return (downloadDate.getTime() - orderDate.getTime()) / (1000 * 60 * 60); // hours
-          })
-          .filter(time => time >= 0); // Filter out any negative times (data issues)
+        // Get order items for the logs
+        const orderItemIds = allLogs.map(log => log.order_item_id);
+        const { data: orderItems } = await supabase
+          .from('order_items')
+          .select('id, created_at')
+          .in('id', orderItemIds);
 
-        if (times.length > 0) {
-          avgTimeToFirstDownload = times.reduce((sum, time) => sum + time, 0) / times.length;
+        if (orderItems && orderItems.length > 0) {
+          const times = allLogs
+            .map(log => {
+              const orderItem = orderItems.find(oi => oi.id === log.order_item_id);
+              if (!orderItem) return -1;
+              const orderDate = new Date(orderItem.created_at);
+              const downloadDate = new Date(log.created_at);
+              return (downloadDate.getTime() - orderDate.getTime()) / (1000 * 60 * 60); // hours
+            })
+            .filter(time => time >= 0);
+
+          if (times.length > 0) {
+            avgTimeToFirstDownload = times.reduce((sum, time) => sum + time, 0) / times.length;
+          }
         }
       }
 
@@ -510,26 +510,23 @@ export function useEmailGrowth() {
       const twoWeeksAgo = new Date();
       twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
 
-      // Total subscribers
-      const { data: allSubscribers, count: totalCount } = await supabase
+      // Total profiles (as placeholder for subscribers since newsletter fields don't exist yet)
+      const { count: totalCount } = await supabase
         .from('profiles')
-        .select('id', { count: 'exact' })
-        .eq('subscribed_to_newsletter', true);
+        .select('id', { count: 'exact' });
 
-      // New this week
-      const { data: thisWeekSubscribers, count: thisWeekCount } = await supabase
+      // New profiles this week
+      const { count: thisWeekCount } = await supabase
         .from('profiles')
         .select('id', { count: 'exact' })
-        .eq('subscribed_to_newsletter', true)
-        .gte('newsletter_subscribed_at', oneWeekAgo.toISOString());
+        .gte('created_at', oneWeekAgo.toISOString());
 
-      // New last week
-      const { data: lastWeekSubscribers, count: lastWeekCount } = await supabase
+      // New profiles last week
+      const { count: lastWeekCount } = await supabase
         .from('profiles')
         .select('id', { count: 'exact' })
-        .eq('subscribed_to_newsletter', true)
-        .gte('newsletter_subscribed_at', twoWeeksAgo.toISOString())
-        .lt('newsletter_subscribed_at', oneWeekAgo.toISOString());
+        .gte('created_at', twoWeeksAgo.toISOString())
+        .lt('created_at', oneWeekAgo.toISOString());
 
       const totalSubscribers = totalCount || 0;
       const newThisWeek = thisWeekCount || 0;
@@ -591,13 +588,16 @@ export function useAdminAlerts() {
         .limit(5);
 
       if (undownloaded && undownloaded.length > 0) {
-        // Fetch user emails separately
+        // Fetch user profiles (which includes email)
         const userIds = undownloaded.map(i => i.order.user_id).filter(Boolean);
-        const { data: users } = await supabase.auth.admin.listUsers();
-        const userEmailMap = new Map(users.users?.map(u => [u.id, u.email]) || []);
+        const { data: profiles } = await supabase
+          .from('profiles')
+          .select('user_id, email')
+          .in('user_id', userIds);
 
         undownloaded.forEach(item => {
-          const email = userEmailMap.get(item.order.user_id) || 'Unknown';
+          const profile = profiles?.find(p => p.user_id === item.order.user_id);
+          const email = profile?.email || 'Unknown';
           alerts.push({
             id: `undownloaded-${item.id}`,
             type: 'undownloaded',

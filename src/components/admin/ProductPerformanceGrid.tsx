@@ -182,14 +182,16 @@ const ProductPerformanceGrid = ({ onEditProduct }: ProductPerformanceGridProps) 
                     is_featured: product.is_featured,
                     is_active: product.is_active,
                     created_at: product.created_at,
+                    updated_at: product.created_at, // Use created_at as fallback
                     category: product.category ? {
                       id: product.category_id || '',
                       name: product.category,
                       slug: product.category.toLowerCase().replace(/\s+/g, '-'),
                       description: null,
                       color_class: 'bg-vibrant-purple',
-                      created_at: new Date().toISOString()
-                    } : null
+                      created_at: new Date().toISOString(),
+                      updated_at: new Date().toISOString()
+                    } : undefined
                   };
                   onEditProduct(fullProduct);
                 }}
