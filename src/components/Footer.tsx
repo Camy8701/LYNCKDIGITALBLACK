@@ -40,7 +40,7 @@ const Footer = () => {
           </div>
           <div className="flex flex-col gap-4">
             <a
-              href="mailto:info@lynckstudio.pro"
+              href="/contact"
               className="text-[13px] font-medium text-foreground/70 uppercase tracking-widest hover:text-foreground transition-colors"
             >
               Contact Us

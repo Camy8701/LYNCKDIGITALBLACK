@@ -14,6 +14,7 @@ import Admin from "./pages/Admin";
 import Dashboard from "./pages/Dashboard";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: "/blog/:slug",
         element: <BlogPost />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
       {
         path: "*",

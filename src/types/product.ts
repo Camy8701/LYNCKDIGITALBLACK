@@ -24,6 +24,14 @@ export interface Product {
   created_at: string;
   updated_at: string;
   category?: Category;
+  // Enhanced product page fields
+  page_count?: number | null;
+  word_count?: number | null;
+  file_size?: string | null;
+  file_type?: string | null;
+  whats_inside?: string[] | null;
+  license_terms?: string[] | null;
+  gallery_images?: string[] | null;
 }
 
 export interface CartItem {
