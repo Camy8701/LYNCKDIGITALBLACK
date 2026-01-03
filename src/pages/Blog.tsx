@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { SEO } from "@/components/SEO";
 import { useBlogPosts } from "@/hooks/useBlog";
 import { format } from "date-fns";
 
@@ -9,6 +10,12 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Blog - LYNCK DIGITAL"
+        description="Tips, insights, and resources to help you succeed with digital products. Discover strategies for building, growing, and scaling your online business."
+        type="website"
+        url={window.location.href}
+      />
       <Header />
 
       <main className="px-5 md:px-20 py-12 md:py-20">

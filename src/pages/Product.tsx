@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import AddToCartButton from "@/components/AddToCartButton";
 import Button from "@/components/Button";
+import { SEO } from "@/components/SEO";
 import { useProduct, useProducts } from "@/hooks/useProducts";
 import { cn } from "@/lib/utils";
 
@@ -59,6 +60,13 @@ const Product = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={`${product.name} - LYNCK DIGITAL`}
+        description={product.short_description || product.description || `Buy ${product.name} - Premium digital product from LYNCK DIGITAL`}
+        image={product.image_url || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&h=630&fit=crop"}
+        type="product"
+        url={window.location.href}
+      />
       <Header />
 
       <main>

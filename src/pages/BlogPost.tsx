@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { SEO } from "@/components/SEO";
 import { useBlogPost } from "@/hooks/useBlog";
 import { format } from "date-fns";
 import { ArrowLeft } from "lucide-react";
@@ -42,6 +43,15 @@ const BlogPost = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={`${post.title} - LYNCK DIGITAL Blog`}
+        description={post.excerpt || post.content?.substring(0, 160) || `Read ${post.title} on LYNCK DIGITAL blog`}
+        image={post.image_url || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&h=630&fit=crop"}
+        type="article"
+        url={window.location.href}
+        publishedTime={post.published_at}
+        modifiedTime={post.updated_at}
+      />
       <Header />
 
       <main className="px-5 md:px-20 py-12 md:py-20">

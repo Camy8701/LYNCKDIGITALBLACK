@@ -1,14 +1,24 @@
-User-agent: Googlebot
-Allow: /
+# robots.txt for LYNCK DIGITAL
+# Allow search engines to crawl all public pages
 
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# Allow all crawlers
 User-agent: *
+
+# Allow public pages
 Allow: /
+Allow: /product/*
+Allow: /category/*
+Allow: /blog/*
+
+# Disallow private/secure areas
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /checkout
+Disallow: /auth
+Disallow: /cart
+
+# Disallow API endpoints
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://yourdomain.com/sitemap.xml

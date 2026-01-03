@@ -5,6 +5,7 @@ import ProductCard from "@/components/ProductCard";
 import HeroCarousel from "@/components/HeroCarousel";
 import CategoryFilter from "@/components/CategoryFilter";
 import Button from "@/components/Button";
+import { SEO } from "@/components/SEO";
 import { useProducts, useCategories } from "@/hooks/useProducts";
 
 const Index = () => {
@@ -28,6 +29,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="LYNCK DIGITAL - Premium Digital Products Store"
+        description="Premium digital products to help you build, grow, and scale your online business. From courses and templates to eBooks and marketing kits — everything you need to succeed."
+        type="website"
+        url={window.location.href}
+      />
       <Header />
 
       <main>

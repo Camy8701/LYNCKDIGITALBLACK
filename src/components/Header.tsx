@@ -25,8 +25,12 @@ const Header = () => {
       <div className="px-5 md:px-20 py-4 md:py-5">
         <div className="flex items-center justify-between gap-4">
           {/* Logo */}
-          <Link to="/" className="font-serif text-xl md:text-2xl font-bold italic shrink-0">
-            LYNCK DIGITAL
+          <Link to="/" className="shrink-0">
+            <img
+              src="/assets/logo.png"
+              alt="LYNCK DIGITAL"
+              className="h-11 md:h-[52px] w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
