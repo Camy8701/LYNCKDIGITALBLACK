@@ -482,7 +482,7 @@ const Admin = () => {
                         <div className="flex-1 min-w-0">
                           <h3 className="font-bold font-sans truncate">{product.name}</h3>
                           <p className="text-sm text-foreground/60 truncate">{product.category?.name || 'No category'}</p>
-                          <div className="flex items-center gap-2 mt-1">
+                          <div className="flex items-center gap-2 mt-1 flex-wrap">
                             <span className="font-bold">${product.price}</span>
                             {!product.is_active && (
                               <span className="text-xs bg-foreground/20 px-2 py-0.5 rounded">Inactive</span>
@@ -491,6 +491,16 @@ const Admin = () => {
                               <span className="text-xs bg-vibrant-yellow px-2 py-0.5 rounded">Featured</span>
                             )}
                           </div>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(product.id);
+                              toast.success('Product ID copied to clipboard!');
+                            }}
+                            className="text-xs text-foreground/40 hover:text-foreground/70 mt-1 font-mono truncate max-w-full text-left transition-colors"
+                            title="Click to copy ID"
+                          >
+                            ID: {product.id}
+                          </button>
                         </div>
                         <div className="flex gap-2">
                           <button
