@@ -288,49 +288,70 @@ export type Database = {
           category_id: string | null
           created_at: string
           description: string | null
+          file_size: string | null
+          file_type: string | null
           file_url: string | null
+          gallery_images: string[] | null
           id: string
           image_url: string | null
           is_active: boolean | null
           is_featured: boolean | null
+          license_terms: string[] | null
           name: string
           original_price: number | null
+          page_count: number | null
           price: number
           short_description: string | null
           slug: string
           updated_at: string
+          whats_inside: string[] | null
+          word_count: number | null
         }
         Insert: {
           category_id?: string | null
           created_at?: string
           description?: string | null
+          file_size?: string | null
+          file_type?: string | null
           file_url?: string | null
+          gallery_images?: string[] | null
           id?: string
           image_url?: string | null
           is_active?: boolean | null
           is_featured?: boolean | null
+          license_terms?: string[] | null
           name: string
           original_price?: number | null
+          page_count?: number | null
           price: number
           short_description?: string | null
           slug: string
           updated_at?: string
+          whats_inside?: string[] | null
+          word_count?: number | null
         }
         Update: {
           category_id?: string | null
           created_at?: string
           description?: string | null
+          file_size?: string | null
+          file_type?: string | null
           file_url?: string | null
+          gallery_images?: string[] | null
           id?: string
           image_url?: string | null
           is_active?: boolean | null
           is_featured?: boolean | null
+          license_terms?: string[] | null
           name?: string
           original_price?: number | null
+          page_count?: number | null
           price?: number
           short_description?: string | null
           slug?: string
           updated_at?: string
+          whats_inside?: string[] | null
+          word_count?: number | null
         }
         Relationships: [
           {
