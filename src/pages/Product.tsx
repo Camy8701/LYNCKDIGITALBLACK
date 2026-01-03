@@ -1,17 +1,19 @@
 import { useParams, Link } from "react-router-dom";
+import { ArrowLeft, FileText, Type, HardDrive, Download, Check } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import ProductGallery from "@/components/ProductGallery";
 import AddToCartButton from "@/components/AddToCartButton";
+import WishlistButton from "@/components/WishlistButton";
+import ProductGallery from "@/components/ProductGallery";
 import { SEO } from "@/components/SEO";
 import { useProduct, useProducts } from "@/hooks/useProducts";
-import { Check, X, FileText, Calendar, Download } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
 const Product = () => {
   const { slug } = useParams();
-  const { data: product, isLoading } = useProduct(slug || "");
+  const { data: product, isLoading } = useProduct(slug || '');
   const { data: products = [] } = useProducts();
 
   if (isLoading) {
@@ -19,9 +21,7 @@ const Product = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main className="px-5 md:px-20 py-20 text-center">
-          <p className="text-lg font-serif text-foreground/60">
-            Loading product...
-          </p>
+          <p className="text-lg font-serif text-foreground/60">Loading product...</p>
         </main>
         <Footer />
       </div>
@@ -33,13 +33,8 @@ const Product = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main className="px-5 md:px-20 py-20 text-center">
-          <h1 className="text-5xl md:text-7xl font-extrabold uppercase mb-6 font-sans tracking-tighter">
-            PRODUCT NOT FOUND
-          </h1>
-          <Link
-            to="/"
-            className="inline-block bg-foreground text-background px-8 py-4 rounded-full font-bold uppercase text-sm hover:bg-foreground/90 transition-colors"
-          >
+          <h1 className="heading-lg mb-6 font-sans">PRODUCT NOT FOUND</h1>
+          <Link to="/" className="btn-transparent">
             Return to Shop
           </Link>
         </main>
@@ -48,272 +43,239 @@ const Product = () => {
     );
   }
 
-  const fallbackImage =
-    "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop";
+  const colorClass = product.category?.color_class || "bg-vibrant-purple";
+  const discount = product.original_price
+    ? Math.round((1 - product.price / product.original_price) * 100)
+    : 0;
+
+  const fallbackImage = "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop";
 
   // Get related products from the same category
   const relatedProducts = products
     .filter((p) => p.id !== product.id && p.category_id === product.category_id)
     .slice(0, 3);
 
-  // Parse license terms from database or use defaults
-  const licensTerms = product.license_terms || [
-    { text: "Use for personal projects", allowed: true },
-    { text: "Use for commercial projects", allowed: true },
-    { text: "Modify and customize", allowed: true },
-    { text: "Resell or redistribute", allowed: false },
+  // Default values for enhanced fields
+  const pageCount = product.page_count || 25;
+  const wordCount = product.word_count || 5000;
+  const fileSize = product.file_size || "3.0 MB";
+  const fileType = product.file_type || "ZIP";
+  const whatsInside = product.whats_inside || [
+    "Complete digital product files",
+    "Detailed documentation",
+    "Bonus resources"
   ];
-
-  // Parse gallery images
-  const galleryImages = product.gallery_images || [];
+  const licenseTerms = product.license_terms || [
+    "Use for personal projects",
+    "Use for commercial projects",
+    "Modify and customize"
+  ];
 
   return (
     <div className="min-h-screen bg-background">
       <SEO
         title={`${product.name} - LYNCK DIGITAL`}
-        description={
-          product.short_description ||
-          product.description ||
-          `Buy ${product.name} - Premium digital product from LYNCK DIGITAL`
-        }
-        image={
-          product.image_url ||
-          "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&h=630&fit=crop"
-        }
+        description={product.short_description || product.description || `Buy ${product.name} - Premium digital product from LYNCK DIGITAL`}
+        image={product.image_url || fallbackImage}
         type="product"
         url={window.location.href}
       />
       <Header />
 
-      <main className="px-5 md:px-20 py-12 md:py-16">
-        <div className="max-w-[1400px] mx-auto">
-          {/* Two Column Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-            {/* Left Column: Gallery and Details */}
-            <div className="lg:col-span-2 space-y-8">
-              {/* Product Gallery */}
-              <ProductGallery
-                mainImage={product.image_url || fallbackImage}
-                productName={product.name}
-                galleryImages={galleryImages}
-              />
+      <main>
+        {/* Back Link & Header */}
+        <section className="px-5 md:px-20 pt-8 pb-4">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-foreground/70 hover:text-foreground transition-colors font-sans"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Library
+          </Link>
+        </section>
 
-              {/* Stats Bar */}
-              {(product.page_count ||
-                product.word_count ||
-                product.file_size ||
-                product.file_type) && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {product.page_count && (
-                    <div className="bg-vibrant-mint rounded-2xl p-4 text-center">
-                      <div className="text-3xl font-extrabold font-sans mb-1">
-                        {product.page_count}
-                      </div>
-                      <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
-                        Pages
-                      </div>
-                    </div>
-                  )}
-                  {product.word_count && (
-                    <div className="bg-vibrant-yellow rounded-2xl p-4 text-center">
-                      <div className="text-3xl font-extrabold font-sans mb-1">
-                        {product.word_count.toLocaleString()}
-                      </div>
-                      <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
-                        Words
-                      </div>
-                    </div>
-                  )}
-                  {product.file_size && (
-                    <div className="bg-vibrant-lavender rounded-2xl p-4 text-center">
-                      <div className="text-3xl font-extrabold font-sans mb-1">
-                        {product.file_size}
-                      </div>
-                      <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
-                        Size
-                      </div>
-                    </div>
-                  )}
-                  {product.file_type && (
-                    <div className="bg-vibrant-coral rounded-2xl p-4 text-center">
-                      <div className="text-3xl font-extrabold font-sans mb-1">
-                        {product.file_type}
-                      </div>
-                      <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
-                        Format
-                      </div>
-                    </div>
-                  )}
-                </div>
+        {/* Product Hero */}
+        <section className="px-5 md:px-20 pb-8">
+          <div className="max-w-[1400px] mx-auto">
+            {/* Title & Category */}
+            <div className="mb-6">
+              {product.category && (
+                <span className={cn(
+                  "inline-block text-xs font-bold uppercase px-3 py-1 rounded-full mb-4 font-sans tracking-wider",
+                  colorClass
+                )}>
+                  {product.category.name}
+                </span>
               )}
-
-              {/* What's Inside Section */}
-              {product.whats_inside && (
-                <div className="bg-card border-2 border-foreground/10 rounded-3xl p-8">
-                  <h2 className="text-2xl font-extrabold uppercase mb-4 font-sans tracking-tight">
-                    What's Inside
-                  </h2>
-                  <div className="prose prose-lg max-w-none font-serif text-foreground/80">
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: product.whats_inside.replace(/\n/g, "<br>"),
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* This Product Contains */}
-              {product.description && (
-                <div className="bg-card border-2 border-foreground/10 rounded-3xl p-8">
-                  <h2 className="text-2xl font-extrabold uppercase mb-4 font-sans tracking-tight">
-                    This Product Contains
-                  </h2>
-                  <p className="text-lg font-serif text-foreground/80 leading-relaxed">
-                    {product.description}
-                  </p>
-                </div>
-              )}
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.9] tracking-tighter font-sans mb-4">
+                {product.name}
+              </h1>
+              <p className="text-lg md:text-xl text-foreground/70 max-w-2xl font-serif">
+                {product.short_description}
+              </p>
             </div>
 
-            {/* Right Column: Sticky Sidebar */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-24 space-y-6">
-                {/* Product Info Card */}
-                <div className="bg-card border-2 border-foreground/10 rounded-3xl p-6">
-                  {/* Category Badge */}
-                  {product.category && (
-                    <span className="inline-block bg-[#ff6b35] text-white text-xs font-bold uppercase px-3 py-1 rounded-full mb-3 tracking-wider">
-                      {product.category.name}
-                    </span>
-                  )}
+            {/* Stats Bar */}
+            <div className="flex flex-wrap gap-6 py-4 border-y border-foreground/10 mb-8">
+              <div className="flex items-center gap-2">
+                <FileText className="w-5 h-5 text-foreground/60" />
+                <span className="text-sm font-sans">
+                  <strong>{pageCount}</strong> Pages
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Type className="w-5 h-5 text-foreground/60" />
+                <span className="text-sm font-sans">
+                  <strong>{wordCount.toLocaleString()}</strong> Words
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <HardDrive className="w-5 h-5 text-foreground/60" />
+                <span className="text-sm font-sans">
+                  <strong>{fileSize}</strong>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Download className="w-5 h-5 text-foreground/60" />
+                <span className="text-sm font-sans">
+                  <strong>{fileType}</strong> File
+                </span>
+              </div>
+            </div>
 
-                  {/* Product Name */}
-                  <h1 className="text-3xl font-extrabold uppercase mb-4 leading-tight tracking-tighter font-sans">
-                    {product.name}
-                  </h1>
+            {/* Main Content Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+              {/* Left Column - Images & Description */}
+              <div className="lg:col-span-2 space-y-8">
+                {/* Product Gallery */}
+                <ProductGallery
+                  mainImage={product.image_url || fallbackImage}
+                  galleryImages={product.gallery_images}
+                  productName={product.name}
+                />
 
-                  {/* Short Description */}
-                  {product.short_description && (
-                    <p className="text-sm font-serif text-foreground/70 mb-6 leading-relaxed">
-                      {product.short_description}
+                {/* Description */}
+                <div>
+                  <h2 className="text-xl font-bold uppercase mb-4 font-sans tracking-tight">
+                    Description
+                  </h2>
+                  <div className="prose prose-lg max-w-none font-serif text-foreground/80">
+                    <p className="text-lg leading-relaxed whitespace-pre-line">
+                      {product.description || product.short_description}
                     </p>
-                  )}
-
-                  {/* Price */}
-                  <div className="flex items-baseline gap-3 mb-6 pb-6 border-b border-foreground/10">
-                    <span className="text-4xl font-extrabold font-sans">
-                      ${product.price}
-                    </span>
-                    {product.original_price && (
-                      <span className="text-xl text-foreground/40 line-through font-sans">
-                        ${product.original_price}
-                      </span>
-                    )}
                   </div>
-
-                  {/* Add to Cart Button */}
-                  <AddToCartButton
-                    product={product}
-                    variant="filled"
-                    className="w-full text-base py-4 mb-3"
-                  />
-
-                  {/* Save for Later Button */}
-                  <button className="w-full bg-transparent border-2 border-foreground hover:bg-foreground hover:text-background text-foreground font-bold uppercase text-sm py-3 px-6 rounded-full transition-all duration-300 flex items-center justify-center gap-2">
-                    <Download className="w-4 h-4" />
-                    Save for Later
-                  </button>
                 </div>
 
-                {/* License Terms */}
-                <div className="bg-card border-2 border-foreground/10 rounded-3xl p-6">
-                  <h3 className="text-lg font-extrabold uppercase mb-4 font-sans tracking-tight">
-                    You Are Free To
+                {/* What's Inside */}
+                <div className="bg-foreground/5 rounded-2xl p-6">
+                  <h3 className="text-lg font-bold uppercase mb-4 font-sans tracking-tight">
+                    What's Inside
                   </h3>
-                  <div className="space-y-3">
-                    {licensTerms.map((term: any, index: number) => (
-                      <div key={index} className="flex items-start gap-3">
-                        {term.allowed ? (
-                          <div className="w-5 h-5 rounded-full bg-vibrant-mint flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <Check className="w-3 h-3 text-foreground" />
-                          </div>
-                        ) : (
-                          <div className="w-5 h-5 rounded-full bg-vibrant-coral flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <X className="w-3 h-3 text-foreground" />
-                          </div>
-                        )}
-                        <span className="text-sm font-serif text-foreground/80 leading-relaxed">
-                          {term.text}
-                        </span>
-                      </div>
+                  <ul className="space-y-3">
+                    {whatsInside.map((item, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <Check className="w-5 h-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
+                        <span className="font-serif text-foreground/80">{item}</span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
+              </div>
 
-                {/* Details Panel */}
-                <div className="bg-card border-2 border-foreground/10 rounded-3xl p-6">
-                  <h3 className="text-lg font-extrabold uppercase mb-4 font-sans tracking-tight">
-                    Details
-                  </h3>
-                  <div className="space-y-3 text-sm">
-                    {product.file_type && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-foreground/60 font-serif flex items-center gap-2">
-                          <FileText className="w-4 h-4" />
-                          File Type
-                        </span>
-                        <span className="font-bold font-sans">
-                          {product.file_type}
-                        </span>
+              {/* Right Column - Sticky Sidebar */}
+              <div className="lg:col-span-1">
+                <div className="lg:sticky lg:top-8 space-y-6">
+                  {/* Product Preview Card */}
+                  <div className="bg-foreground text-background rounded-2xl p-6">
+                    <div className="aspect-video rounded-lg overflow-hidden mb-4 bg-foreground/20">
+                      <img
+                        src={product.image_url || fallbackImage}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    
+                    {/* Price */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-3xl font-black font-sans">${product.price}</span>
+                      {product.original_price && (
+                        <>
+                          <span className="text-xl text-background/50 line-through font-sans">
+                            ${product.original_price}
+                          </span>
+                          <span className="bg-accent-red text-foreground text-xs font-bold px-2 py-1 rounded-full">
+                            {discount}% OFF
+                          </span>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="space-y-3">
+                      <WishlistButton
+                        productId={product.id}
+                        className="w-full h-12 rounded-full border-background/30 text-background hover:bg-background/10"
+                      />
+                      <AddToCartButton
+                        product={product}
+                        variant="filled"
+                        className="w-full justify-center bg-accent-red hover:bg-accent-red/90 text-foreground"
+                      />
+                    </div>
+                  </div>
+
+                  {/* License Terms */}
+                  <div className="border border-foreground/10 rounded-2xl p-6">
+                    <h3 className="text-sm font-bold uppercase mb-4 font-sans tracking-wider text-foreground/70">
+                      You are free to
+                    </h3>
+                    <ul className="space-y-3">
+                      {licenseTerms.map((term, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <Check className="w-4 h-4 text-[hsl(var(--success))] flex-shrink-0 mt-1" />
+                          <span className="text-sm font-sans text-foreground/80">{term}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Details */}
+                  <div className="border border-foreground/10 rounded-2xl p-6">
+                    <h3 className="text-sm font-bold uppercase mb-4 font-sans tracking-wider text-foreground/70">
+                      Details
+                    </h3>
+                    <dl className="space-y-3 text-sm">
+                      <div className="flex justify-between">
+                        <dt className="text-foreground/60 font-sans">File type</dt>
+                        <dd className="font-bold font-sans">{fileType}</dd>
                       </div>
-                    )}
-                    {product.file_size && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-foreground/60 font-serif flex items-center gap-2">
-                          <Download className="w-4 h-4" />
-                          File Size
-                        </span>
-                        <span className="font-bold font-sans">
-                          {product.file_size}
-                        </span>
+                      <div className="flex justify-between">
+                        <dt className="text-foreground/60 font-sans">Size</dt>
+                        <dd className="font-bold font-sans">{fileSize}</dd>
                       </div>
-                    )}
-                    {product.created_at && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-foreground/60 font-serif flex items-center gap-2">
-                          <Calendar className="w-4 h-4" />
-                          Date Added
-                        </span>
-                        <span className="font-bold font-sans">
+                      <div className="flex justify-between">
+                        <dt className="text-foreground/60 font-sans">Added</dt>
+                        <dd className="font-bold font-sans">
                           {format(new Date(product.created_at), "MMM d, yyyy")}
-                        </span>
+                        </dd>
                       </div>
-                    )}
+                    </dl>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Back to Shop Link */}
-          <div className="mt-12 pt-8 border-t border-foreground/10">
-            <Link
-              to="/"
-              className="text-lg font-sans font-bold uppercase tracking-tight inline-block hover:opacity-70 transition-opacity"
-            >
-              ← BACK TO SHOP
-            </Link>
-          </div>
-        </div>
+        </section>
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <section className="mt-16 pt-12 border-t border-foreground/10">
-            <h2 className="text-3xl md:text-5xl font-extrabold uppercase mb-8 text-center font-sans tracking-tighter">
-              YOU MIGHT ALSO LIKE
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <section className="border-t border-foreground/10 mt-12">
+            <div className="px-5 md:px-20 pt-12 md:pt-16 pb-8 md:pb-12">
+              <h2 className="heading-md mb-8 text-center font-sans">
+                YOU MIGHT ALSO LIKE
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-5 gap-x-5 gap-y-8 md:pt-0 md:px-20 md:pb-8 md:gap-x-16 md:gap-y-8">
               {relatedProducts.map((relatedProduct) => (
                 <ProductCard key={relatedProduct.id} product={relatedProduct} />
               ))}

@@ -1,177 +1,122 @@
-import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-interface ContactFormData {
+interface ContactEmailRequest {
   name: string;
   email: string;
   phone?: string;
   message: string;
 }
 
-serve(async (req) => {
+const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Get Resend API key from environment
-    const resendApiKey = Deno.env.get("RESEND_API_KEY");
-
-    if (!resendApiKey) {
-      console.error("RESEND_API_KEY not configured");
-      return new Response(
-        JSON.stringify({ error: "Email service not configured" }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        }
-      );
-    }
-
-    // Parse request body
-    const formData: ContactFormData = await req.json();
+    const { name, email, phone, message }: ContactEmailRequest = await req.json();
 
     // Validate required fields
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!name || !email || !message) {
+      console.error("Missing required fields:", { name: !!name, email: !!email, message: !!message });
       return new Response(
-        JSON.stringify({ error: "Missing required fields: name, email, and message are required" }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        }
+        JSON.stringify({ error: "Name, email, and message are required" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    // Validate email format
+    // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
+    if (!emailRegex.test(email)) {
+      console.error("Invalid email format:", email);
       return new Response(
         JSON.stringify({ error: "Invalid email format" }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        }
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    // Build email HTML content
-    const emailHtml = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background-color: #ff6b35; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-            .content { background-color: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
-            .field { margin-bottom: 20px; }
-            .field-label { font-weight: bold; color: #ff6b35; margin-bottom: 5px; }
-            .field-value { padding: 10px; background-color: white; border-left: 3px solid #ff6b35; }
-            .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1>New Contact Form Submission</h1>
-            </div>
-            <div class="content">
-              <div class="field">
-                <div class="field-label">Name:</div>
-                <div class="field-value">${formData.name}</div>
-              </div>
+    console.log("Sending contact email from:", email);
 
-              <div class="field">
-                <div class="field-label">Email:</div>
-                <div class="field-value"><a href="mailto:${formData.email}">${formData.email}</a></div>
-              </div>
-
-              ${formData.phone ? `
-              <div class="field">
-                <div class="field-label">Phone:</div>
-                <div class="field-value">${formData.phone}</div>
-              </div>
-              ` : ''}
-
-              <div class="field">
-                <div class="field-label">Message:</div>
-                <div class="field-value">${formData.message.replace(/\n/g, '<br>')}</div>
-              </div>
-
-              <div class="footer">
-                <p>This email was sent from the LYNCK DIGITAL contact form.</p>
-                <p>To reply, simply respond to this email - it will go directly to ${formData.email}</p>
-              </div>
-            </div>
-          </div>
-        </body>
-      </html>
-    `;
-
-    // Send email via Resend API
-    const emailResponse = await fetch("https://api.resend.com/emails", {
+    // Send email to the business using Resend API
+    const businessEmailResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
+        "Authorization": `Bearer ${RESEND_API_KEY}`,
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${resendApiKey}`,
       },
       body: JSON.stringify({
-        from: "LYNCK DIGITAL Contact <contact@lynckstudio.pro>",
+        from: "LYNCK Digital <onboarding@resend.dev>",
         to: ["info@lynckstudio.pro"],
-        reply_to: formData.email,
-        subject: `New Contact Form Submission from ${formData.name}`,
-        html: emailHtml,
+        subject: `New Contact Form Submission from ${name}`,
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ""}
+          <h3>Message:</h3>
+          <p>${message.replace(/\n/g, "<br>")}</p>
+          <hr>
+          <p style="color: #666; font-size: 12px;">This message was sent from the LYNCK Digital contact form.</p>
+        `,
       }),
     });
 
-    if (!emailResponse.ok) {
-      const errorText = await emailResponse.text();
-      console.error("Resend API error:", errorText);
-
-      return new Response(
-        JSON.stringify({
-          error: "Failed to send email. Please try again later.",
-          details: errorText
-        }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        }
-      );
+    if (!businessEmailResponse.ok) {
+      const errorData = await businessEmailResponse.json();
+      console.error("Error sending business email:", errorData);
+      throw new Error(errorData.message || "Failed to send email");
     }
 
-    const emailData = await emailResponse.json();
-    console.log("Email sent successfully:", emailData);
+    console.log("Business email sent successfully");
+
+    // Send confirmation email to the user
+    const confirmationEmailResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "LYNCK Digital <onboarding@resend.dev>",
+        to: [email],
+        subject: "We received your message!",
+        html: `
+          <h1>Thank you for contacting us, ${name}!</h1>
+          <p>We have received your message and will get back to you as soon as possible.</p>
+          <p>Here's a copy of your message:</p>
+          <blockquote style="border-left: 3px solid #ff6b35; padding-left: 16px; margin: 16px 0; color: #555;">
+            ${message.replace(/\n/g, "<br>")}
+          </blockquote>
+          <p>Best regards,<br>The LYNCK Digital Team</p>
+        `,
+      }),
+    });
+
+    if (!confirmationEmailResponse.ok) {
+      console.warn("Could not send confirmation email:", await confirmationEmailResponse.text());
+      // Don't fail the request if confirmation email fails
+    } else {
+      console.log("Confirmation email sent successfully");
+    }
 
     return new Response(
-      JSON.stringify({
-        success: true,
-        message: "Your message has been sent successfully!",
-        emailId: emailData.id
-      }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
-      }
+      JSON.stringify({ success: true, message: "Email sent successfully" }),
+      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
-
-  } catch (error) {
-    console.error("Unexpected error in send-contact-email function:", error);
-
+  } catch (error: any) {
+    console.error("Error in send-contact-email function:", error);
     return new Response(
-      JSON.stringify({
-        error: "An unexpected error occurred",
-        details: error instanceof Error ? error.message : String(error)
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
-      }
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   }
-});
+};
+
+serve(handler);
