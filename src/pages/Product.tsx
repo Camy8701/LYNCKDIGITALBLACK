@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, FileText, Type, HardDrive, Download, Check } from "lucide-react";
+import { useEffect } from "react";
+import { ArrowLeft, FileText, Type, HardDrive, Download, Check, X, Calendar } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
@@ -59,17 +60,65 @@ const Product = () => {
   const pageCount = product.page_count || 25;
   const wordCount = product.word_count || 5000;
   const fileSize = product.file_size || "3.0 MB";
-  const fileType = product.file_type || "ZIP";
-  const whatsInside = product.whats_inside || [
-    "Complete digital product files",
-    "Detailed documentation",
-    "Bonus resources"
-  ];
+  const fileType = product.file_type || "PDF";
+
+  // Parse whats_inside (text with newlines)
+  const whatsInside = product.whats_inside
+    ? product.whats_inside.split('\n').filter(line => line.trim())
+    : [
+        "Complete digital product files",
+        "Detailed documentation",
+        "Bonus resources"
+      ];
+
+  // Parse license_terms (JSONB with allowed/disallowed)
   const licenseTerms = product.license_terms || [
-    "Use for personal projects",
-    "Use for commercial projects",
-    "Modify and customize"
+    { text: "Use for personal projects", allowed: true },
+    { text: "Use for commercial projects", allowed: true },
+    { text: "Modify and customize", allowed: true },
+    { text: "Resell or redistribute", allowed: false }
   ];
+
+  // Parse gallery_images (JSONB with url, alt, order)
+  const galleryImages = product.gallery_images
+    ? product.gallery_images.sort((a, b) => a.order - b.order).map(img => img.url)
+    : null;
+
+  // Add Product Schema.org structured data
+  useEffect(() => {
+    const productSchema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "description": product.short_description || product.description,
+      "image": product.image_url || fallbackImage,
+      "brand": {
+        "@type": "Brand",
+        "name": "LYNCK Digital"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": product.price.toString(),
+        "priceCurrency": "USD",
+        "availability": product.is_active ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        "url": window.location.href
+      },
+      "category": product.category?.name || "Digital Products"
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(productSchema);
+    script.id = 'product-schema';
+    document.head.appendChild(script);
+
+    return () => {
+      const existingScript = document.getElementById('product-schema');
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, [product]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -115,31 +164,51 @@ const Product = () => {
               </p>
             </div>
 
-            {/* Stats Bar */}
-            <div className="flex flex-wrap gap-6 py-4 border-y border-foreground/10 mb-8">
-              <div className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-foreground/60" />
-                <span className="text-sm font-sans">
-                  <strong>{pageCount}</strong> Pages
-                </span>
+            {/* Stats Bar - Colorful Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div className="bg-vibrant-mint rounded-2xl p-4 text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <div className="text-3xl font-extrabold font-sans mb-1">
+                  {pageCount}
+                </div>
+                <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
+                  Pages
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Type className="w-5 h-5 text-foreground/60" />
-                <span className="text-sm font-sans">
-                  <strong>{wordCount.toLocaleString()}</strong> Words
-                </span>
+              <div className="bg-vibrant-yellow rounded-2xl p-4 text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Type className="w-5 h-5" />
+                </div>
+                <div className="text-3xl font-extrabold font-sans mb-1">
+                  {wordCount.toLocaleString()}
+                </div>
+                <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
+                  Words
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <HardDrive className="w-5 h-5 text-foreground/60" />
-                <span className="text-sm font-sans">
-                  <strong>{fileSize}</strong>
-                </span>
+              <div className="bg-vibrant-lavender rounded-2xl p-4 text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <HardDrive className="w-5 h-5" />
+                </div>
+                <div className="text-3xl font-extrabold font-sans mb-1">
+                  {fileSize}
+                </div>
+                <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
+                  Size
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Download className="w-5 h-5 text-foreground/60" />
-                <span className="text-sm font-sans">
-                  <strong>{fileType}</strong> File
-                </span>
+              <div className="bg-vibrant-coral rounded-2xl p-4 text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Download className="w-5 h-5" />
+                </div>
+                <div className="text-3xl font-extrabold font-sans mb-1">
+                  {fileType}
+                </div>
+                <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
+                  Format
+                </div>
               </div>
             </div>
 
@@ -150,7 +219,7 @@ const Product = () => {
                 {/* Product Gallery */}
                 <ProductGallery
                   mainImage={product.image_url || fallbackImage}
-                  galleryImages={product.gallery_images}
+                  galleryImages={galleryImages}
                   productName={product.name}
                 />
 
@@ -227,13 +296,23 @@ const Product = () => {
                   {/* License Terms */}
                   <div className="border border-foreground/10 rounded-2xl p-6">
                     <h3 className="text-sm font-bold uppercase mb-4 font-sans tracking-wider text-foreground/70">
-                      You are free to
+                      License Terms
                     </h3>
                     <ul className="space-y-3">
                       {licenseTerms.map((term, index) => (
                         <li key={index} className="flex items-start gap-3">
-                          <Check className="w-4 h-4 text-[hsl(var(--success))] flex-shrink-0 mt-1" />
-                          <span className="text-sm font-sans text-foreground/80">{term}</span>
+                          {term.allowed ? (
+                            <div className="w-5 h-5 rounded-full bg-vibrant-mint flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <Check className="w-3 h-3 text-foreground" />
+                            </div>
+                          ) : (
+                            <div className="w-5 h-5 rounded-full bg-vibrant-coral flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <X className="w-3 h-3 text-foreground" />
+                            </div>
+                          )}
+                          <span className="text-sm font-serif text-foreground/80 leading-relaxed">
+                            {term.text}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -245,16 +324,25 @@ const Product = () => {
                       Details
                     </h3>
                     <dl className="space-y-3 text-sm">
-                      <div className="flex justify-between">
-                        <dt className="text-foreground/60 font-sans">File type</dt>
+                      <div className="flex items-center justify-between">
+                        <dt className="text-foreground/60 font-serif flex items-center gap-2">
+                          <FileText className="w-4 h-4" />
+                          File Type
+                        </dt>
                         <dd className="font-bold font-sans">{fileType}</dd>
                       </div>
-                      <div className="flex justify-between">
-                        <dt className="text-foreground/60 font-sans">Size</dt>
+                      <div className="flex items-center justify-between">
+                        <dt className="text-foreground/60 font-serif flex items-center gap-2">
+                          <Download className="w-4 h-4" />
+                          File Size
+                        </dt>
                         <dd className="font-bold font-sans">{fileSize}</dd>
                       </div>
-                      <div className="flex justify-between">
-                        <dt className="text-foreground/60 font-sans">Added</dt>
+                      <div className="flex items-center justify-between">
+                        <dt className="text-foreground/60 font-serif flex items-center gap-2">
+                          <Calendar className="w-4 h-4" />
+                          Date Added
+                        </dt>
                         <dd className="font-bold font-sans">
                           {format(new Date(product.created_at), "MMM d, yyyy")}
                         </dd>
