@@ -12,7 +12,7 @@ interface SEOProps {
   keywords?: string;
 }
 
-const BASE_URL = 'https://lynckdigital.com';
+const BASE_URL = 'https://lynckdigital.store';
 const DEFAULT_KEYWORDS = 'lynck, lynckdigital, lynck digital, digital products, templates, courses, eBooks, business tools';
 
 export const SEO = ({

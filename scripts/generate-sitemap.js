@@ -31,7 +31,7 @@ if (!supabaseUrl || !supabaseKey) {
 }
 
 const supabase = createClient(supabaseUrl, supabaseKey);
-const DOMAIN = 'https://lynckdigital.com';
+const DOMAIN = 'https://lynckdigital.store';
 
 function formatDate(date) {
   if (!date) return new Date().toISOString().split('T')[0];

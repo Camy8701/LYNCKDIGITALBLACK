@@ -127,7 +127,7 @@ npm run generate:sitemap
 const DOMAIN = 'https://yourdomain.com';
 
 // TO YOUR ACTUAL DOMAIN:
-const DOMAIN = 'https://lynckdigital.com';
+const DOMAIN = 'https://lynckdigital.store';
 ```
 
 **File: `public/robots.txt` (Line 24)**
@@ -136,7 +136,7 @@ const DOMAIN = 'https://lynckdigital.com';
 Sitemap: https://yourdomain.com/sitemap.xml
 
 # TO YOUR ACTUAL DOMAIN:
-Sitemap: https://lynckdigital.com/sitemap.xml
+Sitemap: https://lynckdigital.store/sitemap.xml
 ```
 
 #### 2. Regenerate Sitemap with Correct Domain

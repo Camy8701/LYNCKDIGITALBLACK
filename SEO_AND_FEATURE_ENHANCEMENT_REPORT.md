@@ -281,19 +281,19 @@ WHERE page_count IS NULL;
 
 1. **Google Search Console:**
    - Go to https://search.google.com/search-console
-   - Add property: `https://lynckdigital.com`
-   - Submit sitemap: `https://lynckdigital.com/sitemap.xml`
+   - Add property: `https://lynckdigital.store`
+   - Submit sitemap: `https://lynckdigital.store/sitemap.xml`
 
 2. **Bing Webmaster Tools:**
    - Go to https://www.bing.com/webmasters
-   - Add site: `https://lynckdigital.com`
-   - Submit sitemap: `https://lynckdigital.com/sitemap.xml`
+   - Add site: `https://lynckdigital.store`
+   - Submit sitemap: `https://lynckdigital.store/sitemap.xml`
 
 ### Step 4: Verify Structured Data
 
 Test your product pages:
 - Google Rich Results Test: https://search.google.com/test/rich-results
-- Enter a product URL: `https://lynckdigital.com/product/[slug]`
+- Enter a product URL: `https://lynckdigital.store/product/[slug]`
 - Should show "Product" schema detected ✅
 
 ---
