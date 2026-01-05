@@ -30,10 +30,11 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="LYNCK DIGITAL - Premium Digital Products Store"
-        description="Premium digital products to help you build, grow, and scale your online business. From courses and templates to eBooks and marketing kits — everything you need to succeed."
+        title="LYNCK Digital | Premium Digital Products & Templates for Creators"
+        description="Shop premium digital products at LYNCK Digital (lynckdigital). Templates, courses, eBooks, and marketing tools for creators and entrepreneurs. Build, grow, and scale your online business."
         type="website"
-        url={window.location.href}
+        url="https://lynckdigital.com"
+        keywords="lynck, lynckdigital, lynck digital, digital products, premium templates, online courses, eBooks, marketing kits, business tools, creator resources"
       />
       <Header />
 

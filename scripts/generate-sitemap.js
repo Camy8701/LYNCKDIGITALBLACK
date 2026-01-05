@@ -15,7 +15,7 @@ if (!supabaseUrl || !supabaseKey) {
 }
 
 const supabase = createClient(supabaseUrl, supabaseKey);
-const DOMAIN = 'https://yourdomain.com';
+const DOMAIN = 'https://lynckdigital.com';
 
 function formatDate(date) {
   if (!date) return new Date().toISOString().split('T')[0];
@@ -23,10 +23,11 @@ function formatDate(date) {
 }
 
 async function generateSitemap() {
-  console.log('Generating sitemap...\n');
+  console.log('Generating sitemap for LYNCK Digital...\n');
 
   let urls = [];
 
+  // Homepage
   urls.push({
     loc: DOMAIN,
     changefreq: 'daily',
@@ -34,6 +35,7 @@ async function generateSitemap() {
     lastmod: formatDate(new Date())
   });
 
+  // Blog index
   urls.push({
     loc: DOMAIN + '/blog',
     changefreq: 'weekly',
@@ -41,18 +43,27 @@ async function generateSitemap() {
     lastmod: formatDate(new Date())
   });
 
+  // Contact page
+  urls.push({
+    loc: DOMAIN + '/contact',
+    changefreq: 'monthly',
+    priority: '0.6',
+    lastmod: formatDate(new Date())
+  });
+
+  // Fetch products
   console.log('Fetching products...');
   const { data: products, error: productsError } = await supabase
     .from('products')
-    .select('id, name, updated_at, created_at')
-    .eq('active', true)
+    .select('slug, updated_at, created_at')
+    .eq('is_active', true)
     .order('created_at', { ascending: false });
 
   if (!productsError && products) {
     console.log('Found ' + products.length + ' products');
     products.forEach(product => {
       urls.push({
-        loc: DOMAIN + '/product/' + product.id,
+        loc: DOMAIN + '/product/' + product.slug,
         changefreq: 'weekly',
         priority: '0.9',
         lastmod: formatDate(product.updated_at || product.created_at)
@@ -60,38 +71,21 @@ async function generateSitemap() {
     });
   }
 
-  console.log('Fetching categories...');
-  const { data: categories, error: categoriesError } = await supabase
-    .from('categories')
-    .select('id, name, created_at')
-    .order('name', { ascending: true });
-
-  if (!categoriesError && categories) {
-    console.log('Found ' + categories.length + ' categories');
-    categories.forEach(category => {
-      urls.push({
-        loc: DOMAIN + '/category/' + category.id,
-        changefreq: 'weekly',
-        priority: '0.7',
-        lastmod: formatDate(category.created_at)
-      });
-    });
-  }
-
+  // Fetch blog posts
   console.log('Fetching blog posts...');
   const { data: blogPosts, error: blogError } = await supabase
     .from('blog_posts')
-    .select('id, title, updated_at, created_at, published')
-    .eq('published', true)
-    .order('created_at', { ascending: false });
+    .select('slug, updated_at, created_at')
+    .eq('is_published', true)
+    .order('published_at', { ascending: false });
 
   if (!blogError && blogPosts) {
     console.log('Found ' + blogPosts.length + ' blog posts');
     blogPosts.forEach(post => {
       urls.push({
-        loc: DOMAIN + '/blog/' + post.id,
+        loc: DOMAIN + '/blog/' + post.slug,
         changefreq: 'monthly',
-        priority: '0.6',
+        priority: '0.7',
         lastmod: formatDate(post.updated_at || post.created_at)
       });
     });
@@ -114,7 +108,8 @@ async function generateSitemap() {
   const publicPath = join(__dirname, '..', 'public', 'sitemap.xml');
   writeFileSync(publicPath, xml);
 
-  console.log('\nSitemap generated successfully!');
+  console.log('\nSitemap generated successfully for LYNCK Digital!');
+  console.log('Domain: ' + DOMAIN);
   console.log('Location: public/sitemap.xml');
   console.log('Total URLs: ' + urls.length);
 }

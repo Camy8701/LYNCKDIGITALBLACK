@@ -7,40 +7,56 @@ interface SEOProps {
   url?: string;
   type?: 'website' | 'article' | 'product';
   author?: string;
-  publishedTime?: string;
+  publishedTime?: string | null;
   modifiedTime?: string;
+  keywords?: string;
 }
 
+const BASE_URL = 'https://lynckdigital.com';
+const DEFAULT_KEYWORDS = 'lynck, lynckdigital, lynck digital, digital products, templates, courses, eBooks, business tools';
+
 export const SEO = ({
-  title = 'LYNCK DIGITAL - Digital Products Store',
-  description = 'Premium digital products and resources for creators, developers, and entrepreneurs. High-quality templates, tools, and digital assets to power your projects.',
-  image = 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&h=630&fit=crop',
+  title = 'LYNCK Digital | Premium Digital Products & Templates for Creators',
+  description = 'LYNCK Digital offers premium digital products, templates, courses, and resources for creators and entrepreneurs. Shop lynckdigital for high-quality business tools.',
+  image = `${BASE_URL}/assets/logo.png`,
   url,
   type = 'website',
-  author = 'LYNCK DIGITAL',
+  author = 'LYNCK Digital',
   publishedTime,
-  modifiedTime
+  modifiedTime,
+  keywords = DEFAULT_KEYWORDS
 }: SEOProps) => {
   useEffect(() => {
+    // Update document title
     document.title = title;
+
+    // Update canonical URL
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', url || BASE_URL);
 
     const metaTags = [
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:image', content: image },
       { property: 'og:type', content: type },
+      { property: 'og:url', content: url || BASE_URL },
+      { property: 'og:site_name', content: 'LYNCK Digital' },
+      { property: 'og:locale', content: 'en_US' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
       { name: 'twitter:image', content: image },
+      { name: 'twitter:url', content: url || BASE_URL },
       { name: 'description', content: description },
-      { name: 'author', content: author }
+      { name: 'author', content: author },
+      { name: 'keywords', content: keywords },
+      { name: 'robots', content: 'index, follow' }
     ];
-
-    if (url) {
-      metaTags.push({ property: 'og:url', content: url });
-      metaTags.push({ name: 'twitter:url', content: url });
-    }
 
     if (publishedTime) {
       metaTags.push({ property: 'article:published_time', content: publishedTime });
@@ -68,9 +84,9 @@ export const SEO = ({
     });
 
     return () => {
-      document.title = 'LYNCK DIGITAL - Digital Products Store';
+      document.title = 'LYNCK Digital | Premium Digital Products & Templates for Creators';
     };
-  }, [title, description, image, url, type, author, publishedTime, modifiedTime]);
+  }, [title, description, image, url, type, author, publishedTime, modifiedTime, keywords]);
 
   return null;
 };
