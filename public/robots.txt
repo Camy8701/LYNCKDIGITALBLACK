@@ -1,4 +1,4 @@
-# robots.txt for LYNCK DIGITAL
+# robots.txt for LYNCK Digital (lynckdigital.com)
 # Allow search engines to crawl all public pages
 
 # Allow all crawlers
@@ -7,8 +7,8 @@ User-agent: *
 # Allow public pages
 Allow: /
 Allow: /product/*
-Allow: /category/*
 Allow: /blog/*
+Allow: /blog
 
 # Disallow private/secure areas
 Disallow: /admin
@@ -21,4 +21,4 @@ Disallow: /cart
 Disallow: /api/
 
 # Sitemap location
-Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://lynckdigital.com/sitemap.xml
