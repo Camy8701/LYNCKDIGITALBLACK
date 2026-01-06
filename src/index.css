@@ -64,12 +64,25 @@
   }
 
   .dark {
-    --background: 20 18% 16%; /* #2D2520 */
-    --foreground: 32 71% 91%; /* #fce5cf */
-    --card: 20 14% 25%;
-    --card-foreground: 32 71% 91%;
-    --border: 20 12% 37%;
-    --input: 20 12% 37%;
+    --background: 20 18% 12%; /* Darker warm brown */
+    --foreground: 32 50% 90%; /* Warm cream text */
+    --card: 20 14% 18%;
+    --card-foreground: 32 50% 90%;
+    --border: 20 12% 25%;
+    --input: 20 12% 25%;
+    --ring: 322 82% 83%;
+    
+    /* Muted for dark mode */
+    --muted: 20 12% 20%;
+    --muted-foreground: 32 30% 60%;
+    
+    /* Accent adjustments for dark mode */
+    --accent: 20 14% 22%;
+    --accent-foreground: 32 50% 90%;
+    
+    /* Primary stays vibrant */
+    --primary: 322 82% 75%;
+    --primary-foreground: 0 0% 0%;
   }
 }
 

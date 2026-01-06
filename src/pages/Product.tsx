@@ -62,27 +62,35 @@ const Product = () => {
   const fileSize = product.file_size || "3.0 MB";
   const fileType = product.file_type || "PDF";
 
-  // Parse whats_inside (text with newlines)
-  const whatsInside = product.whats_inside
-    ? product.whats_inside.split('\n').filter(line => line.trim())
+  // Parse whats_inside (string array)
+  const whatsInside = product.whats_inside?.length 
+    ? product.whats_inside
     : [
         "Complete digital product files",
         "Detailed documentation",
         "Bonus resources"
       ];
 
-  // Parse license_terms (JSONB with allowed/disallowed)
-  const licenseTerms = product.license_terms || [
+  // Parse license_terms (string array - format: "text|allowed" or just "text")
+  const defaultLicenseTerms = [
     { text: "Use for personal projects", allowed: true },
     { text: "Use for commercial projects", allowed: true },
     { text: "Modify and customize", allowed: true },
     { text: "Resell or redistribute", allowed: false }
   ];
+  
+  const licenseTerms = product.license_terms?.length 
+    ? product.license_terms.map(term => {
+        if (term.includes('|')) {
+          const [text, allowed] = term.split('|');
+          return { text, allowed: allowed === 'true' };
+        }
+        return { text: term, allowed: true };
+      })
+    : defaultLicenseTerms;
 
-  // Parse gallery_images (JSONB with url, alt, order)
-  const galleryImages = product.gallery_images
-    ? product.gallery_images.sort((a, b) => a.order - b.order).map(img => img.url)
-    : null;
+  // Gallery images (string array of URLs)
+  const galleryImages = product.gallery_images?.length ? product.gallery_images : null;
 
   // Add Product Schema.org structured data
   useEffect(() => {

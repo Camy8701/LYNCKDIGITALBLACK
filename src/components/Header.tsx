@@ -4,6 +4,7 @@ import { useState } from "react";
 import Button from "./Button";
 import SearchBar from "./SearchBar";
 import CartButton from "./CartButton";
+import ThemeToggle from "./ThemeToggle";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 
@@ -64,6 +65,7 @@ const Header = () => {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-2 md:gap-3">
+            <ThemeToggle />
             <SearchBar />
             <CartButton />
             

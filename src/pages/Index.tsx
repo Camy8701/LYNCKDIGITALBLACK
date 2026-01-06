@@ -2,11 +2,14 @@ import { useState, useMemo } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
+import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import HeroCarousel from "@/components/HeroCarousel";
+import HeroSkeleton from "@/components/HeroSkeleton";
 import CategoryFilter from "@/components/CategoryFilter";
 import Button from "@/components/Button";
 import { SEO } from "@/components/SEO";
 import { useProducts, useCategories } from "@/hooks/useProducts";
+import { useHeroProducts } from "@/hooks/useHeroProducts";
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -14,6 +17,7 @@ const Index = () => {
   
   const { data: products = [], isLoading: productsLoading } = useProducts();
   const { data: categories = [] } = useCategories();
+  const { isLoading: heroLoading } = useHeroProducts();
 
   const filteredProducts = useMemo(() => {
     let filtered = products;
@@ -54,7 +58,7 @@ const Index = () => {
 
         {/* Hero Carousel */}
         <section className="px-5 md:px-20 pb-8 md:pb-12">
-          <HeroCarousel />
+          {heroLoading ? <HeroSkeleton /> : <HeroCarousel />}
         </section>
 
         {/* Category Filter */}
@@ -68,9 +72,11 @@ const Index = () => {
 
         {/* Products Grid */}
         {productsLoading ? (
-          <div className="text-center py-20">
-            <p className="text-lg font-serif text-foreground/60">Loading products...</p>
-          </div>
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-5 gap-x-5 gap-y-8 md:pt-0 md:px-20 md:pb-8 md:gap-x-16 md:gap-y-8">
+            {[...Array(6)].map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </section>
         ) : (
           <>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-5 gap-x-5 gap-y-8 md:pt-0 md:px-20 md:pb-8 md:gap-x-16 md:gap-y-8">
