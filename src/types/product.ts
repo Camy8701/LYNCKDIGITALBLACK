@@ -19,19 +19,19 @@ export interface Product {
   category_id: string | null;
   image_url: string | null;
   file_url: string | null;
-  is_featured: boolean;
-  is_active: boolean;
+  is_featured: boolean | null;
+  is_active: boolean | null;
   created_at: string;
   updated_at: string;
   category?: Category;
-  // Enhanced product page fields
+  // Enhanced product page fields - matching database schema (string arrays)
   page_count?: number | null;
   word_count?: number | null;
   file_size?: string | null;
   file_type?: string | null;
-  whats_inside?: string | null; // Text with newlines
-  license_terms?: Array<{ text: string; allowed: boolean }> | null; // JSONB array
-  gallery_images?: Array<{ url: string; alt: string; order: number }> | null; // JSONB array
+  whats_inside?: string[] | null;
+  license_terms?: string[] | null;
+  gallery_images?: string[] | null;
 }
 
 export interface CartItem {
