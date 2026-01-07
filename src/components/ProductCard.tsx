@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
 import AddToCartButton from "./AddToCartButton";
@@ -7,9 +8,10 @@ import { Product } from "@/types/product";
 
 interface ProductCardProps {
   product: Product;
+  onQuickView?: (product: Product) => void;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({ product, onQuickView }: ProductCardProps) => {
   // Use product's custom card_color if set, otherwise fall back to category color
   const colorClass = product.card_color || product.category?.color_class || "bg-vibrant-purple";
   const discount = product.original_price
@@ -83,6 +85,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <Button variant="filled" className="text-xs py-2 px-5 flex-1">
               VIEW PRODUCT
             </Button>
+            {onQuickView && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onQuickView(product);
+                }}
+                className="p-3 rounded-full bg-foreground/10 hover:bg-foreground/20 transition-colors"
+                aria-label="Quick view"
+              >
+                <Eye className="w-5 h-5" />
+              </button>
+            )}
             <AddToCartButton
               product={product}
               variant="icon"
