@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import ProductCardSkeleton from "@/components/ProductCardSkeleton";
+import ProductQuickView from "@/components/ProductQuickView";
 import HeroCarousel from "@/components/HeroCarousel";
 import HeroSkeleton from "@/components/HeroSkeleton";
 import CategoryFilter from "@/components/CategoryFilter";
@@ -10,8 +11,10 @@ import Button from "@/components/Button";
 import { SEO } from "@/components/SEO";
 import { useProducts, useCategories } from "@/hooks/useProducts";
 import { useHeroProducts } from "@/hooks/useHeroProducts";
+import { Product } from "@/types/product";
 
 const Index = () => {
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [visibleProducts, setVisibleProducts] = useState(6);
   
@@ -81,7 +84,11 @@ const Index = () => {
           <>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-5 gap-x-5 gap-y-8 md:pt-0 md:px-20 md:pb-8 md:gap-x-16 md:gap-y-8">
               {filteredProducts.slice(0, visibleProducts).map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard 
+                  key={product.id} 
+                  product={product} 
+                  onQuickView={setQuickViewProduct}
+                />
               ))}
             </section>
 
@@ -102,6 +109,12 @@ const Index = () => {
           </>
         )}
       </main>
+
+      <ProductQuickView
+        product={quickViewProduct}
+        open={!!quickViewProduct}
+        onOpenChange={(open) => !open && setQuickViewProduct(null)}
+      />
 
       <Footer />
     </div>
