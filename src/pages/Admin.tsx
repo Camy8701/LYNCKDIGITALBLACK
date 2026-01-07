@@ -50,7 +50,8 @@ const Admin = () => {
     category_id: '',
     image_url: '',
     is_featured: false,
-    is_active: true
+    is_active: true,
+    card_color: ''
   });
 
   const [categoryForm, setCategoryForm] = useState({
@@ -163,7 +164,8 @@ const Admin = () => {
         image_url: imageUrl || null,
         file_url: fileUrl,
         is_featured: productForm.is_featured,
-        is_active: productForm.is_active
+        is_active: productForm.is_active,
+        card_color: productForm.card_color || null
       };
 
       if (editingProduct) {
@@ -202,7 +204,8 @@ const Admin = () => {
       category_id: '',
       image_url: '',
       is_featured: false,
-      is_active: true
+      is_active: true,
+      card_color: ''
     });
     setEditingProduct(null);
     setImageFile(null);
@@ -320,8 +323,9 @@ const Admin = () => {
       original_price: product.original_price?.toString() || '',
       category_id: product.category_id || '',
       image_url: product.image_url || '',
-      is_featured: product.is_featured,
-      is_active: product.is_active
+      is_featured: product.is_featured ?? false,
+      is_active: product.is_active ?? true,
+      card_color: product.card_color || ''
     });
     setShowProductModal(true);
   };
@@ -733,6 +737,47 @@ const Admin = () => {
                     ))}
                   </select>
                 </div>
+              </div>
+
+              {/* Card Color Picker */}
+              <div>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans">
+                  Card Color (Override category color)
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setProductForm({ ...productForm, card_color: '' })}
+                    className={cn(
+                      "px-4 py-2 rounded-xl border-2 text-sm font-bold uppercase transition-all",
+                      productForm.card_color === ''
+                        ? "border-foreground bg-foreground text-background"
+                        : "border-foreground/30 hover:border-foreground"
+                    )}
+                  >
+                    Use Category
+                  </button>
+                  {colorOptions.map((color) => (
+                    <button
+                      key={color.value}
+                      type="button"
+                      onClick={() => setProductForm({ ...productForm, card_color: color.value })}
+                      className={cn(
+                        "w-10 h-10 rounded-xl border-2 transition-all",
+                        color.value,
+                        productForm.card_color === color.value
+                          ? "border-foreground ring-2 ring-foreground ring-offset-2"
+                          : "border-transparent hover:border-foreground/50"
+                      )}
+                      title={color.label}
+                    />
+                  ))}
+                </div>
+                {productForm.card_color && (
+                  <p className="text-sm text-foreground/60 mt-2">
+                    Selected: {colorOptions.find(c => c.value === productForm.card_color)?.label}
+                  </p>
+                )}
               </div>
 
               <div>

@@ -10,7 +10,8 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const colorClass = product.category?.color_class || "bg-vibrant-purple";
+  // Use product's custom card_color if set, otherwise fall back to category color
+  const colorClass = product.card_color || product.category?.color_class || "bg-vibrant-purple";
   const discount = product.original_price
     ? Math.round((1 - product.price / product.original_price) * 100)
     : 0;

@@ -17,6 +17,52 @@ const Product = () => {
   const { data: product, isLoading } = useProduct(slug || '');
   const { data: products = [] } = useProducts();
 
+  const fallbackImage = "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop";
+
+  // Add Product Schema.org structured data - must be before early returns
+  useEffect(() => {
+    if (!product) return;
+    
+    // Remove any existing product schema first
+    const existingScript = document.getElementById('product-schema');
+    if (existingScript) {
+      existingScript.remove();
+    }
+
+    const productSchema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "description": product.short_description || product.description || "",
+      "image": product.image_url || fallbackImage,
+      "brand": {
+        "@type": "Brand",
+        "name": "LYNCK Digital"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": product.price.toString(),
+        "priceCurrency": "USD",
+        "availability": product.is_active ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        "url": typeof window !== 'undefined' ? window.location.href : ""
+      },
+      "category": product.category?.name || "Digital Products"
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(productSchema);
+    script.id = 'product-schema';
+    document.head.appendChild(script);
+
+    return () => {
+      const scriptToRemove = document.getElementById('product-schema');
+      if (scriptToRemove) {
+        scriptToRemove.remove();
+      }
+    };
+  }, [product, fallbackImage]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
@@ -44,12 +90,10 @@ const Product = () => {
     );
   }
 
-  const colorClass = product.category?.color_class || "bg-vibrant-purple";
+  const colorClass = product.card_color || product.category?.color_class || "bg-vibrant-purple";
   const discount = product.original_price
     ? Math.round((1 - product.price / product.original_price) * 100)
     : 0;
-
-  const fallbackImage = "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop";
 
   // Get related products from the same category
   const relatedProducts = products
@@ -91,42 +135,6 @@ const Product = () => {
 
   // Gallery images (string array of URLs)
   const galleryImages = product.gallery_images?.length ? product.gallery_images : null;
-
-  // Add Product Schema.org structured data
-  useEffect(() => {
-    const productSchema = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": product.name,
-      "description": product.short_description || product.description,
-      "image": product.image_url || fallbackImage,
-      "brand": {
-        "@type": "Brand",
-        "name": "LYNCK Digital"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": product.price.toString(),
-        "priceCurrency": "USD",
-        "availability": product.is_active ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-        "url": window.location.href
-      },
-      "category": product.category?.name || "Digital Products"
-    };
-
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify(productSchema);
-    script.id = 'product-schema';
-    document.head.appendChild(script);
-
-    return () => {
-      const existingScript = document.getElementById('product-schema');
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, [product]);
 
   return (
     <div className="min-h-screen bg-background">

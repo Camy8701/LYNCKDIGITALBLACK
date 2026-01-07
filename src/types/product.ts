@@ -32,6 +32,7 @@ export interface Product {
   whats_inside?: string[] | null;
   license_terms?: string[] | null;
   gallery_images?: string[] | null;
+  card_color?: string | null;
 }
 
 export interface CartItem {
