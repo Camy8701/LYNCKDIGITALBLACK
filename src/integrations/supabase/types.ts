@@ -285,6 +285,7 @@ export type Database = {
       }
       products: {
         Row: {
+          card_color: string | null
           category_id: string | null
           created_at: string
           description: string | null
@@ -308,6 +309,7 @@ export type Database = {
           word_count: number | null
         }
         Insert: {
+          card_color?: string | null
           category_id?: string | null
           created_at?: string
           description?: string | null
@@ -331,6 +333,7 @@ export type Database = {
           word_count?: number | null
         }
         Update: {
+          card_color?: string | null
           category_id?: string | null
           created_at?: string
           description?: string | null
