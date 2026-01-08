@@ -40,6 +40,12 @@ const Footer = () => {
           </div>
           <div className="flex flex-col gap-4">
             <a
+              href="/about"
+              className="text-[13px] font-medium text-foreground/70 uppercase tracking-widest hover:text-foreground transition-colors"
+            >
+              About Us
+            </a>
+            <a
               href="/contact"
               className="text-[13px] font-medium text-foreground/70 uppercase tracking-widest hover:text-foreground transition-colors"
             >
@@ -193,8 +199,8 @@ const Footer = () => {
           </div>
           <div className="flex gap-8">
             <a href="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</a>
-            <a href="/terms" className="hover:text-foreground transition-colors">Terms of use</a>
-            <a href="/cookies" className="hover:text-foreground transition-colors">Cookies</a>
+            <a href="/terms" className="hover:text-foreground transition-colors">Terms & Conditions</a>
+            <a href="/about" className="hover:text-foreground transition-colors">About Us</a>
           </div>
         </div>
       </div>

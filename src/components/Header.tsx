@@ -25,14 +25,31 @@ const Header = () => {
     <header className="sticky top-0 z-50 bg-background border-b border-foreground/5">
       <div className="px-5 md:px-20 py-4 md:py-5">
         <div className="flex items-center justify-between gap-4">
-          {/* Logo */}
-          <Link to="/" className="shrink-0">
-            <img
-              src="/assets/logo.png"
-              alt="LYNCK DIGITAL"
-              className="h-11 md:h-[52px] w-auto"
-            />
-          </Link>
+          {/* Logo & Google Partner Badge */}
+          <div className="flex items-center gap-3 shrink-0">
+            <Link to="/" className="shrink-0">
+              <img
+                src="/assets/logo.png"
+                alt="LYNCK DIGITAL"
+                className="h-11 md:h-[52px] w-auto"
+              />
+            </Link>
+            <a
+              href="https://www.google.com/partners/agency?id=6214402482"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-flex items-center justify-center hover:scale-105 transition-all duration-300"
+              aria-label="Google Partner Badge"
+              title="Certified Google Partner"
+            >
+              <img
+                src="https://www.gstatic.com/partners/badge/images/2025/PartnerBadgeClickable.svg"
+                alt="Google Partner"
+                className="h-11 md:h-[52px] w-auto"
+                loading="lazy"
+              />
+            </a>
+          </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8 flex-1 justify-center">
