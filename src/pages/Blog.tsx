@@ -5,7 +5,7 @@ import { SEO } from "@/components/SEO";
 import { useBlogPosts } from "@/hooks/useBlog";
 import { format } from "date-fns";
 import { Clock, ArrowRight } from "lucide-react";
-
+import NewsletterForm from "@/components/NewsletterForm";
 // Calculate reading time based on content length
 const calculateReadingTime = (content: string | null): number => {
   if (!content) return 1;
@@ -134,6 +134,11 @@ const Blog = () => {
                   ))}
                 </div>
               )}
+
+              {/* Newsletter Subscription Form */}
+              <div className="mt-16">
+                <NewsletterForm />
+              </div>
             </>
           )}
         </div>
