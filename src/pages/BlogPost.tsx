@@ -4,8 +4,31 @@ import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { useBlogPost } from "@/hooks/useBlog";
 import { format } from "date-fns";
-import { ArrowLeft, Clock, Calendar, Share2 } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, Share2, Twitter, Linkedin, Facebook, Link as LinkIcon } from "lucide-react";
 import { toast } from "sonner";
+
+// Convert URLs in text to clickable links
+const renderTextWithLinks = (text: string) => {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const parts = text.split(urlRegex);
+  
+  return parts.map((part, i) => {
+    if (urlRegex.test(part)) {
+      return (
+        <a 
+          key={i} 
+          href={part} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-primary hover:underline break-all"
+        >
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+};
 
 // Calculate reading time based on content length
 const calculateReadingTime = (content: string | null): number => {
@@ -19,22 +42,25 @@ const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading } = useBlogPost(slug || "");
 
-  const handleShare = async () => {
-    const url = window.location.href;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: post?.title,
-          text: post?.excerpt || '',
-          url: url,
-        });
-      } catch {
-        // User cancelled or share failed
-      }
-    } else {
-      await navigator.clipboard.writeText(url);
-      toast.success("Link copied to clipboard!");
-    }
+  const handleCopyLink = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    toast.success("Link copied to clipboard!");
+  };
+
+  const shareOnTwitter = () => {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(post?.title || '');
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+  };
+
+  const shareOnLinkedIn = () => {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+  };
+
+  const shareOnFacebook = () => {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
   };
 
   if (isLoading) {
@@ -116,13 +142,6 @@ const BlogPost = () => {
                 <Clock className="w-4 h-4" />
                 {readingTime} min read
               </span>
-              <button 
-                onClick={handleShare}
-                className="flex items-center gap-2 text-sm font-bold uppercase text-foreground/50 hover:text-foreground font-sans tracking-wider transition-colors ml-auto"
-              >
-                <Share2 className="w-4 h-4" />
-                Share
-              </button>
             </div>
             
             <h1 className="text-4xl md:text-6xl font-extrabold font-sans tracking-tighter mb-8 leading-tight">
@@ -146,7 +165,7 @@ const BlogPost = () => {
                 if (paragraph.length < 50 && /^[A-Z]/.test(paragraph) && !paragraph.includes('.')) {
                   return (
                     <h2 key={index} className="text-2xl font-extrabold font-sans mt-10 mb-4 tracking-tight">
-                      {paragraph}
+                      {renderTextWithLinks(paragraph)}
                     </h2>
                   );
                 }
@@ -157,7 +176,7 @@ const BlogPost = () => {
                   return (
                     <ul key={index} className="list-disc list-inside space-y-2 mb-6 text-foreground/80">
                       {items.map((item, i) => (
-                        <li key={i}>{item.trim()}</li>
+                        <li key={i}>{renderTextWithLinks(item.trim())}</li>
                       ))}
                     </ul>
                   );
@@ -165,14 +184,51 @@ const BlogPost = () => {
                 
                 return (
                   <p key={index} className="mb-6 text-foreground/80 leading-relaxed text-lg">
-                    {paragraph}
+                    {renderTextWithLinks(paragraph)}
                   </p>
                 );
               })}
             </div>
 
+            {/* Social sharing buttons */}
+            <div className="mt-10 pt-8 border-t border-foreground/10">
+              <p className="text-sm font-bold uppercase text-foreground/50 tracking-wider mb-4">
+                Share this article
+              </p>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={shareOnTwitter}
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 hover:bg-foreground/10 text-foreground/70 hover:text-foreground transition-colors"
+                  aria-label="Share on Twitter"
+                >
+                  <Twitter className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={shareOnLinkedIn}
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 hover:bg-foreground/10 text-foreground/70 hover:text-foreground transition-colors"
+                  aria-label="Share on LinkedIn"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={shareOnFacebook}
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 hover:bg-foreground/10 text-foreground/70 hover:text-foreground transition-colors"
+                  aria-label="Share on Facebook"
+                >
+                  <Facebook className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={handleCopyLink}
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 hover:bg-foreground/10 text-foreground/70 hover:text-foreground transition-colors"
+                  aria-label="Copy link"
+                >
+                  <LinkIcon className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
             {/* Author section */}
-            <div className="mt-12 pt-8 border-t border-foreground/10">
+            <div className="mt-8 pt-8 border-t border-foreground/10">
               <p className="text-sm font-bold uppercase text-foreground/50 tracking-wider">
                 Published by LYNCK Digital
               </p>
