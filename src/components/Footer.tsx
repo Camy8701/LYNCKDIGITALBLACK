@@ -32,19 +32,13 @@ const Footer = () => {
               Blog
             </a>
             <a
-              href="/?category=courses-guides"
-              className="text-[13px] font-medium text-foreground/70 uppercase tracking-widest hover:text-foreground transition-colors"
-            >
-              Courses
-            </a>
-          </div>
-          <div className="flex flex-col gap-4">
-            <a
               href="/about"
               className="text-[13px] font-medium text-foreground/70 uppercase tracking-widest hover:text-foreground transition-colors"
             >
               About Us
             </a>
+          </div>
+          <div className="flex flex-col gap-4">
             <a
               href="/contact"
               className="text-[13px] font-medium text-foreground/70 uppercase tracking-widest hover:text-foreground transition-colors"
@@ -58,22 +52,6 @@ const Footer = () => {
               className="text-[13px] font-medium text-foreground/70 uppercase tracking-widest hover:text-foreground transition-colors"
             >
               Instagram
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[13px] font-medium text-foreground/70 uppercase tracking-widest hover:text-foreground transition-colors"
-            >
-              Twitter/X
-            </a>
-            <a
-              href="https://pinterest.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[13px] font-medium text-foreground/70 uppercase tracking-widest hover:text-foreground transition-colors"
-            >
-              Pinterest
             </a>
           </div>
         </div>
