@@ -15,6 +15,7 @@ const Header = () => {
   const navLinks = [
     { label: "Shop", href: "/" },
     { label: "Blog", href: "/blog" },
+    { label: "About Us", href: "/about" },
   ];
 
   const handleSignOut = async () => {
@@ -57,7 +58,7 @@ const Header = () => {
               <Link
                 key={link.href}
                 to={link.href}
-                className="text-sm font-bold uppercase tracking-wider hover:text-foreground/70 transition-colors"
+                className="text-sm font-bold uppercase tracking-wider hover:text-foreground/70 transition-all duration-300 hover:scale-105 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
               >
                 {link.label}
               </Link>
@@ -65,7 +66,7 @@ const Header = () => {
             {user && (
               <Link
                 to="/dashboard"
-                className="text-sm font-bold uppercase tracking-wider hover:text-foreground/70 transition-colors"
+                className="text-sm font-bold uppercase tracking-wider hover:text-foreground/70 transition-all duration-300 hover:scale-105 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
               >
                 Dashboard
               </Link>
@@ -73,7 +74,7 @@ const Header = () => {
             {isAdmin && (
               <Link
                 to="/admin"
-                className="text-sm font-bold uppercase tracking-wider hover:text-foreground/70 transition-colors"
+                className="text-sm font-bold uppercase tracking-wider hover:text-foreground/70 transition-all duration-300 hover:scale-105 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
               >
                 Admin
               </Link>
