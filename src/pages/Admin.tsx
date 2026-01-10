@@ -8,9 +8,10 @@ import Button from "@/components/Button";
 import { Product, Category } from "@/types/product";
 import { BlogPost } from "@/types/blog";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, LogOut, X, Eye, EyeOff, BarChart3 } from "lucide-react";
+import { Pencil, Trash2, Plus, LogOut, X, Eye, EyeOff, BarChart3, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import AdminAnalytics from "@/components/admin/AdminAnalytics";
+import NewsletterSubscribers from "@/components/admin/NewsletterSubscribers";
 
 const Admin = () => {
   const { user, isAdmin, loading, signOut } = useAuth();
@@ -29,7 +30,7 @@ const Admin = () => {
   const updateBlogPost = useUpdateBlogPost();
   const deleteBlogPost = useDeleteBlogPost();
 
-  const [activeTab, setActiveTab] = useState<'analytics' | 'products' | 'categories' | 'blog'>('analytics');
+  const [activeTab, setActiveTab] = useState<'analytics' | 'products' | 'categories' | 'blog' | 'newsletter'>('analytics');
   const [showProductModal, setShowProductModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showBlogModal, setShowBlogModal] = useState(false);
@@ -447,11 +448,28 @@ const Admin = () => {
               >
                 Blog ({blogPosts.length})
               </button>
+              <button
+                onClick={() => setActiveTab('newsletter')}
+                className={cn(
+                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground flex items-center gap-2",
+                  activeTab === 'newsletter'
+                    ? "bg-foreground text-background"
+                    : "bg-transparent text-foreground hover:bg-foreground hover:text-background"
+                )}
+              >
+                <Mail className="w-4 h-4" />
+                Newsletter
+              </button>
             </div>
 
             {/* Analytics Tab */}
             {activeTab === 'analytics' && (
               <AdminAnalytics onEditProduct={editProduct} />
+            )}
+
+            {/* Newsletter Tab */}
+            {activeTab === 'newsletter' && (
+              <NewsletterSubscribers />
             )}
 
             {/* Products Tab */}
