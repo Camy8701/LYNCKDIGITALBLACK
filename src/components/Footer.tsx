@@ -26,6 +26,12 @@ const Footer = () => {
               Shop
             </a>
             <a
+              href="/services"
+              className="text-[13px] font-medium text-foreground/70 uppercase tracking-widest hover:text-foreground transition-colors"
+            >
+              Done For You
+            </a>
+            <a
               href="/blog"
               className="text-[13px] font-medium text-foreground/70 uppercase tracking-widest hover:text-foreground transition-colors"
             >
