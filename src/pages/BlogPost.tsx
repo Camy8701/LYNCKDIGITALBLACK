@@ -4,31 +4,9 @@ import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { useBlogPost } from "@/hooks/useBlog";
 import { format } from "date-fns";
-import { ArrowLeft, Clock, Calendar, Share2, Twitter, Linkedin, Facebook, Link as LinkIcon } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, Twitter, Linkedin, Facebook, Link as LinkIcon } from "lucide-react";
 import { toast } from "sonner";
-
-// Convert URLs in text to clickable links
-const renderTextWithLinks = (text: string) => {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  const parts = text.split(urlRegex);
-  
-  return parts.map((part, i) => {
-    if (urlRegex.test(part)) {
-      return (
-        <a 
-          key={i} 
-          href={part} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-primary hover:underline break-all"
-        >
-          {part}
-        </a>
-      );
-    }
-    return part;
-  });
-};
+import { RichContentRenderer } from "@/components/blog/RichContentRenderer";
 
 // Calculate reading time based on content length
 const calculateReadingTime = (content: string | null): number => {
@@ -68,7 +46,7 @@ const BlogPost = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main className="px-5 md:px-20 py-12 md:py-20">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <div className="animate-pulse space-y-6">
               <div className="h-4 bg-foreground/10 rounded w-32" />
               <div className="h-12 bg-foreground/10 rounded w-3/4" />
@@ -120,7 +98,7 @@ const BlogPost = () => {
       <Header />
 
       <main className="px-5 md:px-20 py-12 md:py-20">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <Link 
             to="/blog" 
             className="inline-flex items-center gap-2 text-foreground/60 hover:text-foreground transition-colors mb-8"
@@ -130,26 +108,35 @@ const BlogPost = () => {
           </Link>
 
           <article>
-            {/* Meta info */}
-            <div className="flex flex-wrap items-center gap-4 mb-6">
-              {post.published_at && (
+            {/* Hero Section */}
+            <header className="mb-12">
+              {/* Meta info */}
+              <div className="flex flex-wrap items-center gap-4 mb-6">
+                {post.published_at && (
+                  <span className="flex items-center gap-2 text-sm font-bold uppercase text-foreground/50 font-sans tracking-wider">
+                    <Calendar className="w-4 h-4" />
+                    {format(new Date(post.published_at), "MMMM d, yyyy")}
+                  </span>
+                )}
                 <span className="flex items-center gap-2 text-sm font-bold uppercase text-foreground/50 font-sans tracking-wider">
-                  <Calendar className="w-4 h-4" />
-                  {format(new Date(post.published_at), "MMMM d, yyyy")}
+                  <Clock className="w-4 h-4" />
+                  {readingTime} min read
                 </span>
+              </div>
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-sans tracking-tighter mb-6 leading-[1.1]">
+                {post.title}
+              </h1>
+
+              {post.excerpt && (
+                <p className="text-xl md:text-2xl text-foreground/70 leading-relaxed max-w-3xl">
+                  {post.excerpt}
+                </p>
               )}
-              <span className="flex items-center gap-2 text-sm font-bold uppercase text-foreground/50 font-sans tracking-wider">
-                <Clock className="w-4 h-4" />
-                {readingTime} min read
-              </span>
-            </div>
-            
-            <h1 className="text-4xl md:text-6xl font-extrabold font-sans tracking-tighter mb-8 leading-tight">
-              {post.title}
-            </h1>
+            </header>
 
             {post.image_url && (
-              <div className="rounded-3xl overflow-hidden mb-10">
+              <div className="rounded-3xl overflow-hidden mb-12 shadow-2xl">
                 <img
                   src={post.image_url}
                   alt={post.title}
@@ -158,68 +145,41 @@ const BlogPost = () => {
               </div>
             )}
 
-            {/* Article content */}
-            <div className="prose prose-lg max-w-none font-serif">
-              {post.content?.split('\n\n').map((paragraph, index) => {
-                // Check if it's a heading (starts with capital and is short)
-                if (paragraph.length < 50 && /^[A-Z]/.test(paragraph) && !paragraph.includes('.')) {
-                  return (
-                    <h2 key={index} className="text-2xl font-extrabold font-sans mt-10 mb-4 tracking-tight">
-                      {renderTextWithLinks(paragraph)}
-                    </h2>
-                  );
-                }
-                
-                // Check if it's a list (starts with bullet points)
-                if (paragraph.includes('• ')) {
-                  const items = paragraph.split('• ').filter(Boolean);
-                  return (
-                    <ul key={index} className="list-disc list-inside space-y-2 mb-6 text-foreground/80">
-                      {items.map((item, i) => (
-                        <li key={i}>{renderTextWithLinks(item.trim())}</li>
-                      ))}
-                    </ul>
-                  );
-                }
-                
-                return (
-                  <p key={index} className="mb-6 text-foreground/80 leading-relaxed text-lg">
-                    {renderTextWithLinks(paragraph)}
-                  </p>
-                );
-              })}
+            {/* Rich Content */}
+            <div className="prose-lg max-w-none">
+              {post.content && <RichContentRenderer content={post.content} />}
             </div>
 
             {/* Social sharing buttons */}
-            <div className="mt-10 pt-8 border-t border-foreground/10">
+            <div className="mt-16 pt-8 border-t border-border">
               <p className="text-sm font-bold uppercase text-foreground/50 tracking-wider mb-4">
                 Share this article
               </p>
               <div className="flex items-center gap-3">
                 <button
                   onClick={shareOnTwitter}
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 hover:bg-foreground/10 text-foreground/70 hover:text-foreground transition-colors"
+                  className="flex items-center justify-center w-12 h-12 rounded-full bg-card border border-border hover:border-primary/40 text-foreground/70 hover:text-primary transition-all"
                   aria-label="Share on Twitter"
                 >
                   <Twitter className="w-5 h-5" />
                 </button>
                 <button
                   onClick={shareOnLinkedIn}
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 hover:bg-foreground/10 text-foreground/70 hover:text-foreground transition-colors"
+                  className="flex items-center justify-center w-12 h-12 rounded-full bg-card border border-border hover:border-primary/40 text-foreground/70 hover:text-primary transition-all"
                   aria-label="Share on LinkedIn"
                 >
                   <Linkedin className="w-5 h-5" />
                 </button>
                 <button
                   onClick={shareOnFacebook}
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 hover:bg-foreground/10 text-foreground/70 hover:text-foreground transition-colors"
+                  className="flex items-center justify-center w-12 h-12 rounded-full bg-card border border-border hover:border-primary/40 text-foreground/70 hover:text-primary transition-all"
                   aria-label="Share on Facebook"
                 >
                   <Facebook className="w-5 h-5" />
                 </button>
                 <button
                   onClick={handleCopyLink}
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 hover:bg-foreground/10 text-foreground/70 hover:text-foreground transition-colors"
+                  className="flex items-center justify-center w-12 h-12 rounded-full bg-card border border-border hover:border-primary/40 text-foreground/70 hover:text-primary transition-all"
                   aria-label="Copy link"
                 >
                   <LinkIcon className="w-5 h-5" />
@@ -228,10 +188,16 @@ const BlogPost = () => {
             </div>
 
             {/* Author section */}
-            <div className="mt-8 pt-8 border-t border-foreground/10">
-              <p className="text-sm font-bold uppercase text-foreground/50 tracking-wider">
-                Published by LYNCK Digital
-              </p>
+            <div className="mt-8 pt-8 border-t border-border">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="text-primary font-bold text-lg">L</span>
+                </div>
+                <div>
+                  <p className="font-bold text-foreground">LYNCK Digital</p>
+                  <p className="text-sm text-foreground/60">Empowering creators with digital products and resources</p>
+                </div>
+              </div>
             </div>
           </article>
         </div>
