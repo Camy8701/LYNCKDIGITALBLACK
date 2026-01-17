@@ -24,9 +24,12 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+import BackgroundLayers from "@/components/BackgroundLayers";
+
 // Layout component with scroll restoration
 const Layout = () => (
   <>
+    <BackgroundLayers />
     <ScrollRestoration />
     <Outlet />
   </>
