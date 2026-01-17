@@ -8,12 +8,12 @@
 
 @layer base {
   :root {
-    /* Base Colors - Warm Cream Theme */
-    --background: 32 71% 91%; /* #fce5cf - Warm cream */
+    /* Base Colors - Clean White Theme */
+    --background: 0 0% 100%; /* Pure white */
     --foreground: 0 0% 0%; /* Pure black */
 
     /* Card Colors */
-    --card: 32 71% 91%;
+    --card: 0 0% 100%;
     --card-foreground: 0 0% 0%;
 
     /* Primary Action Colors */
@@ -64,21 +64,21 @@
   }
 
   .dark {
-    --background: 20 18% 12%; /* Darker warm brown */
-    --foreground: 32 50% 90%; /* Warm cream text */
-    --card: 20 14% 18%;
-    --card-foreground: 32 50% 90%;
-    --border: 20 12% 25%;
-    --input: 20 12% 25%;
+    --background: 220 15% 15%; /* Dark slate gray */
+    --foreground: 0 0% 95%; /* Light text */
+    --card: 220 15% 18%;
+    --card-foreground: 0 0% 95%;
+    --border: 220 12% 28%;
+    --input: 220 12% 28%;
     --ring: 322 82% 83%;
     
     /* Muted for dark mode */
-    --muted: 20 12% 20%;
-    --muted-foreground: 32 30% 60%;
+    --muted: 220 12% 22%;
+    --muted-foreground: 220 10% 60%;
     
     /* Accent adjustments for dark mode */
-    --accent: 20 14% 22%;
-    --accent-foreground: 32 50% 90%;
+    --accent: 220 14% 25%;
+    --accent-foreground: 0 0% 95%;
     
     /* Primary stays vibrant */
     --primary: 322 82% 75%;
