@@ -4,12 +4,13 @@ const HeroCarousel = () => {
       <iframe
         src="https://player.flipsnack.com?hash=QjlGQzg1OUJEQzkrenVmZHMwcW04eQ=="
         width="100%"
+        height="600"
         seamless
         scrolling="no"
         frameBorder="0"
         allowFullScreen
         allow="autoplay; clipboard-read; clipboard-write"
-        className="w-full h-[350px] sm:h-[450px] md:h-[550px] lg:h-[650px] xl:h-[700px] rounded-3xl"
+        className="w-full min-h-[400px] md:min-h-[600px] rounded-3xl"
         title="Digital Products Flipbook"
       />
     </div>
