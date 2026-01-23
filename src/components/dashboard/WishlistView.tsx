@@ -25,12 +25,12 @@ const WishlistView = () => {
 
   if (wishlistItems.length === 0) {
     return (
-      <div className="bg-vibrant-lavender rounded-3xl p-12 text-center">
-        <Heart className="w-20 h-20 text-foreground/20 mx-auto mb-6" />
-        <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-4 font-sans">
+      <div className="data-panel text-center py-12">
+        <Heart className="w-20 h-20 text-muted-foreground mx-auto mb-6" />
+        <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-4 font-sans text-white">
           Your wishlist is empty
         </h3>
-        <p className="text-base md:text-lg text-foreground/70 mb-8 font-serif max-w-md mx-auto">
+        <p className="text-base md:text-lg text-muted-foreground mb-8 font-serif max-w-md mx-auto">
           Start adding products you love to your wishlist and easily track them here!
         </p>
         <Link to="/">
@@ -45,8 +45,9 @@ const WishlistView = () => {
   return (
     <div>
       <div className="mb-8">
-        <h2 className="text-3xl md:text-4xl font-extrabold uppercase font-sans">
-          My Wishlist ({wishlistItems.length})
+        <span className="section-label">Saved</span>
+        <h2 className="text-3xl md:text-4xl font-extrabold uppercase font-sans text-white mt-4">
+          My Wishlist <span className="text-[#ccff00]">({wishlistItems.length})</span>
         </h2>
       </div>
 
@@ -55,7 +56,6 @@ const WishlistView = () => {
           const product = item.product;
           if (!product) return null;
 
-          const colorClass = product.category?.color_class || "bg-vibrant-purple";
           const discount = product.original_price
             ? Math.round((1 - product.price / product.original_price) * 100)
             : 0;
@@ -63,70 +63,58 @@ const WishlistView = () => {
           return (
             <article
               key={item.id}
-              className={cn(
-                "card-hover rounded-3xl overflow-hidden flex flex-col h-full relative",
-                colorClass
-              )}
+              className="stat-card overflow-hidden flex flex-col h-full relative"
             >
               {/* Remove Button */}
               <button
                 onClick={() => handleRemove(product.id)}
-                className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-background/90 hover:bg-accent-red hover:text-white flex items-center justify-center transition-colors border-2 border-foreground"
+                className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#0a0a0a]/90 hover:bg-red-500 text-white flex items-center justify-center transition-colors border border-[#333]"
                 aria-label="Remove from wishlist"
                 disabled={removeFromWishlist.isPending}
               >
                 {removeFromWishlist.isPending ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-foreground"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                 ) : (
                   <Trash2 className="w-4 h-4" />
                 )}
               </button>
 
               {/* Image */}
-              <Link to={`/product/${product.slug}`} className="block">
-                <div className="aspect-square overflow-hidden p-4 md:p-5 relative">
+              <Link to={`/product/${product.slug}`} className="block -m-6 mb-0">
+                <div className="aspect-square overflow-hidden relative">
                   {discount > 0 && (
-                    <span className="absolute top-6 left-6 bg-accent-red text-foreground text-xs font-bold px-3 py-1 rounded-full z-10">
+                    <span className="absolute top-4 left-4 bg-[#e64a19] text-white text-xs font-bold px-3 py-1 rounded-full z-10">
                       SALE
                     </span>
                   )}
-                  <div className="relative w-full h-full rounded-2xl overflow-hidden">
-                    <img
-                      src={product.image_url || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop"}
-                      alt={product.name}
-                      className="w-full h-full object-cover transition-transform duration-500 grayscale"
-                    />
-                    <div
-                      className={cn(
-                        "absolute inset-0 mix-blend-multiply opacity-60",
-                        colorClass
-                      )}
-                      aria-hidden="true"
-                    />
-                  </div>
+                  <img
+                    src={product.image_url || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=800&fit=crop"}
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
                 </div>
               </Link>
 
               {/* Content */}
-              <div className="p-5 md:p-6 flex flex-col flex-1">
+              <div className="pt-6 flex flex-col flex-1">
                 {product.category && (
-                  <span className="text-xs font-bold uppercase text-foreground/70 mb-2 font-sans tracking-wider">
+                  <span className="text-xs font-bold uppercase text-[#ccff00] mb-2 font-sans tracking-wider">
                     {product.category.name}
                   </span>
                 )}
                 <Link to={`/product/${product.slug}`}>
-                  <h3 className="text-2xl md:text-3xl leading-[0.9] mb-3 font-sans font-extrabold tracking-tighter hover:opacity-70 transition-opacity">
+                  <h3 className="text-xl md:text-2xl leading-tight mb-3 font-sans font-extrabold tracking-tighter text-white hover:text-[#e64a19] transition-colors">
                     {product.name}
                   </h3>
                 </Link>
-                <p className="text-sm md:text-base leading-relaxed text-foreground/80 mb-4 flex-1 line-clamp-2 font-serif">
+                <p className="text-sm leading-relaxed text-muted-foreground mb-4 flex-1 line-clamp-2 font-serif">
                   {product.short_description}
                 </p>
 
                 {/* Wishlist Notes */}
                 {item.notes && (
-                  <div className="mb-4 p-3 bg-background/30 rounded-xl">
-                    <p className="text-xs font-serif italic text-foreground/70">
+                  <div className="mb-4 p-3 bg-[#0a0a0a]/50 border border-[#222] rounded-xl">
+                    <p className="text-xs font-serif italic text-muted-foreground">
                       Note: {item.notes}
                     </p>
                   </div>
@@ -134,9 +122,9 @@ const WishlistView = () => {
 
                 {/* Price */}
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-2xl font-extrabold font-sans">${product.price}</span>
+                  <span className="text-2xl font-extrabold font-sans text-[#e64a19]">${product.price}</span>
                   {product.original_price && (
-                    <span className="text-lg text-foreground/50 line-through font-sans">
+                    <span className="text-lg text-muted-foreground line-through font-sans">
                       ${product.original_price}
                     </span>
                   )}

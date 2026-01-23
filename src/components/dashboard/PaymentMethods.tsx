@@ -1,17 +1,19 @@
 import Button from "@/components/Button";
-import { CreditCard, Plus, AlertCircle } from "lucide-react";
+import { CreditCard, Plus, AlertCircle, Zap, Shield, Layers, Star } from "lucide-react";
 
 const PaymentMethods = () => {
   return (
     <div className="space-y-8">
       {/* Info Banner */}
-      <div className="bg-vibrant-yellow rounded-3xl p-6 md:p-8 flex items-start gap-4">
-        <AlertCircle className="w-6 h-6 text-foreground/80 flex-shrink-0 mt-1" />
+      <div className="stat-card-lime flex items-start gap-4">
+        <div className="w-12 h-12 rounded-lg bg-[#ccff00]/20 flex items-center justify-center flex-shrink-0">
+          <AlertCircle className="w-6 h-6 text-[#ccff00]" />
+        </div>
         <div>
-          <h3 className="text-xl font-extrabold uppercase mb-2 font-sans">
+          <h3 className="text-xl font-extrabold uppercase mb-2 font-sans text-white">
             Coming Soon: Stripe Integration
           </h3>
-          <p className="text-base font-serif text-foreground/80 leading-relaxed">
+          <p className="text-base font-serif text-muted-foreground leading-relaxed">
             We're currently integrating Stripe payment processing to enable saved payment methods.
             Soon you'll be able to securely save your payment information for faster checkout!
           </p>
@@ -19,9 +21,9 @@ const PaymentMethods = () => {
       </div>
 
       {/* Payment Methods Section */}
-      <div className="bg-vibrant-lavender rounded-3xl p-6 md:p-8">
+      <div className="stat-card">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl md:text-3xl font-extrabold uppercase font-sans">
+          <h2 className="text-2xl md:text-3xl font-extrabold uppercase font-sans text-white">
             Saved Payment Methods
           </h2>
           <Button
@@ -35,58 +37,67 @@ const PaymentMethods = () => {
         </div>
 
         {/* Empty State */}
-        <div className="text-center py-12">
-          <CreditCard className="w-20 h-20 text-foreground/20 mx-auto mb-6" />
-          <h3 className="text-xl md:text-2xl font-extrabold uppercase mb-3 font-sans">
+        <div className="text-center py-12 border border-[#222] rounded-xl bg-[#0a0a0a]/50">
+          <CreditCard className="w-20 h-20 text-muted-foreground mx-auto mb-6" />
+          <h3 className="text-xl md:text-2xl font-extrabold uppercase mb-3 font-sans text-white">
             No Payment Methods
           </h3>
-          <p className="text-base text-foreground/60 font-serif max-w-md mx-auto">
+          <p className="text-base text-muted-foreground font-serif max-w-md mx-auto">
             Payment methods will appear here once Stripe integration is complete.
           </p>
         </div>
       </div>
 
       {/* Features Preview */}
-      <div className="bg-vibrant-mint rounded-3xl p-6 md:p-8">
-        <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-6 font-sans">
+      <div className="data-panel">
+        <span className="section-label">Preview</span>
+        <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-6 font-sans text-white mt-4">
           Upcoming Features
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex items-start gap-3">
-            <div className="w-2 h-2 bg-foreground rounded-full mt-2"></div>
+          <div className="flex items-start gap-4 p-4 bg-[#0a0a0a] rounded-xl border border-[#262626]">
+            <div className="w-10 h-10 rounded-lg bg-[#e64a19]/20 flex items-center justify-center flex-shrink-0">
+              <Shield className="w-5 h-5 text-[#e64a19]" />
+            </div>
             <div>
-              <h4 className="font-bold font-sans text-sm mb-1">Secure Storage</h4>
-              <p className="text-sm text-foreground/70 font-serif">
+              <h4 className="font-bold font-sans text-sm mb-1 text-white">Secure Storage</h4>
+              <p className="text-sm text-muted-foreground font-serif">
                 Credit card details stored securely with Stripe
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3">
-            <div className="w-2 h-2 bg-foreground rounded-full mt-2"></div>
+          <div className="flex items-start gap-4 p-4 bg-[#0a0a0a] rounded-xl border border-[#262626]">
+            <div className="w-10 h-10 rounded-lg bg-[#ccff00]/20 flex items-center justify-center flex-shrink-0">
+              <Zap className="w-5 h-5 text-[#ccff00]" />
+            </div>
             <div>
-              <h4 className="font-bold font-sans text-sm mb-1">Quick Checkout</h4>
-              <p className="text-sm text-foreground/70 font-serif">
+              <h4 className="font-bold font-sans text-sm mb-1 text-white">Quick Checkout</h4>
+              <p className="text-sm text-muted-foreground font-serif">
                 One-click purchases with saved payment methods
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3">
-            <div className="w-2 h-2 bg-foreground rounded-full mt-2"></div>
+          <div className="flex items-start gap-4 p-4 bg-[#0a0a0a] rounded-xl border border-[#262626]">
+            <div className="w-10 h-10 rounded-lg bg-[#e64a19]/20 flex items-center justify-center flex-shrink-0">
+              <Layers className="w-5 h-5 text-[#e64a19]" />
+            </div>
             <div>
-              <h4 className="font-bold font-sans text-sm mb-1">Multiple Methods</h4>
-              <p className="text-sm text-foreground/70 font-serif">
+              <h4 className="font-bold font-sans text-sm mb-1 text-white">Multiple Methods</h4>
+              <p className="text-sm text-muted-foreground font-serif">
                 Save and manage multiple payment methods
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3">
-            <div className="w-2 h-2 bg-foreground rounded-full mt-2"></div>
+          <div className="flex items-start gap-4 p-4 bg-[#0a0a0a] rounded-xl border border-[#262626]">
+            <div className="w-10 h-10 rounded-lg bg-[#ccff00]/20 flex items-center justify-center flex-shrink-0">
+              <Star className="w-5 h-5 text-[#ccff00]" />
+            </div>
             <div>
-              <h4 className="font-bold font-sans text-sm mb-1">Default Selection</h4>
-              <p className="text-sm text-foreground/70 font-serif">
+              <h4 className="font-bold font-sans text-sm mb-1 text-white">Default Selection</h4>
+              <p className="text-sm text-muted-foreground font-serif">
                 Set a default payment method for convenience
               </p>
             </div>
@@ -95,15 +106,15 @@ const PaymentMethods = () => {
       </div>
 
       {/* Temporary Checkout Info */}
-      <div className="bg-vibrant-coral rounded-3xl p-6 md:p-8">
-        <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-4 font-sans">
+      <div className="stat-card">
+        <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-4 font-sans text-white">
           Current Checkout Process
         </h3>
-        <p className="text-base font-serif text-foreground/80 leading-relaxed mb-4">
+        <p className="text-base font-serif text-muted-foreground leading-relaxed mb-4">
           For now, checkout will create placeholder orders marked as "completed" so you can test
           the full dashboard experience including order history and downloads.
         </p>
-        <p className="text-sm font-serif text-foreground/70">
+        <p className="text-sm font-serif text-[#ccff00]">
           Real payment processing will be available once Stripe integration is completed.
         </p>
       </div>

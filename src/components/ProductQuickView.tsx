@@ -26,7 +26,7 @@ const ProductQuickView = ({ product, open, onOpenChange }: ProductQuickViewProps
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl p-0 overflow-hidden border-0 bg-transparent">
-        <div className={cn("rounded-3xl overflow-hidden", colorClass)}>
+        <div className="rounded-2xl overflow-hidden bg-[#0a0a0a] border border-[#262626]">
           <DialogClose className="absolute right-4 top-4 z-50 rounded-full bg-background/80 backdrop-blur-sm p-2 hover:bg-background transition-colors">
             <X className="h-5 w-5" />
             <span className="sr-only">Close</span>
@@ -36,7 +36,7 @@ const ProductQuickView = ({ product, open, onOpenChange }: ProductQuickViewProps
             {/* Image Section */}
             <div className="aspect-square p-6 relative">
               {discount > 0 && (
-                <span className="absolute top-8 left-8 bg-accent-red text-foreground text-xs font-bold px-3 py-1 rounded-full z-10">
+                <span className="absolute top-8 left-8 bg-[#e64a19] text-white text-xs font-bold px-3 py-1 rounded-full z-10">
                   {discount}% OFF
                 </span>
               )}

@@ -31,16 +31,24 @@ const DashboardOverview = () => {
   return (
     <div className="space-y-8 md:space-y-12">
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div>
+        <span className="section-label">Overview</span>
+        <h2 className="text-3xl md:text-4xl font-extrabold uppercase font-sans text-white mt-4 mb-6">
+          Key Metrics
+        </h2>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 -mt-4">
         {/* Total Orders */}
-        <div className="bg-vibrant-purple rounded-3xl p-6 md:p-8">
+        <div className="stat-card">
           <div className="flex items-start justify-between mb-4">
-            <Package className="w-10 h-10 text-foreground/80" />
+            <div className="w-12 h-12 rounded-lg bg-[#e64a19]/20 flex items-center justify-center">
+              <Package className="w-6 h-6 text-[#e64a19]" />
+            </div>
             <div className="text-right">
-              <div className="text-4xl md:text-5xl font-extrabold font-sans">
+              <div className="text-4xl md:text-5xl font-extrabold font-sans text-white">
                 {stats.total_orders}
               </div>
-              <div className="text-xs md:text-sm font-bold uppercase tracking-wider text-foreground/70 mt-1 font-sans">
+              <div className="text-xs md:text-sm font-bold uppercase tracking-wider text-muted-foreground mt-1 font-sans">
                 Total Orders
               </div>
             </div>
@@ -48,14 +56,16 @@ const DashboardOverview = () => {
         </div>
 
         {/* Total Spent */}
-        <div className="bg-vibrant-mint rounded-3xl p-6 md:p-8">
+        <div className="stat-card-lime">
           <div className="flex items-start justify-between mb-4">
-            <DollarSign className="w-10 h-10 text-foreground/80" />
+            <div className="w-12 h-12 rounded-lg bg-[#ccff00]/20 flex items-center justify-center">
+              <DollarSign className="w-6 h-6 text-[#ccff00]" />
+            </div>
             <div className="text-right">
-              <div className="text-4xl md:text-5xl font-extrabold font-sans">
+              <div className="text-4xl md:text-5xl font-extrabold font-sans text-white">
                 ${stats.total_spent.toFixed(0)}
               </div>
-              <div className="text-xs md:text-sm font-bold uppercase tracking-wider text-foreground/70 mt-1 font-sans">
+              <div className="text-xs md:text-sm font-bold uppercase tracking-wider text-muted-foreground mt-1 font-sans">
                 Total Spent
               </div>
             </div>
@@ -63,14 +73,16 @@ const DashboardOverview = () => {
         </div>
 
         {/* Available Downloads */}
-        <div className="bg-vibrant-yellow rounded-3xl p-6 md:p-8">
+        <div className="stat-card">
           <div className="flex items-start justify-between mb-4">
-            <Download className="w-10 h-10 text-foreground/80" />
+            <div className="w-12 h-12 rounded-lg bg-[#e64a19]/20 flex items-center justify-center">
+              <Download className="w-6 h-6 text-[#e64a19]" />
+            </div>
             <div className="text-right">
-              <div className="text-4xl md:text-5xl font-extrabold font-sans">
+              <div className="text-4xl md:text-5xl font-extrabold font-sans text-white">
                 {stats.available_downloads}
               </div>
-              <div className="text-xs md:text-sm font-bold uppercase tracking-wider text-foreground/70 mt-1 font-sans">
+              <div className="text-xs md:text-sm font-bold uppercase tracking-wider text-muted-foreground mt-1 font-sans">
                 Downloads
               </div>
             </div>
@@ -78,14 +90,16 @@ const DashboardOverview = () => {
         </div>
 
         {/* Wishlist Items */}
-        <div className="bg-vibrant-coral rounded-3xl p-6 md:p-8">
+        <div className="stat-card-lime">
           <div className="flex items-start justify-between mb-4">
-            <Heart className="w-10 h-10 text-foreground/80" />
+            <div className="w-12 h-12 rounded-lg bg-[#ccff00]/20 flex items-center justify-center">
+              <Heart className="w-6 h-6 text-[#ccff00]" />
+            </div>
             <div className="text-right">
-              <div className="text-4xl md:text-5xl font-extrabold font-sans">
+              <div className="text-4xl md:text-5xl font-extrabold font-sans text-white">
                 {stats.wishlist_count}
               </div>
-              <div className="text-xs md:text-sm font-bold uppercase tracking-wider text-foreground/70 mt-1 font-sans">
+              <div className="text-xs md:text-sm font-bold uppercase tracking-wider text-muted-foreground mt-1 font-sans">
                 Wishlist
               </div>
             </div>
@@ -96,9 +110,12 @@ const DashboardOverview = () => {
       {/* Recent Orders Section */}
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl md:text-4xl font-extrabold uppercase font-sans">
-            Recent Orders
-          </h2>
+          <div>
+            <span className="section-label">History</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold uppercase font-sans text-white mt-4">
+              Recent Orders
+            </h2>
+          </div>
           {orders.length > 3 && (
             <Link to="/dashboard?tab=orders">
               <Button variant="transparent" className="text-xs md:text-sm py-2 px-4">
@@ -110,12 +127,12 @@ const DashboardOverview = () => {
 
         {recentOrders.length === 0 ? (
           // Empty State
-          <div className="bg-vibrant-lavender rounded-3xl p-12 text-center">
-            <ShoppingBag className="w-20 h-20 text-foreground/20 mx-auto mb-6" />
-            <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-4 font-sans">
+          <div className="data-panel text-center py-12">
+            <ShoppingBag className="w-20 h-20 text-muted-foreground mx-auto mb-6" />
+            <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-4 font-sans text-white">
               No orders yet
             </h3>
-            <p className="text-base md:text-lg text-foreground/70 mb-8 font-serif max-w-md mx-auto">
+            <p className="text-base md:text-lg text-muted-foreground mb-8 font-serif max-w-md mx-auto">
               Start exploring our digital products and place your first order!
             </p>
             <Link to="/">
@@ -130,12 +147,12 @@ const DashboardOverview = () => {
             {recentOrders.map((order) => (
               <div
                 key={order.id}
-                className="bg-accent-orange/10 rounded-3xl p-6 md:p-8"
+                className="stat-card"
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-xl md:text-2xl font-extrabold font-sans">
+                      <span className="text-xl md:text-2xl font-extrabold font-sans text-white">
                         {order.order_number}
                       </span>
                       <span
@@ -143,16 +160,16 @@ const DashboardOverview = () => {
                           order.status === 'completed'
                             ? 'bg-green-500 text-white'
                             : order.status === 'pending'
-                            ? 'bg-yellow-500 text-foreground'
+                            ? 'bg-yellow-500 text-black'
                             : order.status === 'failed'
                             ? 'bg-red-500 text-white'
-                            : 'bg-foreground/20 text-foreground'
+                            : 'bg-[#333] text-white'
                         }`}
                       >
                         {order.status}
                       </span>
                     </div>
-                    <div className="text-sm text-foreground/60 font-serif">
+                    <div className="text-sm text-muted-foreground font-serif">
                       {format(new Date(order.created_at), 'MMM dd, yyyy')} •{' '}
                       {order.order_items?.length || 0} item
                       {(order.order_items?.length || 0) !== 1 ? 's' : ''}
@@ -161,7 +178,7 @@ const DashboardOverview = () => {
 
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <div className="text-2xl md:text-3xl font-extrabold font-sans">
+                      <div className="text-2xl md:text-3xl font-extrabold font-sans text-[#ccff00]">
                         ${order.total.toFixed(2)}
                       </div>
                     </div>
@@ -175,8 +192,8 @@ const DashboardOverview = () => {
 
       {/* Quick Actions */}
       {stats.completed_orders > 0 && (
-        <div className="bg-vibrant-magenta rounded-3xl p-8 md:p-12">
-          <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-6 font-sans">
+        <div className="data-panel">
+          <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-6 font-sans text-white">
             Quick Actions
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

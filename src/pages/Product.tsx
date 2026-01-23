@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { ArrowLeft, FileText, Type, HardDrive, Download, Check, X, Calendar } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackgroundLayers from "@/components/BackgroundLayers";
 import ProductCard from "@/components/ProductCard";
 import AddToCartButton from "@/components/AddToCartButton";
 import WishlistButton from "@/components/WishlistButton";
@@ -65,27 +66,33 @@ const Product = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a] relative">
+        <BackgroundLayers />
+        <div className="relative z-[200]">
         <Header />
         <main className="px-5 md:px-20 py-20 text-center">
-          <p className="text-lg font-serif text-foreground/60">Loading product...</p>
+          <p className="text-lg font-serif text-muted-foreground">Loading product...</p>
         </main>
         <Footer />
+        </div>
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a] relative">
+        <BackgroundLayers />
+        <div className="relative z-[200]">
         <Header />
         <main className="px-5 md:px-20 py-20 text-center">
-          <h1 className="heading-lg mb-6 font-sans">PRODUCT NOT FOUND</h1>
+          <h1 className="heading-lg mb-6 font-sans text-white">PRODUCT NOT FOUND</h1>
           <Link to="/" className="btn-transparent">
             Return to Shop
           </Link>
         </main>
         <Footer />
+        </div>
       </div>
     );
   }
@@ -137,7 +144,9 @@ const Product = () => {
   const galleryImages = product.gallery_images?.length ? product.gallery_images : null;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a] relative">
+      <BackgroundLayers />
+      <div className="relative z-[200]">
       <SEO
         title={`${product.name} - LYNCK DIGITAL`}
         description={product.short_description || product.description || `Buy ${product.name} - Premium digital product from LYNCK DIGITAL`}
@@ -152,7 +161,7 @@ const Product = () => {
         <section className="px-5 md:px-20 pt-8 pb-4">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-foreground/70 hover:text-foreground transition-colors font-sans"
+            className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground hover:text-white transition-colors font-sans"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Library
@@ -165,64 +174,61 @@ const Product = () => {
             {/* Title & Category */}
             <div className="mb-6">
               {product.category && (
-                <span className={cn(
-                  "inline-block text-xs font-bold uppercase px-3 py-1 rounded-full mb-4 font-sans tracking-wider",
-                  colorClass
-                )}>
+                <span className="section-label">
                   {product.category.name}
                 </span>
               )}
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.9] tracking-tighter font-sans mb-4">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.9] tracking-tighter font-sans mb-4 text-white">
                 {product.name}
               </h1>
-              <p className="text-lg md:text-xl text-foreground/70 max-w-2xl font-serif">
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl font-serif">
                 {product.short_description}
               </p>
             </div>
 
-            {/* Stats Bar - Colorful Cards */}
+            {/* Stats Bar - Dark Tech Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              <div className="bg-vibrant-mint rounded-2xl p-4 text-center">
+              <div className="stat-card-lime text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <FileText className="w-5 h-5" />
+                  <FileText className="w-5 h-5 text-[#ccff00]" />
                 </div>
-                <div className="text-3xl font-extrabold font-sans mb-1">
+                <div className="text-3xl font-extrabold font-sans mb-1 text-white">
                   {pageCount}
                 </div>
-                <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
+                <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   Pages
                 </div>
               </div>
-              <div className="bg-vibrant-yellow rounded-2xl p-4 text-center">
+              <div className="stat-card text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <Type className="w-5 h-5" />
+                  <Type className="w-5 h-5 text-[#e64a19]" />
                 </div>
-                <div className="text-3xl font-extrabold font-sans mb-1">
+                <div className="text-3xl font-extrabold font-sans mb-1 text-white">
                   {wordCount.toLocaleString()}
                 </div>
-                <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
+                <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   Words
                 </div>
               </div>
-              <div className="bg-vibrant-lavender rounded-2xl p-4 text-center">
+              <div className="stat-card-lime text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <HardDrive className="w-5 h-5" />
+                  <HardDrive className="w-5 h-5 text-[#ccff00]" />
                 </div>
-                <div className="text-3xl font-extrabold font-sans mb-1">
+                <div className="text-3xl font-extrabold font-sans mb-1 text-white">
                   {fileSize}
                 </div>
-                <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
+                <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   Size
                 </div>
               </div>
-              <div className="bg-vibrant-coral rounded-2xl p-4 text-center">
+              <div className="stat-card text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <Download className="w-5 h-5" />
+                  <Download className="w-5 h-5 text-[#e64a19]" />
                 </div>
-                <div className="text-3xl font-extrabold font-sans mb-1">
+                <div className="text-3xl font-extrabold font-sans mb-1 text-white">
                   {fileType}
                 </div>
-                <div className="text-xs font-bold uppercase tracking-wider text-foreground/70">
+                <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   Format
                 </div>
               </div>
@@ -241,10 +247,10 @@ const Product = () => {
 
                 {/* Description */}
                 <div>
-                  <h2 className="text-xl font-bold uppercase mb-4 font-sans tracking-tight">
+                  <h2 className="text-xl font-bold uppercase mb-4 font-sans tracking-tight text-white">
                     Description
                   </h2>
-                  <div className="prose prose-lg max-w-none font-serif text-foreground/80">
+                  <div className="prose prose-lg max-w-none font-serif text-muted-foreground">
                     <p className="text-lg leading-relaxed whitespace-pre-line">
                       {product.description || product.short_description}
                     </p>
@@ -252,15 +258,15 @@ const Product = () => {
                 </div>
 
                 {/* What's Inside */}
-                <div className="bg-foreground/5 rounded-2xl p-6">
-                  <h3 className="text-lg font-bold uppercase mb-4 font-sans tracking-tight">
+                <div className="stat-card">
+                  <h3 className="text-lg font-bold uppercase mb-4 font-sans tracking-tight text-white">
                     What's Inside
                   </h3>
                   <ul className="space-y-3">
                     {whatsInside.map((item, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
-                        <span className="font-serif text-foreground/80">{item}</span>
+                        <Check className="w-5 h-5 text-[#ccff00] flex-shrink-0 mt-0.5" />
+                        <span className="font-serif text-muted-foreground">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -271,24 +277,24 @@ const Product = () => {
               <div className="lg:col-span-1">
                 <div className="lg:sticky lg:top-8 space-y-6">
                   {/* Product Preview Card */}
-                  <div className="bg-foreground text-background rounded-2xl p-6">
-                    <div className="aspect-video rounded-lg overflow-hidden mb-4 bg-foreground/20">
+                  <div className="stat-card border-[#e64a19]">
+                    <div className="aspect-video rounded-lg overflow-hidden mb-4 bg-[#222]">
                       <img
                         src={product.image_url || fallbackImage}
                         alt={product.name}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    
+
                     {/* Price */}
                     <div className="flex items-center gap-3 mb-4">
-                      <span className="text-3xl font-black font-sans">${product.price}</span>
+                      <span className="text-3xl font-black font-sans text-white">${product.price}</span>
                       {product.original_price && (
                         <>
-                          <span className="text-xl text-background/50 line-through font-sans">
+                          <span className="text-xl text-muted-foreground line-through font-sans">
                             ${product.original_price}
                           </span>
-                          <span className="bg-accent-red text-foreground text-xs font-bold px-2 py-1 rounded-full">
+                          <span className="bg-[#e64a19] text-white text-xs font-bold px-2 py-1 rounded-full">
                             {discount}% OFF
                           </span>
                         </>
@@ -299,34 +305,34 @@ const Product = () => {
                     <div className="space-y-3">
                       <WishlistButton
                         productId={product.id}
-                        className="w-full h-12 rounded-full border-background/30 text-background hover:bg-background/10"
+                        className="w-full h-12 rounded-full border-[#333] text-white hover:bg-[#222]"
                       />
                       <AddToCartButton
                         product={product}
                         variant="filled"
-                        className="w-full justify-center bg-accent-red hover:bg-accent-red/90 text-foreground"
+                        className="w-full justify-center bg-[#e64a19] hover:bg-[#ff6d3a] text-white border-[#e64a19]"
                       />
                     </div>
                   </div>
 
                   {/* License Terms */}
-                  <div className="border border-foreground/10 rounded-2xl p-6">
-                    <h3 className="text-sm font-bold uppercase mb-4 font-sans tracking-wider text-foreground/70">
+                  <div className="stat-card">
+                    <h3 className="text-sm font-bold uppercase mb-4 font-sans tracking-wider text-muted-foreground">
                       License Terms
                     </h3>
                     <ul className="space-y-3">
                       {licenseTerms.map((term, index) => (
                         <li key={index} className="flex items-start gap-3">
                           {term.allowed ? (
-                            <div className="w-5 h-5 rounded-full bg-vibrant-mint flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <Check className="w-3 h-3 text-foreground" />
+                            <div className="w-5 h-5 rounded-full bg-[#ccff00]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <Check className="w-3 h-3 text-[#ccff00]" />
                             </div>
                           ) : (
-                            <div className="w-5 h-5 rounded-full bg-vibrant-coral flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <X className="w-3 h-3 text-foreground" />
+                            <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <X className="w-3 h-3 text-red-500" />
                             </div>
                           )}
-                          <span className="text-sm font-serif text-foreground/80 leading-relaxed">
+                          <span className="text-sm font-serif text-muted-foreground leading-relaxed">
                             {term.text}
                           </span>
                         </li>
@@ -335,31 +341,31 @@ const Product = () => {
                   </div>
 
                   {/* Details */}
-                  <div className="border border-foreground/10 rounded-2xl p-6">
-                    <h3 className="text-sm font-bold uppercase mb-4 font-sans tracking-wider text-foreground/70">
+                  <div className="stat-card">
+                    <h3 className="text-sm font-bold uppercase mb-4 font-sans tracking-wider text-muted-foreground">
                       Details
                     </h3>
                     <dl className="space-y-3 text-sm">
                       <div className="flex items-center justify-between">
-                        <dt className="text-foreground/60 font-serif flex items-center gap-2">
+                        <dt className="text-muted-foreground font-serif flex items-center gap-2">
                           <FileText className="w-4 h-4" />
                           File Type
                         </dt>
-                        <dd className="font-bold font-sans">{fileType}</dd>
+                        <dd className="font-bold font-sans text-white">{fileType}</dd>
                       </div>
                       <div className="flex items-center justify-between">
-                        <dt className="text-foreground/60 font-serif flex items-center gap-2">
+                        <dt className="text-muted-foreground font-serif flex items-center gap-2">
                           <Download className="w-4 h-4" />
                           File Size
                         </dt>
-                        <dd className="font-bold font-sans">{fileSize}</dd>
+                        <dd className="font-bold font-sans text-white">{fileSize}</dd>
                       </div>
                       <div className="flex items-center justify-between">
-                        <dt className="text-foreground/60 font-serif flex items-center gap-2">
+                        <dt className="text-muted-foreground font-serif flex items-center gap-2">
                           <Calendar className="w-4 h-4" />
                           Date Added
                         </dt>
-                        <dd className="font-bold font-sans">
+                        <dd className="font-bold font-sans text-white">
                           {format(new Date(product.created_at), "MMM d, yyyy")}
                         </dd>
                       </div>
@@ -373,9 +379,9 @@ const Product = () => {
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <section className="border-t border-foreground/10 mt-12">
+          <section className="border-t border-[#222] mt-12">
             <div className="px-5 md:px-20 pt-12 md:pt-16 pb-8 md:pb-12">
-              <h2 className="heading-md mb-8 text-center font-sans">
+              <h2 className="heading-md mb-8 text-center font-sans text-white">
                 YOU MIGHT ALSO LIKE
               </h2>
             </div>
@@ -389,6 +395,7 @@ const Product = () => {
       </main>
 
       <Footer />
+      </div>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Eye } from "lucide-react";
-import { cn } from "@/lib/utils";
 import Button from "./Button";
 import AddToCartButton from "./AddToCartButton";
 import WishlistButton from "./WishlistButton";
@@ -12,8 +11,6 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, onQuickView }: ProductCardProps) => {
-  // Use product's custom card_color if set, otherwise fall back to category color
-  const colorClass = product.card_color || product.category?.color_class || "bg-vibrant-purple";
   const discount = product.original_price
     ? Math.round((1 - product.price / product.original_price) * 100)
     : 0;
@@ -25,17 +22,12 @@ const ProductCard = ({ product, onQuickView }: ProductCardProps) => {
   };
 
   return (
-    <Link to={`/product/${product.slug}`} className="block">
-      <article
-        className={cn(
-          "card-hover rounded-3xl overflow-hidden flex flex-col h-full",
-          colorClass
-        )}
-      >
+    <Link to={`/product/${product.slug}`} className="block group">
+      <article className="bg-[#0a0a0a] border border-[#262626] rounded-xl overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-[#404040]">
         {/* Image */}
-        <div className="aspect-square overflow-hidden p-4 md:p-5 relative">
+        <div className="aspect-square overflow-hidden relative bg-[#0a0a0a]">
           {discount > 0 && (
-            <span className="absolute top-6 left-6 bg-accent-red text-foreground text-xs font-bold px-3 py-1 rounded-full z-10">
+            <span className="absolute top-4 left-4 bg-[#e64a19] text-white text-xs font-bold px-3 py-1 rounded-full z-10">
               SALE
             </span>
           )}
@@ -47,40 +39,38 @@ const ProductCard = ({ product, onQuickView }: ProductCardProps) => {
               e.stopPropagation();
             }}
           />
-          <div className="relative w-full h-full rounded-2xl overflow-hidden">
-            <img
-              src={product.image_url || fallbackImage}
-              alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-500"
-              onError={handleImageError}
-            />
-          </div>
+          <img
+            src={product.image_url || fallbackImage}
+            alt={product.name}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            onError={handleImageError}
+          />
         </div>
 
         {/* Content */}
         <div className="p-5 md:p-6 flex flex-col flex-1">
           {product.category && (
-            <span className="text-xs font-bold uppercase text-foreground/70 mb-2 font-sans tracking-wider">
+            <span className="text-xs font-bold uppercase text-[#ccff00] mb-2 font-sans tracking-wider">
               {product.category.name}
             </span>
           )}
-          <h2 className="text-3xl md:text-4xl leading-[0.9] mb-3 font-sans font-extrabold tracking-tighter">
+          <h2 className="text-xl md:text-2xl leading-tight mb-3 font-sans font-extrabold tracking-tight text-white group-hover:text-[#e64a19] transition-colors">
             {product.name}
           </h2>
-          <p className="text-sm md:text-base leading-relaxed text-foreground/80 mb-4 flex-1 line-clamp-2 font-serif">
+          <p className="text-sm leading-relaxed text-muted-foreground mb-4 flex-1 line-clamp-2 font-serif">
             {product.short_description}
           </p>
-          
+
           {/* Price */}
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl font-extrabold font-sans">${product.price}</span>
+            <span className="text-2xl font-extrabold font-sans text-[#e64a19]">${product.price}</span>
             {product.original_price && (
-              <span className="text-lg text-foreground/50 line-through font-sans">
+              <span className="text-lg text-muted-foreground line-through font-sans">
                 ${product.original_price}
               </span>
             )}
           </div>
-          
+
           <div className="flex items-center gap-2">
             <Button variant="filled" className="text-xs py-2 px-5 flex-1">
               VIEW PRODUCT
@@ -92,7 +82,7 @@ const ProductCard = ({ product, onQuickView }: ProductCardProps) => {
                   e.stopPropagation();
                   onQuickView(product);
                 }}
-                className="p-3 rounded-full bg-foreground/10 hover:bg-foreground/20 transition-colors"
+                className="p-3 rounded-full bg-[#333] hover:bg-[#e64a19] text-white transition-colors border border-[#444]"
                 aria-label="Quick view"
               >
                 <Eye className="w-5 h-5" />

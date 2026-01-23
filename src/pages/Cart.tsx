@@ -36,9 +36,10 @@ const Cart = () => {
       <Header />
       <main className="flex-1 px-5 md:px-20 py-12 md:py-20">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-extrabold uppercase mb-12 font-sans tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-extrabold uppercase mb-0 font-sans tracking-tight text-white animate-fade-in">
             Shopping Cart
           </h1>
+          <div className="section-divider-lime" />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
             {/* Cart Items */}
@@ -46,7 +47,7 @@ const Cart = () => {
               {items.map((item) => (
                 <div
                   key={item.productId}
-                  className="bg-accent-orange/10 rounded-3xl p-6 md:p-8 flex gap-6"
+                  className="bg-[#0a0a0a] border border-[#262626] rounded-2xl p-6 md:p-8 flex gap-6 hover:border-[#404040] transition-all"
                 >
                   {/* Product Image */}
                   <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden flex-shrink-0">
@@ -120,7 +121,7 @@ const Cart = () => {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-vibrant-lavender rounded-3xl p-6 md:p-8 sticky top-24">
+              <div className="stat-card sticky top-24">
                 <h2 className="text-2xl font-extrabold uppercase mb-6 font-sans">
                   Order Summary
                 </h2>

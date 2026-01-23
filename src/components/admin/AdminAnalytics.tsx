@@ -33,16 +33,16 @@ const AdminAnalytics = ({ onEditProduct }: AdminAnalyticsProps) => {
       {/* Header with Refresh Button */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-extrabold uppercase font-sans mb-2">
+          <h1 className="text-4xl font-extrabold uppercase font-sans mb-2 text-white">
             ANALYTICS DASHBOARD
           </h1>
-          <p className="text-foreground/60 font-serif">
+          <p className="text-muted-foreground font-serif">
             Real-time insights into your business performance
           </p>
         </div>
         <button
           onClick={handleRefresh}
-          className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-foreground hover:bg-foreground hover:text-background transition-colors font-bold uppercase text-sm"
+          className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-[#333] text-white hover:border-[#e64a19] hover:text-[#e64a19] transition-colors font-bold uppercase text-sm"
         >
           <RefreshCw className="w-4 h-4" />
           Refresh
@@ -74,82 +74,82 @@ const AdminAnalytics = ({ onEditProduct }: AdminAnalyticsProps) => {
       {/* Placeholder Sections for Future Features */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Traffic & Conversion Funnel */}
-        <div className="bg-vibrant-purple/20 rounded-3xl p-6 border-2 border-vibrant-purple/30">
-          <h3 className="text-xl font-extrabold uppercase font-sans mb-3">
-            📈 TRAFFIC & CONVERSION
+        <div className="stat-card">
+          <h3 className="text-xl font-extrabold uppercase font-sans mb-3 text-white">
+            TRAFFIC & CONVERSION
           </h3>
-          <p className="text-sm text-foreground/70 font-serif mb-4">
+          <p className="text-sm text-muted-foreground font-serif mb-4">
             Track visitors, conversion rates, and traffic sources
           </p>
           <div className="space-y-2 mb-4">
-            <div className="bg-background/30 rounded-xl p-3">
-              <div className="text-xs text-foreground/60 uppercase font-bold">Total Visitors</div>
-              <div className="text-2xl font-extrabold font-sans">-</div>
+            <div className="bg-[#0a0a0a]/50 border border-[#222] rounded-xl p-3">
+              <div className="text-xs text-muted-foreground uppercase font-bold">Total Visitors</div>
+              <div className="text-2xl font-extrabold font-sans text-white">-</div>
             </div>
-            <div className="bg-background/30 rounded-xl p-3">
-              <div className="text-xs text-foreground/60 uppercase font-bold">Conversion Rate</div>
-              <div className="text-2xl font-extrabold font-sans">-</div>
+            <div className="bg-[#0a0a0a]/50 border border-[#222] rounded-xl p-3">
+              <div className="text-xs text-muted-foreground uppercase font-bold">Conversion Rate</div>
+              <div className="text-2xl font-extrabold font-sans text-white">-</div>
             </div>
           </div>
-          <button className="w-full text-sm py-2 px-4 rounded-full border-2 border-foreground/30 text-foreground/50 font-bold uppercase cursor-not-allowed">
+          <button className="w-full text-sm py-2 px-4 rounded-full border border-[#333] text-muted-foreground font-bold uppercase cursor-not-allowed">
             Connect Google Analytics 4
           </button>
         </div>
 
         {/* Email & Audience Growth */}
-        <div className="bg-vibrant-mint/20 rounded-3xl p-6 border-2 border-vibrant-mint/30">
-          <h3 className="text-xl font-extrabold uppercase font-sans mb-3">
-            📧 EMAIL & AUDIENCE GROWTH
+        <div className="stat-card-lime">
+          <h3 className="text-xl font-extrabold uppercase font-sans mb-3 text-white">
+            EMAIL & AUDIENCE GROWTH
           </h3>
-          <p className="text-sm text-foreground/70 font-serif mb-4">
+          <p className="text-sm text-muted-foreground font-serif mb-4">
             Monitor newsletter subscribers and email campaign performance
           </p>
           <div className="space-y-2 mb-4">
-            <div className="bg-background/30 rounded-xl p-3">
-              <div className="text-xs text-foreground/60 uppercase font-bold">Subscribers</div>
-              <div className="text-2xl font-extrabold font-sans">0</div>
+            <div className="bg-[#0a0a0a]/50 border border-[#222] rounded-xl p-3">
+              <div className="text-xs text-muted-foreground uppercase font-bold">Subscribers</div>
+              <div className="text-2xl font-extrabold font-sans text-white">0</div>
             </div>
-            <div className="bg-background/30 rounded-xl p-3">
-              <div className="text-xs text-foreground/60 uppercase font-bold">Open Rate</div>
-              <div className="text-2xl font-extrabold font-sans">-</div>
+            <div className="bg-[#0a0a0a]/50 border border-[#222] rounded-xl p-3">
+              <div className="text-xs text-muted-foreground uppercase font-bold">Open Rate</div>
+              <div className="text-2xl font-extrabold font-sans text-white">-</div>
             </div>
           </div>
-          <button className="w-full text-sm py-2 px-4 rounded-full border-2 border-foreground/30 text-foreground/50 font-bold uppercase cursor-not-allowed">
+          <button className="w-full text-sm py-2 px-4 rounded-full border border-[#333] text-muted-foreground font-bold uppercase cursor-not-allowed">
             Connect Email Service
           </button>
         </div>
       </div>
 
       {/* Support & Quality Monitor Placeholder */}
-      <div className="bg-vibrant-coral/20 rounded-3xl p-6 border-2 border-vibrant-coral/30">
-        <h3 className="text-xl font-extrabold uppercase font-sans mb-3">
-          💬 SUPPORT & QUALITY MONITOR
+      <div className="stat-card">
+        <h3 className="text-xl font-extrabold uppercase font-sans mb-3 text-white">
+          SUPPORT & QUALITY MONITOR
         </h3>
-        <p className="text-sm text-foreground/70 font-serif mb-4">
+        <p className="text-sm text-muted-foreground font-serif mb-4">
           Track support tickets, response times, and product quality scores
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div className="bg-background/30 rounded-xl p-4">
-            <div className="text-xs text-foreground/60 uppercase font-bold mb-1">Open Tickets</div>
-            <div className="text-3xl font-extrabold font-sans">-</div>
+          <div className="bg-[#0a0a0a]/50 border border-[#222] rounded-xl p-4">
+            <div className="text-xs text-muted-foreground uppercase font-bold mb-1">Open Tickets</div>
+            <div className="text-3xl font-extrabold font-sans text-white">-</div>
           </div>
-          <div className="bg-background/30 rounded-xl p-4">
-            <div className="text-xs text-foreground/60 uppercase font-bold mb-1">Avg. Response Time</div>
-            <div className="text-3xl font-extrabold font-sans">-</div>
+          <div className="bg-[#0a0a0a]/50 border border-[#222] rounded-xl p-4">
+            <div className="text-xs text-muted-foreground uppercase font-bold mb-1">Avg. Response Time</div>
+            <div className="text-3xl font-extrabold font-sans text-white">-</div>
           </div>
-          <div className="bg-background/30 rounded-xl p-4">
-            <div className="text-xs text-foreground/60 uppercase font-bold mb-1">Quality Score</div>
-            <div className="text-3xl font-extrabold font-sans">-</div>
+          <div className="bg-[#0a0a0a]/50 border border-[#222] rounded-xl p-4">
+            <div className="text-xs text-muted-foreground uppercase font-bold mb-1">Quality Score</div>
+            <div className="text-3xl font-extrabold font-sans text-white">-</div>
           </div>
         </div>
-        <button className="text-sm py-2 px-4 rounded-full border-2 border-foreground/30 text-foreground/50 font-bold uppercase cursor-not-allowed">
+        <button className="text-sm py-2 px-4 rounded-full border border-[#333] text-muted-foreground font-bold uppercase cursor-not-allowed">
           Enable Ticketing System
         </button>
       </div>
 
       {/* Footer Note */}
-      <div className="text-center py-8 border-t-2 border-foreground/10">
-        <p className="text-xs text-foreground/50 font-serif">
+      <div className="text-center py-8 border-t border-[#222]">
+        <p className="text-xs text-muted-foreground font-serif">
           Analytics update every 1-5 minutes • Last updated: {new Date().toLocaleTimeString()}
         </p>
       </div>

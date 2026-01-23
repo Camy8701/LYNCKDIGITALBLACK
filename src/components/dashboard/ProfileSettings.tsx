@@ -97,15 +97,15 @@ const ProfileSettings = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl">
       {/* Avatar Section */}
-      <div className="bg-vibrant-lavender rounded-3xl p-6 md:p-8">
-        <h2 className="text-2xl md:text-3xl font-extrabold uppercase mb-6 font-sans">
+      <div className="stat-card-lime">
+        <h2 className="text-2xl md:text-3xl font-extrabold uppercase mb-6 font-sans text-white">
           Profile Picture
         </h2>
 
         <div className="flex flex-col md:flex-row items-center gap-6">
           {/* Avatar Display */}
           <div className="relative">
-            <div className="w-32 h-32 rounded-full overflow-hidden bg-foreground/10 flex items-center justify-center">
+            <div className="w-32 h-32 rounded-full overflow-hidden bg-[#333] flex items-center justify-center border-2 border-[#ccff00]">
               {avatarPreview || profile.avatar_url ? (
                 <img
                   src={avatarPreview || profile.avatar_url || ''}
@@ -113,7 +113,7 @@ const ProfileSettings = () => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <User className="w-16 h-16 text-foreground/40" />
+                <User className="w-16 h-16 text-muted-foreground" />
               )}
             </div>
           </div>
@@ -139,7 +139,7 @@ const ProfileSettings = () => {
                   Choose Image
                 </Button>
               </label>
-              <p className="text-xs text-foreground/60 mt-2 font-serif">
+              <p className="text-xs text-muted-foreground mt-2 font-serif">
                 JPEG, PNG, GIF or WebP. Max 5MB.
               </p>
             </div>
@@ -173,14 +173,14 @@ const ProfileSettings = () => {
       </div>
 
       {/* Personal Information */}
-      <div className="bg-vibrant-mint rounded-3xl p-6 md:p-8">
-        <h2 className="text-2xl md:text-3xl font-extrabold uppercase mb-6 font-sans">
+      <div className="stat-card">
+        <h2 className="text-2xl md:text-3xl font-extrabold uppercase mb-6 font-sans text-white">
           Personal Information
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label htmlFor="full_name" className="block text-sm font-bold uppercase mb-2 font-sans">
+            <label htmlFor="full_name" className="block text-sm font-bold uppercase mb-2 font-sans text-white">
               Full Name
             </label>
             <input
@@ -189,13 +189,13 @@ const ProfileSettings = () => {
               type="text"
               value={formData.full_name}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background font-serif"
+              className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white font-serif focus:outline-none focus:border-[#e64a19]"
               placeholder="John Doe"
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-bold uppercase mb-2 font-sans">
+            <label htmlFor="email" className="block text-sm font-bold uppercase mb-2 font-sans text-white">
               Email
             </label>
             <input
@@ -203,15 +203,15 @@ const ProfileSettings = () => {
               type="email"
               value={profile.email}
               disabled
-              className="w-full px-4 py-3 rounded-xl border-2 border-foreground/30 bg-foreground/5 font-serif text-foreground/50 cursor-not-allowed"
+              className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] font-serif text-muted-foreground cursor-not-allowed"
             />
-            <p className="text-xs text-foreground/60 mt-1 font-serif">
+            <p className="text-xs text-muted-foreground mt-1 font-serif">
               Email cannot be changed
             </p>
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-bold uppercase mb-2 font-sans">
+            <label htmlFor="phone" className="block text-sm font-bold uppercase mb-2 font-sans text-white">
               Phone
             </label>
             <input
@@ -220,13 +220,13 @@ const ProfileSettings = () => {
               type="tel"
               value={formData.phone}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background font-serif"
+              className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white font-serif focus:outline-none focus:border-[#e64a19]"
               placeholder="+1 (555) 123-4567"
             />
           </div>
 
           <div>
-            <label htmlFor="company" className="block text-sm font-bold uppercase mb-2 font-sans">
+            <label htmlFor="company" className="block text-sm font-bold uppercase mb-2 font-sans text-white">
               Company
             </label>
             <input
@@ -235,13 +235,13 @@ const ProfileSettings = () => {
               type="text"
               value={formData.company}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background font-serif"
+              className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white font-serif focus:outline-none focus:border-[#e64a19]"
               placeholder="LYNCK Studio"
             />
           </div>
 
           <div className="md:col-span-2">
-            <label htmlFor="website" className="block text-sm font-bold uppercase mb-2 font-sans">
+            <label htmlFor="website" className="block text-sm font-bold uppercase mb-2 font-sans text-white">
               Website
             </label>
             <input
@@ -250,13 +250,13 @@ const ProfileSettings = () => {
               type="url"
               value={formData.website}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background font-serif"
+              className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white font-serif focus:outline-none focus:border-[#e64a19]"
               placeholder="https://example.com"
             />
           </div>
 
           <div className="md:col-span-2">
-            <label htmlFor="bio" className="block text-sm font-bold uppercase mb-2 font-sans">
+            <label htmlFor="bio" className="block text-sm font-bold uppercase mb-2 font-sans text-white">
               Bio
             </label>
             <textarea
@@ -265,7 +265,7 @@ const ProfileSettings = () => {
               value={formData.bio}
               onChange={handleInputChange}
               rows={4}
-              className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background font-serif resize-none"
+              className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white font-serif resize-none focus:outline-none focus:border-[#e64a19]"
               placeholder="Tell us about yourself..."
             />
           </div>
@@ -273,14 +273,14 @@ const ProfileSettings = () => {
       </div>
 
       {/* Billing Address */}
-      <div className="bg-vibrant-yellow rounded-3xl p-6 md:p-8">
-        <h2 className="text-2xl md:text-3xl font-extrabold uppercase mb-6 font-sans">
+      <div className="stat-card-lime">
+        <h2 className="text-2xl md:text-3xl font-extrabold uppercase mb-6 font-sans text-white">
           Billing Address
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="md:col-span-2">
-            <label htmlFor="address_street" className="block text-sm font-bold uppercase mb-2 font-sans">
+            <label htmlFor="address_street" className="block text-sm font-bold uppercase mb-2 font-sans text-white">
               Street Address
             </label>
             <input
@@ -289,13 +289,13 @@ const ProfileSettings = () => {
               type="text"
               value={formData.address_street}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background font-serif"
+              className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white font-serif focus:outline-none focus:border-[#ccff00]"
               placeholder="123 Main St"
             />
           </div>
 
           <div>
-            <label htmlFor="address_city" className="block text-sm font-bold uppercase mb-2 font-sans">
+            <label htmlFor="address_city" className="block text-sm font-bold uppercase mb-2 font-sans text-white">
               City
             </label>
             <input
@@ -304,13 +304,13 @@ const ProfileSettings = () => {
               type="text"
               value={formData.address_city}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background font-serif"
+              className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white font-serif focus:outline-none focus:border-[#ccff00]"
               placeholder="San Francisco"
             />
           </div>
 
           <div>
-            <label htmlFor="address_state" className="block text-sm font-bold uppercase mb-2 font-sans">
+            <label htmlFor="address_state" className="block text-sm font-bold uppercase mb-2 font-sans text-white">
               State / Province
             </label>
             <input
@@ -319,13 +319,13 @@ const ProfileSettings = () => {
               type="text"
               value={formData.address_state}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background font-serif"
+              className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white font-serif focus:outline-none focus:border-[#ccff00]"
               placeholder="California"
             />
           </div>
 
           <div>
-            <label htmlFor="address_zip" className="block text-sm font-bold uppercase mb-2 font-sans">
+            <label htmlFor="address_zip" className="block text-sm font-bold uppercase mb-2 font-sans text-white">
               ZIP / Postal Code
             </label>
             <input
@@ -334,13 +334,13 @@ const ProfileSettings = () => {
               type="text"
               value={formData.address_zip}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background font-serif"
+              className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white font-serif focus:outline-none focus:border-[#ccff00]"
               placeholder="94102"
             />
           </div>
 
           <div>
-            <label htmlFor="address_country" className="block text-sm font-bold uppercase mb-2 font-sans">
+            <label htmlFor="address_country" className="block text-sm font-bold uppercase mb-2 font-sans text-white">
               Country
             </label>
             <input
@@ -349,7 +349,7 @@ const ProfileSettings = () => {
               type="text"
               value={formData.address_country}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background font-serif"
+              className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white font-serif focus:outline-none focus:border-[#ccff00]"
               placeholder="United States"
             />
           </div>

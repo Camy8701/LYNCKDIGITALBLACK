@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackgroundLayers from "@/components/BackgroundLayers";
 import { SEO } from "@/components/SEO";
 
 const inquirySchema = z.object({
@@ -194,44 +195,46 @@ export default function Services() {
         description="Get a fully automated digital product store with 10-30+ premium products, payment processing, and email delivery. Start earning passive income within 72 hours."
         url="https://lynckdigital.store/services"
       />
-      <div className="min-h-screen flex flex-col bg-background">
+      <div className="min-h-screen flex flex-col bg-[#0a0a0a] relative">
+        <BackgroundLayers />
+        <div className="relative z-[200] flex flex-col flex-1">
         <Header />
-        
+
         <main className="flex-1">
           {/* Hero Section */}
           <section className="relative py-20 lg:py-28 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10" />
             <div className="container mx-auto px-4 relative z-10">
               <div className="max-w-4xl mx-auto text-center">
-                <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6">
+                <span className="section-label">
                   Done For You Service
                 </span>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
                   Your Own Profitable Digital Store{" "}
-                  <span className="text-primary">Ready in 72 Hours</span>
+                  <span className="text-[#e64a19]">Ready in 72 Hours</span>
                 </h1>
                 <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                  Skip the months of learning and setup. We build your complete automated store, 
+                  Skip the months of learning and setup. We build your complete automated store,
                   load it with premium digital products, and hand you the keys to start selling.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" onClick={() => document.getElementById("packages")?.scrollIntoView({ behavior: "smooth" })}>
+                  <button className="btn-filled" onClick={() => document.getElementById("packages")?.scrollIntoView({ behavior: "smooth" })}>
                     View Packages
                     <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                  <Button size="lg" variant="outline" onClick={() => document.getElementById("inquiry-form")?.scrollIntoView({ behavior: "smooth" })}>
+                  </button>
+                  <button className="btn-transparent" onClick={() => document.getElementById("inquiry-form")?.scrollIntoView({ behavior: "smooth" })}>
                     Get Started Now
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
           </section>
 
           {/* What's Included Section */}
-          <section className="py-16 lg:py-24 bg-muted/30">
+          <section className="py-16 lg:py-24">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                <span className="section-label">What's Included</span>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                   Everything You Need to Succeed
                 </h2>
                 <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -240,19 +243,15 @@ export default function Services() {
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {whatsIncluded.map((item, index) => (
-                  <Card key={index} className="bg-card border-border hover:border-primary/50 transition-colors">
-                    <CardHeader>
-                      <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                        <item.icon className="h-6 w-6 text-primary" />
-                      </div>
-                      <CardTitle className="text-xl">{item.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-muted-foreground">
-                        {item.description}
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
+                  <div key={index} className="stat-card hover:border-[#e64a19]/50 transition-colors">
+                    <div className="h-12 w-12 rounded-lg bg-[#e64a19]/20 flex items-center justify-center mb-4">
+                      <item.icon className="h-6 w-6 text-[#e64a19]" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                    <p className="text-muted-foreground">
+                      {item.description}
+                    </p>
+                  </div>
                 ))}
               </div>
             </div>
@@ -262,7 +261,8 @@ export default function Services() {
           <section id="packages" className="py-16 lg:py-24 scroll-mt-20">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                <span className="section-label">Pricing</span>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                   Choose Your Package
                 </h2>
                 <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -271,66 +271,66 @@ export default function Services() {
               </div>
               <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
                 {packages.map((pkg) => (
-                  <Card 
-                    key={pkg.id} 
-                    className={`relative flex flex-col ${
-                      pkg.popular 
-                        ? "border-primary shadow-lg shadow-primary/20 scale-105" 
-                        : "border-border"
+                  <div
+                    key={pkg.id}
+                    className={`relative flex flex-col stat-card ${
+                      pkg.popular
+                        ? "border-[#ccff00] shadow-lg shadow-[#ccff00]/10"
+                        : ""
                     }`}
                   >
                     {pkg.popular && (
                       <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                        <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-primary text-primary-foreground text-sm font-medium">
+                        <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-[#ccff00] text-black text-sm font-bold">
                           <Star className="h-3.5 w-3.5" />
                           Most Popular
                         </span>
                       </div>
                     )}
-                    <CardHeader className="text-center pb-2">
-                      <CardTitle className="text-2xl">{pkg.name}</CardTitle>
-                      <CardDescription>{pkg.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-1 flex flex-col">
+                    <div className="text-center pb-2">
+                      <h3 className="text-2xl font-bold text-white">{pkg.name}</h3>
+                      <p className="text-muted-foreground">{pkg.description}</p>
+                    </div>
+                    <div className="flex-1 flex flex-col">
                       <div className="text-center mb-6">
                         <div className="flex items-baseline justify-center gap-1">
-                          <span className="text-4xl font-bold text-foreground">€{pkg.price}</span>
+                          <span className="text-4xl font-bold text-white">€{pkg.price}</span>
                           <span className="text-muted-foreground">one-time</span>
                         </div>
-                        <p className="text-primary font-medium mt-2">
+                        <p className="text-[#ccff00] font-medium mt-2">
                           {pkg.products} Digital Products
                         </p>
                       </div>
                       <ul className="space-y-3 mb-6 flex-1">
                         {pkg.features.map((feature, index) => (
                           <li key={index} className="flex items-start gap-2">
-                            <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <Check className="h-5 w-5 text-[#ccff00] shrink-0 mt-0.5" />
                             <span className="text-muted-foreground">{feature}</span>
                           </li>
                         ))}
                       </ul>
-                      <Button 
-                        className="w-full" 
-                        variant={pkg.popular ? "default" : "outline"}
+                      <button
+                        className={pkg.popular ? "btn-filled w-full justify-center bg-[#ccff00] hover:bg-[#b8e600] text-black border-[#ccff00]" : "btn-transparent w-full justify-center"}
                         onClick={() => handlePackageSelect(pkg.id)}
                       >
                         Select {pkg.name}
-                      </Button>
-                    </CardContent>
-                  </Card>
+                      </button>
+                    </div>
+                  </div>
                 ))}
               </div>
               <p className="text-center text-muted-foreground mt-8">
-                Need a custom package? <button onClick={() => document.getElementById("inquiry-form")?.scrollIntoView({ behavior: "smooth" })} className="text-primary hover:underline">Contact us</button> for enterprise solutions.
+                Need a custom package? <button onClick={() => document.getElementById("inquiry-form")?.scrollIntoView({ behavior: "smooth" })} className="text-[#e64a19] hover:underline">Contact us</button> for enterprise solutions.
               </p>
             </div>
           </section>
 
           {/* FAQ Section */}
-          <section className="py-16 lg:py-24 bg-muted/30">
+          <section className="py-16 lg:py-24">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                <span className="section-label">FAQ</span>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                   Frequently Asked Questions
                 </h2>
                 <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -339,29 +339,25 @@ export default function Services() {
               </div>
               <div className="max-w-3xl mx-auto space-y-4">
                 {faqs.map((faq, index) => (
-                  <Card 
-                    key={index} 
-                    className={`cursor-pointer transition-colors ${
-                      expandedFaq === index ? "border-primary" : "border-border hover:border-primary/50"
+                  <div
+                    key={index}
+                    className={`stat-card cursor-pointer transition-colors ${
+                      expandedFaq === index ? "border-[#e64a19]" : "hover:border-[#e64a19]/50"
                     }`}
                     onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
                   >
-                    <CardHeader className="pb-2">
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg font-medium">{faq.question}</CardTitle>
-                        {expandedFaq === index ? (
-                          <ChevronUp className="h-5 w-5 text-primary shrink-0" />
-                        ) : (
-                          <ChevronDown className="h-5 w-5 text-muted-foreground shrink-0" />
-                        )}
-                      </div>
-                    </CardHeader>
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-medium text-white">{faq.question}</h3>
+                      {expandedFaq === index ? (
+                        <ChevronUp className="h-5 w-5 text-[#e64a19] shrink-0" />
+                      ) : (
+                        <ChevronDown className="h-5 w-5 text-muted-foreground shrink-0" />
+                      )}
+                    </div>
                     {expandedFaq === index && (
-                      <CardContent className="pt-0">
-                        <p className="text-muted-foreground">{faq.answer}</p>
-                      </CardContent>
+                      <p className="text-muted-foreground mt-4">{faq.answer}</p>
                     )}
-                  </Card>
+                  </div>
                 ))}
               </div>
             </div>
@@ -372,15 +368,16 @@ export default function Services() {
             <div className="container mx-auto px-4">
               <div className="max-w-2xl mx-auto">
                 <div className="text-center mb-10">
-                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                  <span className="section-label">Get Started</span>
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                     Ready to Get Started?
                   </h2>
                   <p className="text-muted-foreground text-lg">
                     Fill out the form below and we'll be in touch within 24 hours to discuss your new store.
                   </p>
                 </div>
-                <Card className="border-border">
-                  <CardContent className="pt-6">
+                <div className="stat-card">
+                  <div className="pt-2">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -481,23 +478,24 @@ export default function Services() {
                         />
                       </div>
 
-                      <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                      <button type="submit" className="btn-filled w-full justify-center" disabled={isSubmitting}>
                         {isSubmitting ? "Submitting..." : "Request Your Store"}
-                      </Button>
+                      </button>
 
                       <p className="text-xs text-center text-muted-foreground">
-                        By submitting this form, you agree to be contacted about our services. 
+                        By submitting this form, you agree to be contacted about our services.
                         We respect your privacy and will never share your information.
                       </p>
                     </form>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
         </main>
 
         <Footer />
+        </div>
       </div>
     </>
   );

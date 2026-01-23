@@ -5,6 +5,7 @@ import { useAllProducts, useCategories, useCreateProduct, useUpdateProduct, useD
 import { useAllBlogPosts, useCreateBlogPost, useUpdateBlogPost, useDeleteBlogPost } from "@/hooks/useBlog";
 import { supabase } from "@/integrations/supabase/client";
 import Button from "@/components/Button";
+import BackgroundLayers from "@/components/BackgroundLayers";
 import { Product, Category } from "@/types/product";
 import { BlogPost } from "@/types/blog";
 import { toast } from "sonner";
@@ -350,8 +351,8 @@ const Admin = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-lg font-serif">Loading...</p>
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <p className="text-lg font-serif text-white">Loading...</p>
       </div>
     );
   }
@@ -361,24 +362,26 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a] relative">
+      <BackgroundLayers />
+      <div className="relative z-[200]">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-background border-b border-foreground/10">
+      <header className="sticky top-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-[#222]">
         <div className="px-5 md:px-20 py-5 md:py-6">
           <div className="flex items-center justify-between">
-            <a href="/" className="font-serif text-2xl md:text-3xl font-bold italic">
+            <a href="/" className="font-serif text-2xl md:text-3xl font-bold italic text-white">
               LYNCK DIGITAL
             </a>
             <div className="flex items-center gap-4">
-              <span className="text-sm font-sans text-foreground/70">{user.email}</span>
+              <span className="text-sm font-sans text-muted-foreground">{user.email}</span>
               {isAdmin && (
-                <span className="text-xs font-bold uppercase bg-vibrant-mint px-3 py-1 rounded-full">
+                <span className="text-xs font-bold uppercase bg-[#ccff00] text-black px-3 py-1 rounded-full">
                   Admin
                 </span>
               )}
               <button
                 onClick={handleSignOut}
-                className="p-2 hover:bg-foreground/10 rounded-full transition-colors"
+                className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
               >
                 <LogOut className="w-5 h-5" />
               </button>
@@ -388,14 +391,16 @@ const Admin = () => {
       </header>
 
       <main className="px-5 md:px-20 py-8 md:py-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold uppercase mb-8 font-sans tracking-tighter">
+        <span className="mono-label mb-4 block">Administration</span>
+        <h1 className="text-4xl md:text-5xl font-extrabold uppercase mb-0 font-sans tracking-tighter text-white animate-fade-in">
           ADMIN DASHBOARD
         </h1>
+        <div className="section-divider-lime" />
 
         {!isAdmin ? (
-          <div className="bg-vibrant-coral rounded-3xl p-8 text-center">
-            <h2 className="text-2xl font-extrabold uppercase mb-4 font-sans">Access Denied</h2>
-            <p className="font-serif text-foreground/80">
+          <div className="data-panel text-center">
+            <h2 className="text-2xl font-extrabold uppercase mb-4 font-sans text-white">Access Denied</h2>
+            <p className="font-serif text-muted-foreground">
               You don't have admin privileges. Contact the administrator to get access.
             </p>
           </div>
@@ -406,10 +411,10 @@ const Admin = () => {
               <button
                 onClick={() => setActiveTab('analytics')}
                 className={cn(
-                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground flex items-center gap-2",
+                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2",
                   activeTab === 'analytics'
-                    ? "bg-foreground text-background"
-                    : "bg-transparent text-foreground hover:bg-foreground hover:text-background"
+                    ? "bg-[#e64a19] text-white border-2 border-[#e64a19]"
+                    : "bg-transparent text-white border-2 border-[#262626] hover:border-[#ccff00]/50"
                 )}
               >
                 <BarChart3 className="w-4 h-4" />
@@ -418,10 +423,10 @@ const Admin = () => {
               <button
                 onClick={() => setActiveTab('products')}
                 className={cn(
-                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground",
+                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200",
                   activeTab === 'products'
-                    ? "bg-foreground text-background"
-                    : "bg-transparent text-foreground hover:bg-foreground hover:text-background"
+                    ? "bg-[#e64a19] text-white border-2 border-[#e64a19]"
+                    : "bg-transparent text-white border-2 border-[#262626] hover:border-[#ccff00]/50"
                 )}
               >
                 Products ({products.length})
@@ -429,10 +434,10 @@ const Admin = () => {
               <button
                 onClick={() => setActiveTab('categories')}
                 className={cn(
-                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground",
+                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200",
                   activeTab === 'categories'
-                    ? "bg-foreground text-background"
-                    : "bg-transparent text-foreground hover:bg-foreground hover:text-background"
+                    ? "bg-[#e64a19] text-white border-2 border-[#e64a19]"
+                    : "bg-transparent text-white border-2 border-[#262626] hover:border-[#ccff00]/50"
                 )}
               >
                 Categories ({categories.length})
@@ -440,10 +445,10 @@ const Admin = () => {
               <button
                 onClick={() => setActiveTab('blog')}
                 className={cn(
-                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground",
+                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200",
                   activeTab === 'blog'
-                    ? "bg-foreground text-background"
-                    : "bg-transparent text-foreground hover:bg-foreground hover:text-background"
+                    ? "bg-[#e64a19] text-white border-2 border-[#e64a19]"
+                    : "bg-transparent text-white border-2 border-[#262626] hover:border-[#ccff00]/50"
                 )}
               >
                 Blog ({blogPosts.length})
@@ -451,10 +456,10 @@ const Admin = () => {
               <button
                 onClick={() => setActiveTab('newsletter')}
                 className={cn(
-                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground flex items-center gap-2",
+                  "px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2",
                   activeTab === 'newsletter'
-                    ? "bg-foreground text-background"
-                    : "bg-transparent text-foreground hover:bg-foreground hover:text-background"
+                    ? "bg-[#e64a19] text-white border-2 border-[#e64a19]"
+                    : "bg-transparent text-white border-2 border-[#262626] hover:border-[#ccff00]/50"
                 )}
               >
                 <Mail className="w-4 h-4" />
@@ -476,7 +481,7 @@ const Admin = () => {
             {activeTab === 'products' && (
               <>
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-extrabold uppercase font-sans">Products</h2>
+                  <h2 className="text-2xl font-extrabold uppercase font-sans text-white">Products</h2>
                   <Button
                     variant="filled"
                     onClick={() => setShowProductModal(true)}
@@ -488,13 +493,13 @@ const Admin = () => {
                 </div>
 
                 {productsLoading ? (
-                  <p className="text-center py-12 font-serif text-foreground/60">Loading products...</p>
+                  <p className="text-center py-12 font-serif text-muted-foreground">Loading products...</p>
                 ) : (
                   <div className="grid gap-4">
                     {products.map((product) => (
                       <div
                         key={product.id}
-                        className="bg-card rounded-2xl p-4 md:p-6 flex items-center gap-4 border border-foreground/10"
+                        className="stat-card flex items-center gap-4"
                       >
                         <img
                           src={product.image_url || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=100&h=100&fit=crop"}
@@ -502,15 +507,15 @@ const Admin = () => {
                           className="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover"
                         />
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-bold font-sans truncate">{product.name}</h3>
-                          <p className="text-sm text-foreground/60 truncate">{product.category?.name || 'No category'}</p>
+                          <h3 className="font-bold font-sans truncate text-white">{product.name}</h3>
+                          <p className="text-sm text-muted-foreground truncate">{product.category?.name || 'No category'}</p>
                           <div className="flex items-center gap-2 mt-1 flex-wrap">
-                            <span className="font-bold">${product.price}</span>
+                            <span className="font-bold text-white">${product.price}</span>
                             {!product.is_active && (
-                              <span className="text-xs bg-foreground/20 px-2 py-0.5 rounded">Inactive</span>
+                              <span className="text-xs bg-[#333] text-white px-2 py-0.5 rounded">Inactive</span>
                             )}
                             {product.is_featured && (
-                              <span className="text-xs bg-vibrant-yellow px-2 py-0.5 rounded">Featured</span>
+                              <span className="text-xs bg-[#ccff00] text-black px-2 py-0.5 rounded">Featured</span>
                             )}
                           </div>
                           <button
@@ -518,7 +523,7 @@ const Admin = () => {
                               navigator.clipboard.writeText(product.id);
                               toast.success('Product ID copied to clipboard!');
                             }}
-                            className="text-xs text-foreground/40 hover:text-foreground/70 mt-1 font-mono truncate max-w-full text-left transition-colors"
+                            className="text-xs text-muted-foreground hover:text-white mt-1 font-mono truncate max-w-full text-left transition-colors"
                             title="Click to copy ID"
                           >
                             ID: {product.id}
@@ -527,13 +532,13 @@ const Admin = () => {
                         <div className="flex gap-2">
                           <button
                             onClick={() => editProduct(product)}
-                            className="p-2 hover:bg-foreground/10 rounded-full transition-colors"
+                            className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
                           >
                             <Pencil className="w-5 h-5" />
                           </button>
                           <button
                             onClick={() => handleDeleteProduct(product.id)}
-                            className="p-2 hover:bg-accent-red/20 rounded-full transition-colors text-accent-red"
+                            className="p-2 hover:bg-red-500/20 rounded-full transition-colors text-red-500"
                           >
                             <Trash2 className="w-5 h-5" />
                           </button>
@@ -549,7 +554,7 @@ const Admin = () => {
             {activeTab === 'categories' && (
               <>
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-extrabold uppercase font-sans">Categories</h2>
+                  <h2 className="text-2xl font-extrabold uppercase font-sans text-white">Categories</h2>
                   <Button
                     variant="filled"
                     onClick={() => setShowCategoryModal(true)}
@@ -564,19 +569,17 @@ const Admin = () => {
                   {categories.map((category) => (
                     <div
                       key={category.id}
-                      className={cn(
-                        "rounded-2xl p-4 md:p-6 flex items-center gap-4",
-                        category.color_class
-                      )}
+                      className="stat-card flex items-center gap-4"
                     >
+                      <div className={cn("w-4 h-full min-h-[60px] rounded-full", category.color_class)} />
                       <div className="flex-1">
-                        <h3 className="font-bold font-sans">{category.name}</h3>
-                        <p className="text-sm text-foreground/70">{category.description}</p>
-                        <p className="text-xs text-foreground/50 mt-1">Slug: {category.slug}</p>
+                        <h3 className="font-bold font-sans text-white">{category.name}</h3>
+                        <p className="text-sm text-muted-foreground">{category.description}</p>
+                        <p className="text-xs text-muted-foreground mt-1">Slug: {category.slug}</p>
                       </div>
                       <button
                         onClick={() => handleDeleteCategory(category.id)}
-                        className="p-2 hover:bg-foreground/10 rounded-full transition-colors"
+                        className="p-2 hover:bg-red-500/20 rounded-full transition-colors text-red-500"
                       >
                         <Trash2 className="w-5 h-5" />
                       </button>
@@ -590,7 +593,7 @@ const Admin = () => {
             {activeTab === 'blog' && (
               <>
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-extrabold uppercase font-sans">Blog Posts</h2>
+                  <h2 className="text-2xl font-extrabold uppercase font-sans text-white">Blog Posts</h2>
                   <Button
                     variant="filled"
                     onClick={() => setShowBlogModal(true)}
@@ -602,13 +605,13 @@ const Admin = () => {
                 </div>
 
                 {blogLoading ? (
-                  <p className="text-center py-12 font-serif text-foreground/60">Loading blog posts...</p>
+                  <p className="text-center py-12 font-serif text-muted-foreground">Loading blog posts...</p>
                 ) : (
                   <div className="grid gap-4">
                     {blogPosts.map((post) => (
                       <div
                         key={post.id}
-                        className="bg-card rounded-2xl p-4 md:p-6 flex items-center gap-4 border border-foreground/10"
+                        className="stat-card flex items-center gap-4"
                       >
                         {post.image_url && (
                           <img
@@ -618,15 +621,15 @@ const Admin = () => {
                           />
                         )}
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-bold font-sans truncate">{post.title}</h3>
-                          <p className="text-sm text-foreground/60 truncate">{post.excerpt || 'No excerpt'}</p>
+                          <h3 className="font-bold font-sans truncate text-white">{post.title}</h3>
+                          <p className="text-sm text-muted-foreground truncate">{post.excerpt || 'No excerpt'}</p>
                           <div className="flex items-center gap-2 mt-1">
                             {post.is_published ? (
-                              <span className="text-xs bg-vibrant-mint px-2 py-0.5 rounded">Published</span>
+                              <span className="text-xs bg-green-500 text-white px-2 py-0.5 rounded">Published</span>
                             ) : (
-                              <span className="text-xs bg-foreground/20 px-2 py-0.5 rounded">Draft</span>
+                              <span className="text-xs bg-[#333] text-white px-2 py-0.5 rounded">Draft</span>
                             )}
-                            <span className="text-xs text-foreground/50">
+                            <span className="text-xs text-muted-foreground">
                               {new Date(post.created_at).toLocaleDateString()}
                             </span>
                           </div>
@@ -634,20 +637,20 @@ const Admin = () => {
                         <div className="flex gap-2">
                           <button
                             onClick={() => toggleBlogPublish(post)}
-                            className="p-2 hover:bg-foreground/10 rounded-full transition-colors"
+                            className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
                             title={post.is_published ? 'Unpublish' : 'Publish'}
                           >
                             {post.is_published ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                           </button>
                           <button
                             onClick={() => editBlogPost(post)}
-                            className="p-2 hover:bg-foreground/10 rounded-full transition-colors"
+                            className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
                           >
                             <Pencil className="w-5 h-5" />
                           </button>
                           <button
                             onClick={() => handleDeleteBlogPost(post.id)}
-                            className="p-2 hover:bg-accent-red/20 rounded-full transition-colors text-accent-red"
+                            className="p-2 hover:bg-red-500/20 rounded-full transition-colors text-red-500"
                           >
                             <Trash2 className="w-5 h-5" />
                           </button>
@@ -664,13 +667,13 @@ const Admin = () => {
 
       {/* Product Modal */}
       {showProductModal && (
-        <div className="fixed inset-0 bg-foreground/50 flex items-center justify-center p-5 z-50 overflow-y-auto">
-          <div className="bg-background rounded-3xl p-6 md:p-8 w-full max-w-2xl my-8 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-5 z-50 overflow-y-auto">
+          <div className="bg-[#0a0a0a] rounded-3xl p-6 md:p-8 w-full max-w-2xl my-8 max-h-[90vh] overflow-y-auto border border-[#262626]">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-extrabold uppercase font-sans">
+              <h2 className="text-2xl font-extrabold uppercase font-sans text-white">
                 {editingProduct ? 'EDIT PRODUCT' : 'ADD PRODUCT'}
               </h2>
-              <button onClick={resetProductForm} className="p-2 hover:bg-foreground/10 rounded-full">
+              <button onClick={resetProductForm} className="p-2 hover:bg-white/10 rounded-full text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -678,76 +681,76 @@ const Admin = () => {
             <form onSubmit={handleProductSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold uppercase mb-2 font-sans">Name *</label>
+                  <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Name *</label>
                   <input
                     type="text"
                     value={productForm.name}
                     onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
                     required
-                    className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19]"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold uppercase mb-2 font-sans">Slug</label>
+                  <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Slug</label>
                   <input
                     type="text"
                     value={productForm.slug}
                     onChange={(e) => setProductForm({ ...productForm, slug: e.target.value })}
                     placeholder="auto-generated"
-                    className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19] placeholder:text-gray-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">Short Description</label>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Short Description</label>
                 <input
                   type="text"
                   value={productForm.short_description}
                   onChange={(e) => setProductForm({ ...productForm, short_description: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19]"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">Full Description</label>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Full Description</label>
                 <textarea
                   value={productForm.description}
                   onChange={(e) => setProductForm({ ...productForm, description: e.target.value })}
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none resize-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19] resize-none"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-bold uppercase mb-2 font-sans">Price *</label>
+                  <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Price *</label>
                   <input
                     type="number"
                     step="0.01"
                     value={productForm.price}
                     onChange={(e) => setProductForm({ ...productForm, price: e.target.value })}
                     required
-                    className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19]"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold uppercase mb-2 font-sans">Original Price</label>
+                  <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Original Price</label>
                   <input
                     type="number"
                     step="0.01"
                     value={productForm.original_price}
                     onChange={(e) => setProductForm({ ...productForm, original_price: e.target.value })}
                     placeholder="For sale display"
-                    className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19] placeholder:text-gray-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold uppercase mb-2 font-sans">Category</label>
+                  <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Category</label>
                   <select
                     value={productForm.category_id}
                     onChange={(e) => setProductForm({ ...productForm, category_id: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19]"
                   >
                     <option value="">No category</option>
                     {categories.map((cat) => (
@@ -759,7 +762,7 @@ const Admin = () => {
 
               {/* Card Color Picker */}
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">
                   Card Color (Override category color)
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -769,8 +772,8 @@ const Admin = () => {
                     className={cn(
                       "px-4 py-2 rounded-xl border-2 text-sm font-bold uppercase transition-all",
                       productForm.card_color === ''
-                        ? "border-foreground bg-foreground text-background"
-                        : "border-foreground/30 hover:border-foreground"
+                        ? "border-[#e64a19] bg-[#e64a19] text-white"
+                        : "border-[#333] text-white hover:border-[#e64a19]/50"
                     )}
                   >
                     Use Category
@@ -784,50 +787,50 @@ const Admin = () => {
                         "w-10 h-10 rounded-xl border-2 transition-all",
                         color.value,
                         productForm.card_color === color.value
-                          ? "border-foreground ring-2 ring-foreground ring-offset-2"
-                          : "border-transparent hover:border-foreground/50"
+                          ? "border-white ring-2 ring-white ring-offset-2 ring-offset-[#1a1a1a]"
+                          : "border-transparent hover:border-white/50"
                       )}
                       title={color.label}
                     />
                   ))}
                 </div>
                 {productForm.card_color && (
-                  <p className="text-sm text-foreground/60 mt-2">
+                  <p className="text-sm text-muted-foreground mt-2">
                     Selected: {colorOptions.find(c => c.value === productForm.card_color)?.label}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">Product Image</label>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Product Image</label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none"
                 />
                 {productForm.image_url && !imageFile && (
-                  <p className="text-sm text-foreground/60 mt-2">Current: {productForm.image_url}</p>
+                  <p className="text-sm text-muted-foreground mt-2">Current: {productForm.image_url}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">
                   Digital Product File (PDF, ZIP, etc.) *
                 </label>
                 <input
                   type="file"
                   accept=".pdf,.zip,.rar,.mp4,.mov,.epub,.txt,.docx,.xlsx"
                   onChange={(e) => setProductFile(e.target.files?.[0] || null)}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none"
                 />
                 {editingProduct?.file_url && !productFile && (
-                  <p className="text-sm text-foreground/60 mt-2">
+                  <p className="text-sm text-muted-foreground mt-2">
                     Current file: {editingProduct.file_url.split('/').pop()}
                   </p>
                 )}
                 {productFile && (
-                  <p className="text-sm text-vibrant-mint mt-2">
+                  <p className="text-sm text-[#ccff00] mt-2">
                     New file selected: {productFile.name}
                   </p>
                 )}
@@ -841,7 +844,7 @@ const Admin = () => {
                     onChange={(e) => setProductForm({ ...productForm, is_featured: e.target.checked })}
                     className="w-5 h-5"
                   />
-                  <span className="text-sm font-bold uppercase font-sans">Featured</span>
+                  <span className="text-sm font-bold uppercase font-sans text-white">Featured</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -850,7 +853,7 @@ const Admin = () => {
                     onChange={(e) => setProductForm({ ...productForm, is_active: e.target.checked })}
                     className="w-5 h-5"
                   />
-                  <span className="text-sm font-bold uppercase font-sans">Active</span>
+                  <span className="text-sm font-bold uppercase font-sans text-white">Active</span>
                 </label>
               </div>
 
@@ -869,54 +872,54 @@ const Admin = () => {
 
       {/* Category Modal */}
       {showCategoryModal && (
-        <div className="fixed inset-0 bg-foreground/50 flex items-center justify-center p-5 z-50">
-          <div className="bg-background rounded-3xl p-6 md:p-8 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-5 z-50">
+          <div className="bg-[#0a0a0a] rounded-3xl p-6 md:p-8 w-full max-w-md border border-[#262626]">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-extrabold uppercase font-sans">ADD CATEGORY</h2>
-              <button onClick={resetCategoryForm} className="p-2 hover:bg-foreground/10 rounded-full">
+              <h2 className="text-2xl font-extrabold uppercase font-sans text-white">ADD CATEGORY</h2>
+              <button onClick={resetCategoryForm} className="p-2 hover:bg-white/10 rounded-full text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleCategorySubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">Name *</label>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Name *</label>
                 <input
                   type="text"
                   value={categoryForm.name}
                   onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
                   required
-                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19]"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">Slug</label>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Slug</label>
                 <input
                   type="text"
                   value={categoryForm.slug}
                   onChange={(e) => setCategoryForm({ ...categoryForm, slug: e.target.value })}
                   placeholder="auto-generated"
-                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19] placeholder:text-gray-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">Description</label>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Description</label>
                 <textarea
                   value={categoryForm.description}
                   onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none resize-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19] resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">Color</label>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Color</label>
                 <select
                   value={categoryForm.color_class}
                   onChange={(e) => setCategoryForm({ ...categoryForm, color_class: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19]"
                 >
                   {colorOptions.map((color) => (
                     <option key={color.value} value={color.value}>{color.label}</option>
@@ -939,13 +942,13 @@ const Admin = () => {
 
       {/* Blog Post Modal */}
       {showBlogModal && (
-        <div className="fixed inset-0 bg-foreground/50 flex items-center justify-center p-5 z-50 overflow-y-auto">
-          <div className="bg-background rounded-3xl p-6 md:p-8 w-full max-w-2xl my-8 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-5 z-50 overflow-y-auto">
+          <div className="bg-[#0a0a0a] rounded-3xl p-6 md:p-8 w-full max-w-2xl my-8 max-h-[90vh] overflow-y-auto border border-[#262626]">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-extrabold uppercase font-sans">
+              <h2 className="text-2xl font-extrabold uppercase font-sans text-white">
                 {editingBlogPost ? 'EDIT POST' : 'ADD POST'}
               </h2>
-              <button onClick={resetBlogForm} className="p-2 hover:bg-foreground/10 rounded-full">
+              <button onClick={resetBlogForm} className="p-2 hover:bg-white/10 rounded-full text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -953,59 +956,59 @@ const Admin = () => {
             <form onSubmit={handleBlogSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold uppercase mb-2 font-sans">Title *</label>
+                  <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Title *</label>
                   <input
                     type="text"
                     value={blogForm.title}
                     onChange={(e) => setBlogForm({ ...blogForm, title: e.target.value })}
                     required
-                    className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19]"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold uppercase mb-2 font-sans">Slug</label>
+                  <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Slug</label>
                   <input
                     type="text"
                     value={blogForm.slug}
                     onChange={(e) => setBlogForm({ ...blogForm, slug: e.target.value })}
                     placeholder="auto-generated"
-                    className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19] placeholder:text-gray-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">Excerpt</label>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Excerpt</label>
                 <input
                   type="text"
                   value={blogForm.excerpt}
                   onChange={(e) => setBlogForm({ ...blogForm, excerpt: e.target.value })}
                   placeholder="Short description for listing"
-                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19] placeholder:text-gray-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">Content</label>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Content</label>
                 <textarea
                   value={blogForm.content}
                   onChange={(e) => setBlogForm({ ...blogForm, content: e.target.value })}
                   rows={10}
                   placeholder="Write your blog post content here..."
-                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none resize-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none focus:border-[#e64a19] resize-none placeholder:text-gray-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-bold uppercase mb-2 font-sans">Featured Image</label>
+                <label className="block text-sm font-bold uppercase mb-2 font-sans text-white">Featured Image</label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={(e) => setBlogImageFile(e.target.files?.[0] || null)}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white focus:outline-none"
                 />
                 {blogForm.image_url && !blogImageFile && (
-                  <p className="text-sm text-foreground/60 mt-2">Current: {blogForm.image_url}</p>
+                  <p className="text-sm text-muted-foreground mt-2">Current: {blogForm.image_url}</p>
                 )}
               </div>
 
@@ -1017,7 +1020,7 @@ const Admin = () => {
                     onChange={(e) => setBlogForm({ ...blogForm, is_published: e.target.checked })}
                     className="w-5 h-5"
                   />
-                  <span className="text-sm font-bold uppercase font-sans">Publish immediately</span>
+                  <span className="text-sm font-bold uppercase font-sans text-white">Publish immediately</span>
                 </label>
               </div>
 
@@ -1033,6 +1036,7 @@ const Admin = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

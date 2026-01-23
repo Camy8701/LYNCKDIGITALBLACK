@@ -132,12 +132,12 @@ const OrderHistory = () => {
 
   if (orders.length === 0) {
     return (
-      <div className="bg-vibrant-lavender rounded-3xl p-12 text-center">
-        <Package className="w-20 h-20 text-foreground/20 mx-auto mb-6" />
-        <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-4 font-sans">
+      <div className="data-panel text-center py-12">
+        <Package className="w-20 h-20 text-muted-foreground mx-auto mb-6" />
+        <h3 className="text-2xl md:text-3xl font-extrabold uppercase mb-4 font-sans text-white">
           No orders yet
         </h3>
-        <p className="text-base md:text-lg text-foreground/70 mb-8 font-serif max-w-md mx-auto">
+        <p className="text-base md:text-lg text-muted-foreground mb-8 font-serif max-w-md mx-auto">
           Start exploring our digital products collection and make your first purchase!
         </p>
         <Link to="/">
@@ -158,16 +158,16 @@ const OrderHistory = () => {
         return (
           <div
             key={order.id}
-            className="bg-accent-orange/10 rounded-3xl overflow-hidden"
+            className="stat-card overflow-hidden"
           >
             {/* Order Header */}
             <button
               onClick={() => toggleOrder(order.id)}
-              className="w-full p-6 md:p-8 flex items-center justify-between hover:bg-accent-orange/5 transition-colors"
+              className="w-full flex items-center justify-between hover:bg-white/5 transition-colors -m-6 p-6"
             >
               <div className="flex-1 text-left">
                 <div className="flex items-center gap-3 mb-2 flex-wrap">
-                  <span className="text-xl md:text-2xl font-extrabold font-sans">
+                  <span className="text-xl md:text-2xl font-extrabold font-sans text-white">
                     {order.order_number}
                   </span>
                   <span
@@ -175,16 +175,16 @@ const OrderHistory = () => {
                       order.status === 'completed'
                         ? 'bg-green-500 text-white'
                         : order.status === 'pending'
-                        ? 'bg-yellow-500 text-foreground'
+                        ? 'bg-yellow-500 text-black'
                         : order.status === 'failed'
                         ? 'bg-red-500 text-white'
-                        : 'bg-foreground/20 text-foreground'
+                        : 'bg-[#333] text-white'
                     }`}
                   >
                     {order.status}
                   </span>
                 </div>
-                <div className="text-sm text-foreground/60 font-serif">
+                <div className="text-sm text-muted-foreground font-serif">
                   {format(new Date(order.created_at), 'MMMM dd, yyyy')} •{' '}
                   {itemCount} item{itemCount !== 1 ? 's' : ''}
                 </div>
@@ -192,26 +192,26 @@ const OrderHistory = () => {
 
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <div className="text-2xl md:text-3xl font-extrabold font-sans">
+                  <div className="text-2xl md:text-3xl font-extrabold font-sans text-[#ccff00]">
                     ${order.total.toFixed(2)}
                   </div>
                 </div>
                 {isExpanded ? (
-                  <ChevronUp className="w-6 h-6 text-foreground/60" />
+                  <ChevronUp className="w-6 h-6 text-muted-foreground" />
                 ) : (
-                  <ChevronDown className="w-6 h-6 text-foreground/60" />
+                  <ChevronDown className="w-6 h-6 text-muted-foreground" />
                 )}
               </div>
             </button>
 
             {/* Order Items (Expanded) */}
             {isExpanded && (
-              <div className="border-t-2 border-foreground/10 p-6 md:p-8 space-y-6">
+              <div className="border-t border-[#333] mt-6 pt-6 space-y-6">
                 {/* Order Items List */}
                 {(order.order_items || []).map((item) => (
                   <div
                     key={item.id}
-                    className="bg-background/50 rounded-2xl p-6 flex flex-col md:flex-row gap-6"
+                    className="bg-[#0a0a0a]/50 border border-[#222] rounded-xl p-6 flex flex-col md:flex-row gap-6"
                   >
                     {/* Product Image */}
                     {item.product_image_url && (
@@ -226,15 +226,15 @@ const OrderHistory = () => {
 
                     {/* Product Info */}
                     <div className="flex-1">
-                      <h4 className="text-xl md:text-2xl font-extrabold mb-2 font-sans">
+                      <h4 className="text-xl md:text-2xl font-extrabold mb-2 font-sans text-white">
                         {item.product_name}
                       </h4>
                       {item.product_description && (
-                        <p className="text-sm text-foreground/70 mb-3 font-serif line-clamp-2">
+                        <p className="text-sm text-muted-foreground mb-3 font-serif line-clamp-2">
                           {item.product_description}
                         </p>
                       )}
-                      <div className="flex items-center gap-4 text-sm font-serif text-foreground/60">
+                      <div className="flex items-center gap-4 text-sm font-serif text-muted-foreground">
                         <span>Qty: {item.quantity}</span>
                         <span>•</span>
                         <span>${item.unit_price.toFixed(2)} each</span>
@@ -255,7 +255,7 @@ const OrderHistory = () => {
                             <Download className="w-4 h-4" />
                             {downloadProduct.isPending ? 'Downloading...' : 'Download'}
                           </Button>
-                          <span className="text-xs font-bold text-foreground/60 font-sans">
+                          <span className="text-xs font-bold text-[#ccff00] font-sans">
                             Downloads: {item.download_count}/{item.max_downloads}
                           </span>
                         </div>
@@ -264,7 +264,7 @@ const OrderHistory = () => {
 
                     {/* Item Total */}
                     <div className="text-right">
-                      <div className="text-xl md:text-2xl font-extrabold font-sans">
+                      <div className="text-xl md:text-2xl font-extrabold font-sans text-white">
                         ${item.subtotal.toFixed(2)}
                       </div>
                     </div>
@@ -272,17 +272,17 @@ const OrderHistory = () => {
                 ))}
 
                 {/* Order Summary */}
-                <div className="bg-background/50 rounded-2xl p-6">
+                <div className="bg-[#0a0a0a]/50 border border-[#222] rounded-xl p-6">
                   <div className="space-y-3 max-w-md ml-auto">
-                    <div className="flex justify-between text-base font-serif">
+                    <div className="flex justify-between text-base font-serif text-muted-foreground">
                       <span>Subtotal:</span>
-                      <span className="font-bold font-sans">${order.subtotal.toFixed(2)}</span>
+                      <span className="font-bold font-sans text-white">${order.subtotal.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-base font-serif">
+                    <div className="flex justify-between text-base font-serif text-muted-foreground">
                       <span>Tax:</span>
-                      <span className="font-bold font-sans">${order.tax.toFixed(2)}</span>
+                      <span className="font-bold font-sans text-white">${order.tax.toFixed(2)}</span>
                     </div>
-                    <div className="border-t-2 border-foreground/10 pt-3 flex justify-between text-xl font-extrabold font-sans">
+                    <div className="border-t border-[#333] pt-3 flex justify-between text-xl font-extrabold font-sans text-[#ccff00]">
                       <span>Total:</span>
                       <span>${order.total.toFixed(2)}</span>
                     </div>

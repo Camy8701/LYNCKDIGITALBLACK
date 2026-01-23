@@ -72,32 +72,32 @@ const NewsletterSubscribers = () => {
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-vibrant-mint rounded-2xl p-6">
+        <div className="stat-card-lime">
           <div className="flex items-center gap-3 mb-2">
-            <Users className="w-5 h-5" />
-            <span className="text-sm font-bold uppercase tracking-wider">
+            <Users className="w-5 h-5 text-[#ccff00]" />
+            <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
               Total Subscribers
             </span>
           </div>
-          <p className="text-4xl font-extrabold">{subscribers.length}</p>
+          <p className="text-4xl font-extrabold text-white">{subscribers.length}</p>
         </div>
-        <div className="bg-vibrant-lavender rounded-2xl p-6">
+        <div className="stat-card">
           <div className="flex items-center gap-3 mb-2">
-            <Mail className="w-5 h-5" />
-            <span className="text-sm font-bold uppercase tracking-wider">
+            <Mail className="w-5 h-5 text-[#e64a19]" />
+            <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
               Active
             </span>
           </div>
-          <p className="text-4xl font-extrabold">{activeSubscribers.length}</p>
+          <p className="text-4xl font-extrabold text-white">{activeSubscribers.length}</p>
         </div>
-        <div className="bg-vibrant-yellow rounded-2xl p-6">
+        <div className="stat-card">
           <div className="flex items-center gap-3 mb-2">
-            <Mail className="w-5 h-5" />
-            <span className="text-sm font-bold uppercase tracking-wider">
+            <Mail className="w-5 h-5 text-[#e64a19]" />
+            <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
               Inactive
             </span>
           </div>
-          <p className="text-4xl font-extrabold">
+          <p className="text-4xl font-extrabold text-white">
             {subscribers.length - activeSubscribers.length}
           </p>
         </div>
@@ -107,7 +107,7 @@ const NewsletterSubscribers = () => {
       <div className="flex gap-4 flex-wrap">
         <button
           onClick={() => refetch()}
-          className="px-4 py-2 bg-foreground text-background rounded-full text-sm font-bold uppercase tracking-wider flex items-center gap-2 hover:opacity-90 transition-opacity"
+          className="px-4 py-2 bg-[#333] text-white rounded-full text-sm font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-[#e64a19] transition-colors"
         >
           <RefreshCw className="w-4 h-4" />
           Refresh
@@ -115,7 +115,7 @@ const NewsletterSubscribers = () => {
         <button
           onClick={handleExportCSV}
           disabled={exporting || subscribers.length === 0}
-          className="px-4 py-2 bg-vibrant-coral rounded-full text-sm font-bold uppercase tracking-wider flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="px-4 py-2 bg-[#e64a19] text-white rounded-full text-sm font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-[#e64a19]/80 transition-colors disabled:opacity-50"
         >
           <Download className="w-4 h-4" />
           {exporting ? "Exporting..." : "Export CSV"}
@@ -168,8 +168,8 @@ const NewsletterSubscribers = () => {
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-bold uppercase ${
                           subscriber.is_active
-                            ? "bg-vibrant-mint"
-                            : "bg-foreground/20"
+                            ? "bg-[#ccff00]/20 text-[#ccff00]"
+                            : "bg-[#333] text-muted-foreground"
                         }`}
                       >
                         {subscriber.is_active ? "Active" : "Inactive"}

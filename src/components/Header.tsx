@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-background border-b border-foreground/5">
+    <header className="sticky top-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-[#222]">
       <div className="px-5 md:px-20 py-4 md:py-5">
         <div className="flex items-center justify-between gap-4">
           {/* Logo & Google Partner Badge */}
@@ -59,7 +59,7 @@ const Header = () => {
               <Link
                 key={link.href}
                 to={link.href}
-                className="text-sm font-bold uppercase tracking-wider hover:text-foreground/70 transition-all duration-300 hover:scale-105 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
+                className="text-sm font-bold uppercase tracking-wider text-white hover:text-white/70 transition-all duration-300 hover:scale-105 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#ccff00] after:transition-all after:duration-300 hover:after:w-full"
               >
                 {link.label}
               </Link>
@@ -67,7 +67,7 @@ const Header = () => {
             {user && (
               <Link
                 to="/dashboard"
-                className="text-sm font-bold uppercase tracking-wider hover:text-foreground/70 transition-all duration-300 hover:scale-105 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
+                className="text-sm font-bold uppercase tracking-wider text-white hover:text-white/70 transition-all duration-300 hover:scale-105 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#ccff00] after:transition-all after:duration-300 hover:after:w-full"
               >
                 Dashboard
               </Link>
@@ -75,7 +75,7 @@ const Header = () => {
             {isAdmin && (
               <Link
                 to="/admin"
-                className="text-sm font-bold uppercase tracking-wider hover:text-foreground/70 transition-all duration-300 hover:scale-105 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
+                className="text-sm font-bold uppercase tracking-wider text-white hover:text-white/70 transition-all duration-300 hover:scale-105 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#ccff00] after:transition-all after:duration-300 hover:after:w-full"
               >
                 Admin
               </Link>
@@ -90,15 +90,15 @@ const Header = () => {
             
             {user ? (
               <div className="hidden md:flex items-center gap-2">
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-foreground/5 rounded-full">
-                  <User className="w-4 h-4" />
-                  <span className="text-xs font-medium truncate max-w-[100px]">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-full">
+                  <User className="w-4 h-4 text-white" />
+                  <span className="text-xs font-medium truncate max-w-[100px] text-white">
                     {user.email?.split('@')[0]}
                   </span>
                 </div>
                 <button
                   onClick={handleSignOut}
-                  className="p-2 hover:bg-foreground/10 rounded-full transition-colors"
+                  className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
                   aria-label="Sign out"
                 >
                   <LogOut className="w-4 h-4" />
@@ -115,7 +115,7 @@ const Header = () => {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 hover:bg-foreground/10 rounded-full transition-colors"
+              className="md:hidden p-2 hover:bg-white/10 rounded-full transition-colors text-white"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -125,14 +125,14 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-foreground/10 pt-4 animate-fade-in">
+          <div className="md:hidden mt-4 pb-4 border-t border-[#222] pt-4 animate-fade-in">
             <nav className="flex flex-col gap-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-lg font-bold uppercase tracking-wider"
+                  className="text-lg font-bold uppercase tracking-wider text-white"
                 >
                   {link.label}
                 </Link>
@@ -141,7 +141,7 @@ const Header = () => {
                 <Link
                   to="/dashboard"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-lg font-bold uppercase tracking-wider"
+                  className="text-lg font-bold uppercase tracking-wider text-white"
                 >
                   Dashboard
                 </Link>
@@ -150,7 +150,7 @@ const Header = () => {
                 <Link
                   to="/admin"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-lg font-bold uppercase tracking-wider"
+                  className="text-lg font-bold uppercase tracking-wider text-white"
                 >
                   Admin
                 </Link>
@@ -161,7 +161,7 @@ const Header = () => {
                     handleSignOut();
                     setMobileMenuOpen(false);
                   }}
-                  className="text-lg font-bold uppercase tracking-wider text-left text-foreground/70"
+                  className="text-lg font-bold uppercase tracking-wider text-left text-muted-foreground"
                 >
                   Sign Out
                 </button>
@@ -169,7 +169,7 @@ const Header = () => {
                 <Link
                   to="/auth"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-lg font-bold uppercase tracking-wider"
+                  className="text-lg font-bold uppercase tracking-wider text-white"
                 >
                   Sign In
                 </Link>

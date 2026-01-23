@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackgroundLayers from "@/components/BackgroundLayers";
 import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import OrderHistory from "@/components/dashboard/OrderHistory";
 import ProfileSettings from "@/components/dashboard/ProfileSettings";
@@ -37,10 +38,10 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-foreground mx-auto mb-4"></div>
-          <p className="text-lg font-sans font-bold">Loading dashboard...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-white mx-auto mb-4"></div>
+          <p className="text-lg font-sans font-bold text-white">Loading dashboard...</p>
         </div>
       </div>
     );
@@ -51,30 +52,34 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-[#0a0a0a] relative">
+      <BackgroundLayers />
+      <div className="relative z-[200] flex flex-col min-h-screen">
       <Header />
 
       <main className="flex-1 px-5 md:px-20 py-12 md:py-20">
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}
-          <div className="mb-12">
-            <h1 className="text-5xl md:text-7xl font-extrabold uppercase mb-4 font-sans tracking-tight">
+          <div className="mb-4">
+            <span className="mono-label mb-4 block">Account</span>
+            <h1 className="text-5xl md:text-7xl font-extrabold uppercase mb-4 font-sans tracking-tight text-white animate-fade-in">
               My Dashboard
             </h1>
-            <p className="text-lg md:text-xl text-foreground/70 font-serif">
+            <p className="text-lg md:text-xl text-muted-foreground font-serif animate-fade-in-delay-1">
               Manage your orders, profile, and wishlist
             </p>
           </div>
+          <div className="section-divider-lime" />
 
           {/* Tab Navigation */}
           <div className="flex flex-wrap gap-3 mb-8 md:mb-12">
             <button
               onClick={() => handleTabChange('overview')}
               className={cn(
-                "px-4 md:px-6 py-2 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground flex items-center gap-2",
+                "px-4 md:px-6 py-2 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2",
                 activeTab === 'overview'
-                  ? "bg-foreground text-background"
-                  : "bg-transparent hover:bg-foreground hover:text-background"
+                  ? "bg-[#e64a19] text-white border-2 border-[#e64a19]"
+                  : "bg-transparent text-white border-2 border-[#262626] hover:border-[#ccff00]/50"
               )}
             >
               <LayoutDashboard className="w-4 h-4" />
@@ -84,10 +89,10 @@ const Dashboard = () => {
             <button
               onClick={() => handleTabChange('orders')}
               className={cn(
-                "px-4 md:px-6 py-2 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground flex items-center gap-2",
+                "px-4 md:px-6 py-2 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2",
                 activeTab === 'orders'
-                  ? "bg-foreground text-background"
-                  : "bg-transparent hover:bg-foreground hover:text-background"
+                  ? "bg-[#e64a19] text-white border-2 border-[#e64a19]"
+                  : "bg-transparent text-white border-2 border-[#262626] hover:border-[#ccff00]/50"
               )}
             >
               <Package className="w-4 h-4" />
@@ -97,10 +102,10 @@ const Dashboard = () => {
             <button
               onClick={() => handleTabChange('profile')}
               className={cn(
-                "px-4 md:px-6 py-2 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground flex items-center gap-2",
+                "px-4 md:px-6 py-2 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2",
                 activeTab === 'profile'
-                  ? "bg-foreground text-background"
-                  : "bg-transparent hover:bg-foreground hover:text-background"
+                  ? "bg-[#e64a19] text-white border-2 border-[#e64a19]"
+                  : "bg-transparent text-white border-2 border-[#262626] hover:border-[#ccff00]/50"
               )}
             >
               <User className="w-4 h-4" />
@@ -110,10 +115,10 @@ const Dashboard = () => {
             <button
               onClick={() => handleTabChange('wishlist')}
               className={cn(
-                "px-4 md:px-6 py-2 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground flex items-center gap-2",
+                "px-4 md:px-6 py-2 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2",
                 activeTab === 'wishlist'
-                  ? "bg-foreground text-background"
-                  : "bg-transparent hover:bg-foreground hover:text-background"
+                  ? "bg-[#e64a19] text-white border-2 border-[#e64a19]"
+                  : "bg-transparent text-white border-2 border-[#262626] hover:border-[#ccff00]/50"
               )}
             >
               <Heart className="w-4 h-4" />
@@ -123,10 +128,10 @@ const Dashboard = () => {
             <button
               onClick={() => handleTabChange('payment')}
               className={cn(
-                "px-4 md:px-6 py-2 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 border-2 border-foreground flex items-center gap-2",
+                "px-4 md:px-6 py-2 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2",
                 activeTab === 'payment'
-                  ? "bg-foreground text-background"
-                  : "bg-transparent hover:bg-foreground hover:text-background"
+                  ? "bg-[#e64a19] text-white border-2 border-[#e64a19]"
+                  : "bg-transparent text-white border-2 border-[#262626] hover:border-[#ccff00]/50"
               )}
             >
               <CreditCard className="w-4 h-4" />
@@ -146,6 +151,7 @@ const Dashboard = () => {
       </main>
 
       <Footer />
+      </div>
     </div>
   );
 };

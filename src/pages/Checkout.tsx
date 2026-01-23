@@ -27,16 +27,16 @@ const Checkout = () => {
         <Header />
         <main className="flex-1 px-5 md:px-20 py-12 md:py-20">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="bg-vibrant-mint rounded-3xl p-8 md:p-12">
+            <div className="stat-card-lime">
               <div className="flex justify-center mb-6">
-                <CheckCircle className="w-20 h-20 text-foreground" />
+                <CheckCircle className="w-20 h-20 text-[#ccff00]" />
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-extrabold uppercase mb-6 font-sans tracking-tight">
+              <h1 className="text-4xl md:text-5xl font-extrabold uppercase mb-6 font-sans tracking-tight text-white">
                 Payment Successful!
               </h1>
 
-              <p className="text-lg md:text-xl leading-relaxed text-foreground/80 mb-8 font-serif max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl leading-relaxed text-muted-foreground mb-8 font-serif max-w-2xl mx-auto">
                 Thank you for your purchase! Your order has been confirmed and your digital products are ready for download.
               </p>
 
@@ -113,11 +113,11 @@ const Checkout = () => {
         <Header />
         <main className="flex-1 px-5 md:px-20 py-12 md:py-20">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="bg-vibrant-yellow rounded-3xl p-8 md:p-12">
-              <h1 className="text-4xl md:text-5xl font-extrabold uppercase mb-6 font-sans tracking-tight">
+            <div className="stat-card">
+              <h1 className="text-4xl md:text-5xl font-extrabold uppercase mb-6 font-sans tracking-tight text-white">
                 Your Cart is Empty
               </h1>
-              <p className="text-lg text-foreground/80 mb-8 font-serif">
+              <p className="text-lg text-muted-foreground mb-8 font-serif">
                 Add some products to your cart before checking out.
               </p>
               <Link to="/">
@@ -138,13 +138,14 @@ const Checkout = () => {
       <Header />
       <main className="flex-1 px-5 md:px-20 py-12 md:py-20">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-extrabold uppercase mb-8 font-sans tracking-tight text-center">
+          <h1 className="text-4xl md:text-5xl font-extrabold uppercase mb-0 font-sans tracking-tight text-center text-white animate-fade-in">
             Checkout
           </h1>
+          <div className="section-divider-lime" />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Order Summary */}
-            <div className="bg-muted rounded-3xl p-6 md:p-8">
+            <div className="stat-card">
               <h2 className="text-xl font-bold uppercase mb-6 font-sans">
                 Order Summary
               </h2>
@@ -179,7 +180,7 @@ const Checkout = () => {
             </div>
 
             {/* Payment Section */}
-            <div className="bg-vibrant-mint rounded-3xl p-6 md:p-8">
+            <div className="stat-card-lime">
               <div className="flex items-center gap-3 mb-6">
                 <CreditCard className="w-6 h-6" />
                 <h2 className="text-xl font-bold uppercase font-sans">

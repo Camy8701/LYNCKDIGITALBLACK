@@ -57,13 +57,14 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-5">
       <div className="w-full max-w-md">
-        <div className="bg-vibrant-purple rounded-3xl p-8 md:p-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold uppercase text-center mb-2 font-sans tracking-tighter">
+        <div className="stat-card">
+          <h1 className="text-4xl md:text-5xl font-extrabold uppercase text-center mb-2 font-sans tracking-tighter text-white animate-fade-in">
             {isLogin ? "SIGN IN" : "SIGN UP"}
           </h1>
-          <p className="text-center text-foreground/70 mb-8 font-serif">
+          <p className="text-center text-muted-foreground mb-0 font-serif animate-fade-in-delay-1">
             {isLogin ? "Access your admin dashboard" : "Create your admin account"}
           </p>
+          <div className="section-divider-lime" />
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -76,7 +77,7 @@ const Auth = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent text-foreground placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-foreground"
+                className="w-full px-4 py-3 rounded-xl border border-[#262626] bg-[#0a0a0a] text-white placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#e64a19] focus:border-[#e64a19]"
                 placeholder="your@email.com"
               />
             </div>
@@ -92,7 +93,7 @@ const Auth = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-transparent text-foreground placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-foreground"
+                className="w-full px-4 py-3 rounded-xl border border-[#262626] bg-[#0a0a0a] text-white placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#e64a19] focus:border-[#e64a19]"
                 placeholder="••••••••"
               />
             </div>
