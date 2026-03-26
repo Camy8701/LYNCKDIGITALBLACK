@@ -9,8 +9,8 @@ const About = () => {
       <BackgroundLayers />
       <div className="relative z-[200]">
       <SEO
-        title="About Us - LYNCK DIGITAL"
-        description="Learn about Josina and Lynck Digital - Making building a real online business simpler, clearer, and more accessible for people who want independence."
+        title="About Us - THE DIGITALHUB"
+        description="Learn about Josina and The DigitalHub - Making building a real online business simpler, clearer, and more accessible for people who want independence."
         type="website"
         url={window.location.href}
       />
@@ -20,12 +20,12 @@ const About = () => {
         <article className="max-w-4xl mx-auto">
           <span className="section-label">Our Story</span>
           <h1 className="text-4xl md:text-6xl font-black uppercase leading-[0.9] tracking-tighter font-sans mb-8 text-white">
-            About Lynck Digital
+            About The DigitalHub
           </h1>
 
           <div className="space-y-6 text-muted-foreground font-serif text-lg leading-relaxed">
             <p>
-              My name is Josina, and Lynck Digital was created for one reason: to make building a real online business simpler, clearer, and more accessible for people who want independence.
+              My name is Josina, and The DigitalHub was created for one reason: to make building a real online business simpler, clearer, and more accessible for people who want independence.
             </p>
 
             <p>
@@ -51,7 +51,7 @@ const About = () => {
             <div className="section-divider" />
 
             <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tighter font-sans mt-12 mb-6 text-white">
-              Why Lynck Digital Is Different
+              Why The DigitalHub Is Different
             </h2>
 
             <p>
@@ -108,7 +108,7 @@ const About = () => {
             </h2>
 
             <p>
-              Lynck Digital focuses on high-quality digital products designed to help you build, launch, and scale:
+              The DigitalHub focuses on high-quality digital products designed to help you build, launch, and scale:
             </p>
 
             <ul className="list-none space-y-3 my-6">
@@ -206,7 +206,7 @@ const About = () => {
             </p>
 
             <p className="font-bold text-white text-xl">
-              Lynck Digital exists to give you exactly that — so you can build income, freedom, and control over your future.
+              The DigitalHub exists to give you exactly that — so you can build income, freedom, and control over your future.
             </p>
 
             <div className="mt-12 stat-card">

@@ -40,11 +40,11 @@ const Index = () => {
       <BackgroundLayers />
       <div className="relative z-[200]">
       <SEO
-        title="LYNCK Digital | Premium Digital Products & Templates for Creators"
-        description="Shop premium digital products at LYNCK Digital (lynckdigital). Templates, courses, eBooks, and marketing tools for creators and entrepreneurs. Build, grow, and scale your online business."
+        title="The DigitalHub | Premium Digital Products & Templates for Creators"
+        description="Shop premium digital products at The DigitalHub (thedigitalhub). Templates, courses, eBooks, and marketing tools for creators and entrepreneurs. Build, grow, and scale your online business."
         type="website"
-        url="https://lynckdigital.com"
-        keywords="lynck, lynckdigital, lynck digital, digital products, premium templates, online courses, eBooks, marketing kits, business tools, creator resources"
+        url="https://thedigitalhub.com"
+        keywords="the digitalhub,thedigitalhub, digitalhub,digital products, premium templates, online courses, eBooks, marketing kits, business tools, creator resources"
       />
       <Header />
 
@@ -53,7 +53,7 @@ const Index = () => {
         <section className="px-5 md:px-20 pt-12 md:pt-20 pb-8 md:pb-12">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-6xl md:text-[120px] font-extrabold uppercase text-center mb-10 max-[700px]:mb-[30px] leading-[0.72] tracking-[-2px] max-[700px]:tracking-[-1px] text-white mx-auto animate-fade-in">
-              LYNCK DIGITAL
+              THE DIGITALHUB
             </h1>
             <p className="text-lg md:text-xl leading-relaxed text-[#e64a19] max-w-3xl mx-auto mb-0 font-serif animate-fade-in-delay-1">
               Premium digital products to help you build, grow, and scale your online business.

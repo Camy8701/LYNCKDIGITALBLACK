@@ -13,15 +13,15 @@ interface SEOProps {
 }
 
 const BASE_URL = 'https://lynckdigital.store';
-const DEFAULT_KEYWORDS = 'lynck, lynckdigital, lynck digital, digital products, templates, courses, eBooks, business tools';
+const DEFAULT_KEYWORDS = 'the digitalhub, thedigitalhub, digitalhub, digital products, templates, courses, eBooks, business tools';
 
 export const SEO = ({
-  title = 'LYNCK Digital | Premium Digital Products & Templates for Creators',
-  description = 'LYNCK Digital offers premium digital products, templates, courses, and resources for creators and entrepreneurs. Shop lynckdigital for high-quality business tools.',
+  title = 'The DigitalHub | Premium Digital Products & Templates for Creators',
+  description = 'The DigitalHub offers premium digital products, templates, courses, and resources for creators and entrepreneurs. Shop The DigitalHub for high-quality business tools.',
   image = `${BASE_URL}/assets/logo.png`,
   url,
   type = 'website',
-  author = 'LYNCK Digital',
+  author = 'The DigitalHub',
   publishedTime,
   modifiedTime,
   keywords = DEFAULT_KEYWORDS
@@ -45,7 +45,7 @@ export const SEO = ({
       { property: 'og:image', content: image },
       { property: 'og:type', content: type },
       { property: 'og:url', content: url || BASE_URL },
-      { property: 'og:site_name', content: 'LYNCK Digital' },
+      { property: 'og:site_name', content: 'The DigitalHub' },
       { property: 'og:locale', content: 'en_US' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: title },
@@ -84,7 +84,7 @@ export const SEO = ({
     });
 
     return () => {
-      document.title = 'LYNCK Digital | Premium Digital Products & Templates for Creators';
+      document.title = 'The DigitalHub | Premium Digital Products & Templates for Creators';
     };
   }, [title, description, image, url, type, author, publishedTime, modifiedTime, keywords]);
 

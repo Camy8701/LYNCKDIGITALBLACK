@@ -1,5 +1,5 @@
 // =====================================================
-// LYNCK DIGITAL - Customer Dashboard Types
+// THE DIGITALHUB - Customer Dashboard Types
 // =====================================================
 // TypeScript interfaces for orders, wishlists, profiles,
 // payment methods, and dashboard statistics

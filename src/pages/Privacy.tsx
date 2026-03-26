@@ -6,8 +6,8 @@ const Privacy = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Privacy Policy - LYNCK DIGITAL"
-        description="Lynck Digital respects your privacy and is committed to protecting your personal data. Learn how we collect, use, and protect your information."
+        title="Privacy Policy - THE DIGITALHUB"
+        description="The DigitalHub respects your privacy and is committed to protecting your personal data. Learn how we collect, use, and protect your information."
         type="website"
         url={window.location.href}
       />
@@ -30,7 +30,7 @@ const Privacy = () => {
                 Introduction
               </h2>
               <p>
-                Lynck Digital ("we", "our", or "us") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and protect your information when you visit our website or purchase our Products.
+                The DigitalHub ("we", "our", or "us") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and protect your information when you visit our website or purchase our Products.
               </p>
               <p className="mt-4">
                 By using our website or services, you consent to the practices described in this policy.
@@ -85,7 +85,7 @@ const Privacy = () => {
                 3. Marketing Communications
               </h2>
               <p>
-                By providing your email address at checkout, through a lead form, or by engaging with our opt-in campaigns, you consent to receive recurring promotional and marketing emails from Lynck Digital. These may include product updates, exclusive offers, and launch announcements.
+                By providing your email address at checkout, through a lead form, or by engaging with our opt-in campaigns, you consent to receive recurring promotional and marketing emails from The DigitalHub. These may include product updates, exclusive offers, and launch announcements.
               </p>
               <p className="mt-4">
                 Consent is not a condition of any purchase. You can unsubscribe at any time by clicking the unsubscribe link in any email.

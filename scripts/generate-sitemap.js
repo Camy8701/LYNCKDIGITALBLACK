@@ -39,7 +39,7 @@ function formatDate(date) {
 }
 
 async function generateSitemap() {
-  console.log('Generating sitemap for LYNCK Digital...\n');
+  console.log('Generating sitemap for The DigitalHub...\n');
 
   let urls = [];
 
@@ -124,7 +124,7 @@ async function generateSitemap() {
   const publicPath = join(__dirname, '..', 'public', 'sitemap.xml');
   writeFileSync(publicPath, xml);
 
-  console.log('\nSitemap generated successfully for LYNCK Digital!');
+  console.log('\nSitemap generated successfully for The DigitalHub!');
   console.log('Domain: ' + DOMAIN);
   console.log('Location: public/sitemap.xml');
   console.log('Total URLs: ' + urls.length);

@@ -38,7 +38,7 @@ const Product = () => {
       "image": product.image_url || fallbackImage,
       "brand": {
         "@type": "Brand",
-        "name": "LYNCK Digital"
+        "name": "The DigitalHub"
       },
       "offers": {
         "@type": "Offer",
@@ -148,8 +148,8 @@ const Product = () => {
       <BackgroundLayers />
       <div className="relative z-[200]">
       <SEO
-        title={`${product.name} - LYNCK DIGITAL`}
-        description={product.short_description || product.description || `Buy ${product.name} - Premium digital product from LYNCK DIGITAL`}
+        title={`${product.name} - THE DIGITALHUB`}
+        description={product.short_description || product.description || `Buy ${product.name} - Premium digital product from THE DIGITALHUB`}
         image={product.image_url || fallbackImage}
         type="product"
         url={window.location.href}

@@ -15,7 +15,7 @@ interface CartContextType {
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
-const CART_STORAGE_KEY = 'lynck-cart';
+const CART_STORAGE_KEY = 'digitalhub-cart';
 const CART_VERSION = 1;
 
 export function CartProvider({ children }: { children: ReactNode }) {

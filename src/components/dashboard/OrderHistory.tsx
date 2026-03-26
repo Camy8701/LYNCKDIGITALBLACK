@@ -32,7 +32,7 @@ const OrderHistory = () => {
     // Company Header
     doc.setFontSize(24);
     doc.setFont(undefined, 'bold');
-    doc.text('LYNCK DIGITAL', 20, 20);
+    doc.text('THE DIGITALHUB', 20, 20);
 
     doc.setFontSize(10);
     doc.setFont(undefined, 'normal');

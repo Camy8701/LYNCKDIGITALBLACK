@@ -52,7 +52,7 @@ const handler = async (req: Request): Promise<Response> => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "LYNCK Digital <onboarding@resend.dev>",
+        from: "The DigitalHub <onboarding@resend.dev>",
         to: ["info@lynckstudio.pro"],
         subject: `New Contact Form Submission from ${name}`,
         html: `
@@ -63,7 +63,7 @@ const handler = async (req: Request): Promise<Response> => {
           <h3>Message:</h3>
           <p>${message.replace(/\n/g, "<br>")}</p>
           <hr>
-          <p style="color: #666; font-size: 12px;">This message was sent from the LYNCK Digital contact form.</p>
+          <p style="color: #666; font-size: 12px;">This message was sent from the The DigitalHub contact form.</p>
         `,
       }),
     });
@@ -84,7 +84,7 @@ const handler = async (req: Request): Promise<Response> => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "LYNCK Digital <onboarding@resend.dev>",
+        from: "The DigitalHub <onboarding@resend.dev>",
         to: [email],
         subject: "We received your message!",
         html: `
@@ -94,7 +94,7 @@ const handler = async (req: Request): Promise<Response> => {
           <blockquote style="border-left: 3px solid #ff6b35; padding-left: 16px; margin: 16px 0; color: #555;">
             ${message.replace(/\n/g, "<br>")}
           </blockquote>
-          <p>Best regards,<br>The LYNCK Digital Team</p>
+          <p>Best regards,<br>The The DigitalHub Team</p>
         `,
       }),
     });

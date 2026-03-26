@@ -86,14 +86,14 @@ const BlogPost = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title={`${post.title} | LYNCK Digital Blog`}
-        description={post.excerpt || post.content?.substring(0, 160) || `Read ${post.title} on the LYNCK Digital blog - tips and insights for digital creators from lynckdigital.`}
-        image={post.image_url || "https://lynckdigital.com/assets/logo.png"}
+        title={`${post.title} | The DigitalHub Blog`}
+        description={post.excerpt || post.content?.substring(0, 160) || `Read ${post.title} on the The DigitalHub blog - tips and insights for digital creators from thedigitalhub.`}
+        image={post.image_url || "https://thedigitalhub.com/assets/logo.png"}
         type="article"
-        url={`https://lynckdigital.com/blog/${post.slug}`}
+        url={`https://thedigitalhub.com/blog/${post.slug}`}
         publishedTime={post.published_at}
         modifiedTime={post.updated_at}
-        keywords={`lynck digital, lynckdigital, ${post.title.toLowerCase()}, digital products, creator tips`}
+        keywords={`the digitalhub, thedigitalhub, ${post.title.toLowerCase()}, digital products, creator tips`}
       />
       <Header />
 
@@ -194,7 +194,7 @@ const BlogPost = () => {
                   <span className="text-primary font-bold text-lg">L</span>
                 </div>
                 <div>
-                  <p className="font-bold text-foreground">LYNCK Digital</p>
+                  <p className="font-bold text-foreground">The DigitalHub</p>
                   <p className="text-sm text-foreground/60">Empowering creators with digital products and resources</p>
                 </div>
               </div>

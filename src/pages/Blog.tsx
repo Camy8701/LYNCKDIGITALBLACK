@@ -24,11 +24,11 @@ const Blog = () => {
       <BackgroundLayers />
       <div className="relative z-[200]">
       <SEO
-        title="Blog | LYNCK Digital - Tips & Insights for Digital Creators"
-        description="Read the LYNCK Digital blog for expert tips, insights, and resources on digital products, online business, and creator success. Discover strategies from lynckdigital."
+        title="Blog | The DigitalHub - Tips & Insights for Digital Creators"
+        description="Read the The DigitalHub blog for expert tips, insights, and resources on digital products, online business, and creator success. Discover strategies from thedigitalhub."
         type="website"
-        url="https://lynckdigital.com/blog"
-        keywords="lynck blog, lynckdigital blog, lynck digital tips, digital product insights, creator tips, online business resources"
+        url="https://thedigitalhub.com/blog"
+        keywords="digitalhub blog, thedigitalhub blog, the digitalhub tips, digital product insights, creator tips, online business resources"
       />
       <Header />
 

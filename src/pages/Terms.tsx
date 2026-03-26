@@ -6,8 +6,8 @@ const Terms = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Terms & Conditions - LYNCK DIGITAL"
-        description="Terms and Conditions governing your use of all digital products, courses, templates, guides, and services provided by Lynck Digital."
+        title="Terms & Conditions - THE DIGITALHUB"
+        description="Terms and Conditions governing your use of all digital products, courses, templates, guides, and services provided by The DigitalHub."
         type="website"
         url={window.location.href}
       />
@@ -30,7 +30,7 @@ const Terms = () => {
                 Introduction
               </h2>
               <p>
-                These Terms and Conditions ("Terms") govern your use of all digital products, courses, templates, guides, and services ("Products") provided by Lynck Digital ("Company", "we", "our", or "us") through the website https://lynckdigital.store.
+                These Terms and Conditions ("Terms") govern your use of all digital products, courses, templates, guides, and services ("Products") provided by The DigitalHub ("Company", "we", "our", or "us") through the website https://lynckdigital.store.
               </p>
               <p className="mt-4">
                 By completing a purchase or accessing any of our Products, you ("Customer", "You", or "Your") agree to be bound by these Terms. If you do not agree, please do not use our website or purchase our Products.
@@ -51,7 +51,7 @@ const Terms = () => {
                 2. Intellectual Property
               </h2>
               <p>
-                All content provided in our Products—including but not limited to videos, templates, PDFs, graphics, written material, AI prompts, and course materials—is the sole intellectual property of Lynck Digital.
+                All content provided in our Products—including but not limited to videos, templates, PDFs, graphics, written material, AI prompts, and course materials—is the sole intellectual property of The DigitalHub.
               </p>
               <p className="mt-4">
                 You are granted a limited, non-exclusive, non-transferable license for personal or internal business use only. You may not share, distribute, reproduce, modify, or resell any part of the content without prior written consent.
@@ -66,7 +66,7 @@ const Terms = () => {
                 3. AI and Likeness Restrictions
               </h2>
               <p>
-                You may not use any photographs, video, voice, likeness, or content from Lynck Digital—including appearances on video, social media, or public platforms—for the purpose of training, generating, or reproducing content through artificial intelligence (AI) or machine learning technologies.
+                You may not use any photographs, video, voice, likeness, or content from The DigitalHub—including appearances on video, social media, or public platforms—for the purpose of training, generating, or reproducing content through artificial intelligence (AI) or machine learning technologies.
               </p>
               <p className="mt-4">
                 This includes but is not limited to deepfakes, voice replication, or image generation tools. Any such use is strictly prohibited and may result in legal action.
@@ -99,7 +99,7 @@ const Terms = () => {
                 6. Assumption of Risk
               </h2>
               <p>
-                You acknowledge that business and financial decisions involve risk. You assume full responsibility for your outcomes and agree that Lynck Digital is not liable for any damages, losses, or results arising from your use of our Products.
+                You acknowledge that business and financial decisions involve risk. You assume full responsibility for your outcomes and agree that The DigitalHub is not liable for any damages, losses, or results arising from your use of our Products.
               </p>
             </section>
 
@@ -124,7 +124,7 @@ const Terms = () => {
                 8. Limitation of Liability
               </h2>
               <p>
-                To the maximum extent permitted by law, Lynck Digital shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our Products.
+                To the maximum extent permitted by law, The DigitalHub shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our Products.
               </p>
               <p className="mt-4">
                 Our total liability, if any, is limited to the amount you paid for the specific Product in question.
@@ -136,7 +136,7 @@ const Terms = () => {
                 9. Indemnification
               </h2>
               <p>
-                You agree to indemnify and hold harmless Lynck Digital, its partners, and affiliates from any claims, damages, or expenses arising from your use of our Products, your violation of these Terms, or your violation of any third-party rights.
+                You agree to indemnify and hold harmless The DigitalHub, its partners, and affiliates from any claims, damages, or expenses arising from your use of our Products, your violation of these Terms, or your violation of any third-party rights.
               </p>
             </section>
 

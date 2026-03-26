@@ -11,7 +11,7 @@ const HeroCarousel = () => {
         allowFullScreen
         allow="autoplay; clipboard-read; clipboard-write"
         className="w-full"
-        title="LYNCK Digital Catalog"
+        title="The DigitalHub Catalog"
       />
     </div>
   );

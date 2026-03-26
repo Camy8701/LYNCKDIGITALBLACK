@@ -1,4 +1,4 @@
-# robots.txt for LYNCK Digital (lynckdigital.store)
+# robots.txt for The DigitalHub
 # Allow search engines to crawl all public pages
 
 # Allow all crawlers

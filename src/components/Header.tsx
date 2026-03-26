@@ -32,7 +32,7 @@ const Header = () => {
             <Link to="/" className="shrink-0">
               <img
                 src="/assets/logo.png"
-                alt="LYNCK DIGITAL"
+                alt="THE DIGITALHUB"
                 className="h-11 md:h-[52px] w-auto"
               />
             </Link>

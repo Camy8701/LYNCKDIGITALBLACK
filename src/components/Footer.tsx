@@ -15,7 +15,7 @@ const Footer = () => {
             textStroke: '1px rgba(230, 74, 25, 0.4)'
           }}
         >
-          LYNCK DIGITAL
+          THE DIGITALHUB
         </h1>
       </div>
 
@@ -184,7 +184,7 @@ const Footer = () => {
         {/* Copyright Row */}
         <div className="lg:col-span-2 border-t border-[#222] px-5 md:px-8 py-5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-muted-foreground font-medium tracking-wide">
           <div>
-            © 2026 LYNCK DIGITAL. All rights reserved
+            © 2026 THE DIGITALHUB. All rights reserved
           </div>
           <div className="flex gap-8">
             <a href="/privacy" className="hover:text-[#e64a19] transition-colors">Privacy Policy</a>

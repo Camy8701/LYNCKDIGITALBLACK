@@ -236,7 +236,7 @@ const ProfileSettings = () => {
               value={formData.company}
               onChange={handleInputChange}
               className="w-full px-4 py-3 rounded-xl border-2 border-[#262626] bg-[#0a0a0a] text-white font-serif focus:outline-none focus:border-[#e64a19]"
-              placeholder="LYNCK Studio"
+              placeholder="The DigitalHub"
             />
           </div>
 

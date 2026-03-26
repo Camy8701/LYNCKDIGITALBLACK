@@ -64,8 +64,8 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Contact Us - LYNCK DIGITAL"
-        description="Get in touch with LYNCK DIGITAL. We'd love to hear from you about our digital products, courses, and templates."
+        title="Contact Us - THE DIGITALHUB"
+        description="Get in touch with THE DIGITALHUB. We'd love to hear from you about our digital products, courses, and templates."
       />
       <Header />
 
